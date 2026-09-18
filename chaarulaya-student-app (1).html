@@ -1,0 +1,2300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#4A2A63">
+<title>Chaarulaya — Student App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#3A2440; --ink-soft:#7C6B84; --ink-2:#5B4763;
+  --plum:#4A2A63; --plum-2:#5E3579; --plum-3:#7A4A96;
+  --cream:#FFF9F4; --cream-2:#FDEFE6; --blush:#FFE9EE; --lilac:#F1E9FB;
+  --peach:#FFEADA; --mint:#E7F5F0; --white:#FFFFFF;
+  --saffron:#FFA552; --saffron-2:#F58B3C; --rose:#FF7CA3; --rose-2:#EF5D8C;
+  --violet:#9B7FD4; --gold:#E3A64E; --gold-soft:#F4CE86;
+  --teal:#0E8C86; --teal-soft:#E3F3F1;
+  --ok:#2E7D4F; --ok-bg:#DFF1E4; --bad:#C2334F; --bad-bg:#FBE0E4; --warn:#9A5B0E; --warn-bg:#FCEBD4;
+  --line:rgba(58,36,64,0.07); --line-2:rgba(58,36,64,0.045);
+  --bg:#FBF9FD; --bg-2:#F5F1F9; --surface:#FFFFFF;
+  --sh-1:0 1px 2px rgba(58,36,64,.035), 0 10px 24px -14px rgba(90,50,110,.22);
+  --sh-2:0 2px 4px rgba(58,36,64,.04), 0 20px 40px -20px rgba(90,50,110,.3);
+  --sans:'Nunito',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --ease:cubic-bezier(.22,.9,.28,1);
+  --tab-h:74px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:var(--sans);background:radial-gradient(90% 80% at 50% 0%,#5E3579,#2A1338 70%);
+  color:var(--ink);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;
+  min-height:100vh;display:flex;align-items:center;justify-content:center;gap:34px;padding:28px;}
+h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em;line-height:1.25;}
+p{color:var(--ink-soft);}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;border:none;background:none;cursor:pointer;color:inherit;}
+input,select,textarea{font-family:inherit;}
+ul{list-style:none;}
+
+/* ---------- device frame (desktop preview) ---------- */
+.device{width:412px;height:868px;flex-shrink:0;border-radius:46px;border:11px solid #150720;
+  background:var(--bg);position:relative;overflow:hidden;
+  box-shadow:0 50px 100px -30px rgba(0,0,0,.65),0 0 0 2px rgba(255,255,255,.07);}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:124px;height:26px;
+  background:#150720;border-radius:0 0 16px 16px;z-index:200;}
+.statusbar{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;
+  font-size:12.5px;font-weight:800;color:var(--ink);flex-shrink:0;position:relative;z-index:150;}
+.statusbar.dark{color:var(--cream);}
+.statusbar .sb-ic{display:flex;gap:5px;align-items:center;}
+.statusbar svg{width:15px;height:15px;fill:currentColor;}
+.app{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;}
+.viewport{flex-grow:1;position:relative;overflow:hidden;}
+
+/* ---------- reviewer index (desktop only) ---------- */
+.index{width:230px;flex-shrink:0;color:rgba(255,249,244,.9);max-height:868px;overflow-y:auto;}
+.index h5{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,249,244,.5);
+  margin:16px 0 8px;font-weight:800;}
+.index h5:first-child{margin-top:0;}
+.index button{display:block;width:100%;text-align:left;font-size:12.8px;font-weight:700;padding:8px 12px;
+  border-radius:9px;color:rgba(255,249,244,.78);transition:.18s;}
+.index button:hover{background:rgba(255,249,244,.12);color:#fff;}
+.index-title{font-size:15px;font-weight:800;color:#fff;margin-bottom:4px;}
+.index-sub{font-size:11.5px;color:rgba(255,249,244,.55);margin-bottom:18px;line-height:1.5;}
+@media(max-width:1100px){.index{display:none;}}
+@media(max-width:520px){
+  body{padding:0;background:var(--bg);display:block;}
+  .device{width:100%;height:100vh;height:100dvh;border:none;border-radius:0;box-shadow:none;}
+  .notch{display:none;}
+  .statusbar{display:none;}
+}
+
+/* ---------- screens ---------- */
+.screen{position:absolute;inset:0;display:none;flex-direction:column;background:var(--bg);}
+.screen::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(58% 34% at 92% -4%, rgba(255,124,163,.17), transparent 68%),
+    radial-gradient(52% 30% at -12% 10%, rgba(155,127,212,.15), transparent 70%),
+    radial-gradient(70% 34% at 46% 103%, rgba(255,165,82,.10), transparent 70%);}
+.screen.splash::before{display:none;}
+.screen > *{position:relative;z-index:1;}
+.screen.on{display:flex;animation:slideIn .28s var(--ease);}
+.screen.on.noanim{animation:none;}
+@keyframes slideIn{from{opacity:0;transform:translateX(16px);}to{opacity:1;transform:none;}}
+.body{flex-grow:1;overflow-y:auto;overscroll-behavior:contain;padding:0 18px 28px;-webkit-overflow-scrolling:touch;}
+.body.flush{padding:0 0 28px;}
+.body.tabbed{padding-bottom:calc(var(--tab-h) + 22px);}
+
+/* ---------- app bar ---------- */
+.bar{display:flex;align-items:center;gap:12px;padding:8px 16px 14px;flex-shrink:0;background:transparent;
+  position:relative;z-index:20;}
+.bar.line{border-bottom:1px solid var(--line);padding-bottom:12px;}
+.bar h1{font-size:19px;flex-grow:1;letter-spacing:-.015em;}
+.bar .sub{font-size:11.5px;color:var(--ink-soft);font-weight:700;display:block;margin-top:1px;}
+.iconbtn{width:38px;height:38px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.82);backdrop-filter:blur(10px);border:1px solid var(--line);
+  box-shadow:var(--sh-1);flex-shrink:0;transition:.18s;}
+.iconbtn:active{transform:scale(.93);}
+.iconbtn svg{width:18px;height:18px;stroke:var(--ink);stroke-width:2.2;fill:none;}
+.iconbtn.plain{background:none;border:none;}
+.dot{position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--rose-2);
+  border:2px solid var(--cream);}
+
+/* ---------- tab bar ---------- */
+.tabbar{position:absolute;left:0;right:0;bottom:0;height:var(--tab-h);display:none;align-items:center;
+  justify-content:space-around;padding:0 6px calc(env(safe-area-inset-bottom) + 4px);z-index:120;
+  background:rgba(255,255,255,.8);backdrop-filter:blur(22px) saturate(160%);
+  border-top:1px solid rgba(58,36,64,.06);box-shadow:0 -8px 30px -18px rgba(90,50,110,.35);}
+.tabbar.on{display:flex;}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0;color:var(--ink-soft);
+  transition:color .18s;}
+.tab svg{width:21px;height:21px;stroke:currentColor;stroke-width:2;fill:none;}
+.tab span{font-size:10px;font-weight:800;letter-spacing:.01em;}
+.tab.on{color:var(--rose-2);}
+.tab.on svg{stroke:var(--rose-2);}
+
+/* ---------- buttons ---------- */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:15px 22px;border-radius:16px;
+  font-size:15px;font-weight:800;transition:.2s var(--ease);width:100%;}
+.btn:active{transform:scale(.975);}
+.btn-pri{background:linear-gradient(100deg,var(--plum-2),var(--rose-2));color:#fff;
+  box-shadow:0 12px 24px -12px rgba(90,50,110,.75);}
+.btn-out{border:1.5px solid rgba(58,36,64,.12);color:var(--ink);background:var(--surface);}
+.btn-soft{background:var(--bg-2);color:var(--ink);}
+.btn-dark{background:var(--plum);color:var(--cream);}
+.btn svg{width:17px;height:17px;stroke:currentColor;stroke-width:2.2;fill:none;}
+.btn.sm{padding:11px 16px;font-size:13.5px;border-radius:12px;width:auto;}
+.btn[disabled]{opacity:.45;pointer-events:none;}
+.btn-row{display:flex;gap:10px;}
+
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;padding:6px 12px;
+  border-radius:100px;background:var(--bg-2);color:var(--plum-2);white-space:nowrap;}
+.chip.ok{background:var(--ok-bg);color:var(--ok);}
+.chip.bad{background:var(--bad-bg);color:var(--bad);}
+.chip.warn{background:var(--warn-bg);color:var(--warn);}
+.chip.teal{background:var(--teal-soft);color:var(--teal);}
+.chip.live{background:var(--bad-bg);color:var(--bad);}
+.chip.live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--bad);animation:blip 1.7s infinite;}
+@keyframes blip{50%{opacity:.25;}}
+
+/* ---------- cards & rows ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px;
+  margin-bottom:12px;box-shadow:var(--sh-1);}
+.card.flat{border:none;}
+.row{display:flex;align-items:center;gap:13px;background:var(--surface);border:1px solid var(--line);
+  border-radius:18px;padding:14px;margin-bottom:10px;transition:.18s;box-shadow:var(--sh-1);}
+.row:active{transform:scale(.99);background:var(--bg-2);}
+.row .ic{width:42px;height:42px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  background:var(--cream-2);}
+.row .ic svg{width:19px;height:19px;stroke:var(--plum-2);stroke-width:2;fill:none;}
+.row .ic.rose{background:var(--blush);} .row .ic.rose svg{stroke:var(--rose-2);}
+.row .ic.teal{background:var(--teal-soft);} .row .ic.teal svg{stroke:var(--teal);}
+.row .ic.gold{background:var(--peach);} .row .ic.gold svg{stroke:var(--saffron-2);}
+.row .tx{flex-grow:1;min-width:0;}
+.row .tx b{font-size:14.5px;font-weight:800;display:block;line-height:1.3;}
+.row .tx span{font-size:12.3px;color:var(--ink-soft);display:block;margin-top:2px;}
+.row .go{width:16px;height:16px;stroke:var(--ink-soft);stroke-width:2.4;fill:none;flex-shrink:0;}
+
+.sec{display:flex;align-items:center;justify-content:space-between;margin:22px 0 12px;}
+.sec h3{font-size:16.5px;}
+.sec a{font-size:12.5px;font-weight:800;color:var(--rose-2);}
+.eyebrow{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
+
+/* ---------- forms ---------- */
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:7px;}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid var(--line);border-radius:14px;
+  padding:14px;font-size:15px;color:var(--ink);background:var(--white);transition:border-color .18s;}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--rose-2);}
+.field textarea{min-height:96px;resize:vertical;}
+.frow{display:grid;grid-template-columns:88px 1fr;gap:9px;}
+.hint{font-size:12px;color:var(--ink-soft);margin-top:6px;}
+
+/* ---------- segmented ---------- */
+.seg{display:flex;background:var(--bg-2);border-radius:15px;padding:4px;gap:3px;margin-bottom:16px;}
+.seg button{flex:1;padding:10px 6px;border-radius:11px;font-size:12.8px;font-weight:800;color:var(--ink-soft);
+  transition:.18s;white-space:nowrap;}
+.seg button.on{background:var(--white);color:var(--ink);box-shadow:0 2px 8px -4px rgba(58,36,64,.35);}
+
+.scroller{display:flex;gap:8px;overflow-x:auto;padding:2px 18px 14px;margin:0 -18px;scrollbar-width:none;}
+.scroller::-webkit-scrollbar{display:none;}
+.pill{padding:10px 16px;border-radius:100px;font-size:13px;font-weight:800;background:var(--surface);
+  border:1px solid var(--line);color:var(--ink-soft);white-space:nowrap;flex-shrink:0;transition:.18s;}
+.pill.on{background:linear-gradient(100deg,var(--plum-2),var(--rose-2));color:#fff;border-color:transparent;}
+
+/* ---------- hero / banners ---------- */
+.hero{background:
+    radial-gradient(90% 80% at 8% 0%, #8455A6 0%, transparent 58%),
+    radial-gradient(80% 70% at 100% 6%, #B0518A 0%, transparent 60%),
+    linear-gradient(165deg,#5E3579 0%,#43245C 62%,#37184F 100%);
+  color:var(--cream);border-radius:0 0 30px 30px;padding:4px 18px 24px;margin:0 0 18px;
+  position:relative;overflow:hidden;box-shadow:0 18px 40px -24px rgba(58,20,80,.85);}
+.hero::after{content:"";position:absolute;top:-40%;right:-25%;width:75%;height:150%;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,165,82,.3),transparent 62%);filter:blur(28px);}
+.hero > *{position:relative;z-index:1;}
+.hero h2{font-size:22px;color:var(--cream);margin-bottom:5px;}
+.hero p{font-size:13px;color:rgba(255,249,244,.72);}
+.hero-top{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.av{width:42px;height:42px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--rose-2),var(--saffron));}
+.av.lg{width:74px;height:74px;font-size:25px;}
+.av.sm{width:32px;height:32px;font-size:11px;}
+
+.next-card{background:rgba(255,249,244,.12);border:1px solid rgba(255,249,244,.2);border-radius:18px;
+  padding:14px;backdrop-filter:blur(6px);}
+.next-card .nc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+.next-card b{font-size:15.5px;color:var(--cream);display:block;}
+.next-card span{font-size:12.3px;color:rgba(255,249,244,.72);}
+
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:6px;}
+.qa{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:13px 6px;text-align:center;box-shadow:var(--sh-1);
+  transition:.18s;position:relative;}
+.qa:active{transform:scale(.95);}
+.qa .qi{width:36px;height:36px;border-radius:12px;margin:0 auto 7px;display:flex;align-items:center;justify-content:center;}
+.qa .qi svg{width:17px;height:17px;stroke:#fff;stroke-width:2.1;fill:none;}
+.qa span{font-size:10.5px;font-weight:800;line-height:1.25;display:block;}
+.qa .badge{position:absolute;top:7px;right:9px;min-width:17px;height:17px;border-radius:100px;padding:0 5px;
+  background:var(--rose-2);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+
+/* ---------- progress ---------- */
+.bar-track{height:7px;border-radius:100px;background:var(--bg-2);overflow:hidden;}
+.bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--plum-2),var(--rose-2));transition:width .5s var(--ease);}
+.bar-track.light{background:rgba(255,249,244,.22);}
+.bar-track.light .bar-fill{background:linear-gradient(90deg,var(--gold-soft),var(--saffron));}
+
+.mc{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:12px;box-shadow:var(--sh-1);}
+.mc-top{display:flex;justify-content:space-between;gap:12px;margin-bottom:11px;}
+.mc-top .eyebrow{color:var(--rose-2);display:block;margin-bottom:3px;}
+.mc-top h4{font-size:16px;}
+.mc-att{text-align:right;flex-shrink:0;}
+.mc-att b{font-size:17px;font-weight:800;color:var(--ok);display:block;line-height:1;}
+.mc-att span{font-size:9.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);}
+.mc-meta{font-size:12.3px;color:var(--ink-soft);margin-bottom:11px;display:grid;gap:3px;}
+.mc-meta b{color:var(--ink);font-weight:800;}
+.mc-foot{display:flex;justify-content:space-between;font-size:11.8px;font-weight:800;margin-bottom:6px;}
+.mc-foot span.s{color:var(--ink-soft);}
+
+/* ---------- course tiles ---------- */
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;margin-bottom:14px;transition:.18s;box-shadow:var(--sh-1);}
+.tile:active{transform:scale(.99);}
+.tile-img{aspect-ratio:16/8;position:relative;background:linear-gradient(150deg,var(--peach),var(--blush));}
+.tile-img img{width:100%;height:100%;object-fit:cover;}
+.tile-img .tag{position:absolute;top:10px;left:10px;font-size:10.5px;font-weight:800;padding:5px 11px;
+  border-radius:100px;background:rgba(255,255,255,.94);}
+.tile-bd{padding:14px;}
+.tile-bd h4{font-size:16px;margin-bottom:5px;}
+.tile-bd p{font-size:12.8px;line-height:1.5;margin-bottom:11px;}
+.tile-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding-top:11px;border-top:1px solid var(--line);}
+.tile-foot b{font-size:16px;font-weight:800;}
+.tile-foot small{font-size:11.5px;color:var(--ink-soft);display:block;font-weight:700;}
+
+.lvl{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:12px;box-shadow:var(--sh-1);}
+.lvl h4{font-size:16px;margin-bottom:11px;}
+.lvl .lr{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:13px;border-bottom:1px dashed var(--line);}
+.lvl .lr:last-of-type{border-bottom:none;}
+.lvl .lr span{color:var(--ink-soft);font-weight:700;}
+.lvl .lr b{font-weight:800;text-align:right;}
+.lvl-act{display:flex;gap:9px;margin-top:12px;}
+
+/* ---------- lists / tables as rows ---------- */
+.lrow{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line-2);}
+.lrow:last-child{border-bottom:none;}
+.lrow .tx{flex-grow:1;min-width:0;}
+.lrow .tx b{font-size:14px;font-weight:800;display:block;line-height:1.3;}
+.lrow .tx span{font-size:12px;color:var(--ink-soft);display:block;margin-top:2px;}
+.lrow .rt{text-align:right;flex-shrink:0;}
+.datebox{width:46px;flex-shrink:0;text-align:center;background:var(--bg-2);border-radius:13px;padding:7px 2px;}
+.datebox b{font-size:16px;font-weight:800;display:block;line-height:1;}
+.datebox span{font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);}
+
+.kpi-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
+.kpi-row.three{grid-template-columns:repeat(3,1fr);}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:13px;box-shadow:var(--sh-1);}
+.kpi small{display:block;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:5px;}
+.kpi b{font-size:22px;font-weight:800;line-height:1;}
+.kpi.ok b{color:var(--ok);} .kpi.bad b{color:var(--bad);} .kpi.warn b{color:var(--warn);}
+
+/* ---------- bottom sheet ---------- */
+.sheet{position:absolute;inset:0;z-index:300;display:flex;align-items:flex-end;opacity:0;visibility:hidden;
+  transition:opacity .26s var(--ease),visibility .26s;}
+.sheet.on{opacity:1;visibility:visible;}
+.sheet-back{position:absolute;inset:0;background:rgba(28,10,38,.55);backdrop-filter:blur(3px);}
+.sheet-box{position:relative;width:100%;max-height:88%;background:var(--bg);border-radius:28px 28px 0 0;
+  display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s var(--ease);
+  padding-bottom:env(safe-area-inset-bottom);}
+.sheet.on .sheet-box{transform:none;}
+.grab{width:42px;height:5px;border-radius:100px;background:var(--line);margin:10px auto 4px;flex-shrink:0;}
+.sheet-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:8px 18px 12px;flex-shrink:0;}
+.sheet-hd h3{font-size:18px;margin-bottom:2px;}
+.sheet-hd .sub{font-size:12px;color:var(--ink-soft);font-weight:700;}
+.sheet-bd{padding:0 18px 18px;overflow-y:auto;}
+.sheet-ft{padding:12px 18px 18px;border-top:1px solid var(--line);flex-shrink:0;background:var(--bg);}
+
+/* ---------- player / pdf ---------- */
+.player{background:#150720;border-radius:16px;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;position:relative;}
+.pbtn{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center;}
+.pbtn svg{width:19px;height:19px;fill:var(--plum);margin-left:3px;}
+.pctrl{display:flex;align-items:center;gap:10px;margin-top:11px;}
+.pctrl .t{font-size:11.5px;color:var(--ink-soft);font-weight:800;}
+.pctrl .sk{flex-grow:1;height:5px;border-radius:100px;background:var(--bg-2);overflow:hidden;}
+.pctrl .sk i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--rose-2),var(--saffron));}
+.pdf{background:var(--bg-2);border-radius:18px;padding:22px;text-align:center;}
+.pdf svg{width:38px;height:38px;stroke:var(--rose-2);stroke-width:1.7;fill:none;margin-bottom:10px;}
+.pdf b{display:block;font-size:14px;font-weight:800;}
+.pdf span{font-size:12px;color:var(--ink-soft);}
+.pdf .pg{background:var(--white);border:1px solid var(--line);border-radius:9px;height:120px;margin-top:14px;
+  background-image:repeating-linear-gradient(180deg,transparent 0 12px,var(--line) 12px 13px);
+  background-position:0 18px;background-size:100% 13px;background-repeat:repeat-y;}
+
+/* ---------- exam ---------- */
+.timer{position:sticky;top:0;z-index:30;background:linear-gradient(var(--bg) 72%,rgba(251,249,253,0));padding:10px 0 14px;margin-bottom:4px;}
+.timer-in{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--surface);
+  border:1px solid var(--line);border-radius:16px;padding:12px 15px;box-shadow:var(--sh-1);}
+.timer-in b{font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;}
+.timer-in.low{background:var(--bad-bg);border-color:transparent;}
+.timer-in.low b{color:var(--bad);}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:12px;box-shadow:var(--sh-1);}
+.q-hd{display:flex;gap:10px;margin-bottom:13px;}
+.qn{width:25px;height:25px;border-radius:8px;flex-shrink:0;font-size:11.5px;font-weight:800;color:#fff;
+  display:flex;align-items:center;justify-content:center;background:var(--plum-2);}
+.q-hd p{font-size:14.5px;color:var(--ink);font-weight:700;line-height:1.45;}
+.opt{display:flex;align-items:center;gap:11px;border:1.5px solid var(--line);border-radius:13px;padding:13px 14px;
+  font-size:14px;margin-bottom:8px;transition:.18s;}
+.opt:active{transform:scale(.99);}
+.opt.on{border-color:var(--rose-2);background:var(--blush);font-weight:800;}
+.opt .ob{width:19px;height:19px;border-radius:50%;border:2px solid var(--line);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;}
+.opt.on .ob{border-color:var(--rose-2);}
+.opt .ob i{width:9px;height:9px;border-radius:50%;background:var(--rose-2);transform:scale(0);transition:transform .18s var(--ease);}
+.opt.on .ob i{transform:scale(1);}
+.opt.right{border-color:#8FCBA6;background:var(--ok-bg);}
+.opt.wrong{border-color:#E39BAB;background:var(--bad-bg);}
+.opt .fl{margin-left:auto;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;}
+.opt.right .fl{color:var(--ok);} .opt.wrong .fl{color:var(--bad);}
+.drop{border:1.5px dashed var(--line);border-radius:15px;padding:20px;text-align:center;}
+.drop svg{width:24px;height:24px;stroke:var(--rose-2);stroke-width:1.8;fill:none;margin-bottom:8px;}
+.drop span{display:block;font-size:11.8px;color:var(--ink-soft);margin-top:7px;}
+.done-file{display:flex;align-items:center;gap:11px;border:1.5px solid #9AD3B0;background:#EFF8F2;
+  border-radius:14px;padding:12px;}
+.done-file .fi{width:32px;height:32px;border-radius:9px;background:var(--ok);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;}
+.done-file .fi svg{width:15px;height:15px;stroke:#fff;stroke-width:2.6;fill:none;}
+.done-file b{font-size:13px;font-weight:800;display:block;}
+.done-file small{font-size:11px;color:var(--ink-soft);}
+
+.result{background:radial-gradient(120% 140% at 15% 0%,var(--plum-3),var(--plum) 70%);border-radius:20px;
+  padding:26px 20px;text-align:center;color:var(--cream);margin-bottom:16px;}
+.result .score{font-size:46px;font-weight:800;line-height:1;color:var(--gold-soft);margin-bottom:6px;}
+.result h3{color:var(--cream);font-size:18px;margin-bottom:4px;}
+.result p{color:rgba(255,249,244,.7);font-size:12.5px;margin-bottom:16px;}
+.verdict{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  padding:7px 15px;border-radius:100px;}
+.verdict.pass{background:var(--ok-bg);color:var(--ok);}
+.verdict.fail{background:var(--bad-bg);color:var(--bad);}
+
+/* ---------- misc ---------- */
+.empty{text-align:center;padding:44px 20px;}
+.empty svg{width:64px;height:64px;stroke:var(--rose-2);stroke-width:1.4;fill:none;opacity:.45;margin-bottom:14px;}
+.empty h3{font-size:17px;margin-bottom:6px;}
+.empty p{font-size:13px;max-width:250px;margin:0 auto 18px;}
+.footbar{padding:12px 18px calc(env(safe-area-inset-bottom) + 18px);flex-shrink:0;
+  background:linear-gradient(rgba(251,249,253,0),var(--bg) 26%);position:relative;z-index:5;}
+.fab{position:absolute;right:18px;bottom:calc(var(--tab-h) + 16px);z-index:110;height:50px;padding:0 20px;
+  border-radius:100px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800;color:#fff;
+  background:linear-gradient(100deg,var(--plum-2),var(--rose-2));box-shadow:0 14px 28px -10px rgba(90,50,110,.8);}
+.fab svg{width:17px;height:17px;stroke:#fff;stroke-width:2.4;fill:none;}
+.toast{position:absolute;left:14px;right:14px;top:52px;z-index:400;background:var(--ink);color:var(--cream);
+  border-radius:15px;padding:13px 16px;display:flex;gap:11px;align-items:center;
+  transform:translateY(-140%);transition:transform .34s var(--ease);box-shadow:0 18px 34px -16px rgba(0,0,0,.6);}
+.toast.on{transform:none;}
+.toast svg{width:18px;height:18px;stroke:var(--gold-soft);stroke-width:2.3;fill:none;flex-shrink:0;}
+.toast b{font-size:13.5px;display:block;}
+.toast span{font-size:11.5px;color:rgba(255,249,244,.72);}
+
+/* splash + onboarding */
+.splash{background:radial-gradient(120% 120% at 50% 20%,var(--plum-3),var(--plum) 60%,#2A1338 100%);
+  align-items:center;justify-content:center;color:var(--cream);text-align:center;padding:30px;}
+.mark{width:72px;height:72px;border-radius:22px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--rose-2),var(--saffron));margin-bottom:20px;
+  box-shadow:0 18px 40px -14px rgba(239,93,140,.8);}
+.mark svg{width:34px;height:34px;stroke:#fff;stroke-width:2;fill:none;}
+.splash h1{font-size:30px;color:var(--cream);margin-bottom:8px;}
+.splash p{color:rgba(255,249,244,.7);font-size:14px;max-width:270px;}
+.ob-img{aspect-ratio:1/1;border-radius:24px;overflow:hidden;margin-bottom:24px;background:var(--cream-2);}
+.ob-img img{width:100%;height:100%;object-fit:cover;}
+.dots{display:flex;gap:7px;justify-content:center;margin:18px 0 22px;}
+.dots i{width:7px;height:7px;border-radius:100px;background:var(--line);transition:.25s;}
+.dots i.on{width:22px;background:var(--rose-2);}
+
+/* ===================== WEBSITE PAGES ===================== */
+.mhero{position:relative;border-radius:0 0 30px 30px;overflow:hidden;margin-bottom:18px;
+  background:linear-gradient(165deg,#5E3579,#3B1B53);color:var(--cream);}
+.mhero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.42;}
+.mhero-in{position:relative;z-index:1;padding:28px 18px 26px;}
+.mhero .eyebrow{color:var(--gold-soft);}
+.mhero h1{font-size:27px;color:var(--cream);margin:7px 0 9px;line-height:1.2;}
+.mhero p{font-size:13.5px;color:rgba(255,249,244,.78);line-height:1.6;}
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:20px;}
+.stat-strip div{background:rgba(255,249,244,.13);border-radius:13px;padding:10px 6px;text-align:center;}
+.stat-strip b{display:block;font-size:16px;font-weight:800;color:var(--gold-soft);line-height:1;}
+.stat-strip span{font-size:9px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  color:rgba(255,249,244,.6);display:block;margin-top:4px;}
+
+.fac{display:flex;gap:13px;background:var(--surface);border:1px solid var(--line);border-radius:20px;
+  padding:13px;margin-bottom:12px;box-shadow:var(--sh-1);}
+.fac-img{width:86px;flex-shrink:0;border-radius:15px;overflow:hidden;background:var(--bg-2);}
+.fac-img img{width:100%;height:100%;object-fit:cover;min-height:104px;}
+.fac-bd{flex-grow:1;min-width:0;}
+.fac-bd h4{font-size:15.5px;margin-bottom:2px;}
+.fac-role{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--rose-2);margin-bottom:7px;}
+.fac-bd p{font-size:12.2px;line-height:1.5;margin-bottom:8px;}
+.fac-tags{display:flex;gap:6px;flex-wrap:wrap;}
+
+.gal{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.gal-i{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:1/1;display:flex;
+  align-items:flex-end;padding:11px;box-shadow:var(--sh-1);}
+.gal-i.tall{grid-row:span 2;aspect-ratio:auto;}
+.gal-i.wide{grid-column:span 2;aspect-ratio:2/1;}
+.gal-i img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.gal-i::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(0deg,rgba(30,10,38,.72),rgba(30,10,38,0) 58%);}
+.gal-i b{position:relative;z-index:1;font-size:11.8px;font-weight:800;color:#fff;line-height:1.3;}
+.gal-i .gp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;width:38px;height:38px;
+  border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;}
+.gal-i .gp svg{width:14px;height:14px;fill:var(--plum);margin-left:2px;}
+
+.tl{position:relative;padding-left:26px;}
+.tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;border-radius:2px;
+  background:linear-gradient(var(--rose-2),var(--saffron));opacity:.35;}
+.tl-i{position:relative;margin-bottom:16px;}
+.tl-i::before{content:"";position:absolute;left:-23px;top:5px;width:12px;height:12px;border-radius:50%;
+  background:var(--surface);border:2.5px solid var(--rose-2);}
+.tl-i .yr{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--rose-2);}
+.tl-i h4{font-size:14.5px;margin:3px 0 4px;}
+.tl-i p{font-size:12.3px;line-height:1.5;}
+
+.perk{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line-2);}
+.perk:last-child{border-bottom:none;}
+.perk .pi{width:38px;height:38px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.perk .pi svg{width:17px;height:17px;stroke-width:2;fill:none;}
+.perk b{font-size:14px;font-weight:800;display:block;margin-bottom:2px;}
+.perk span{font-size:12.2px;color:var(--ink-soft);line-height:1.5;display:block;}
+
+.film{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:3/4;flex-shrink:0;width:124px;
+  box-shadow:var(--sh-1);}
+.film img{width:100%;height:100%;object-fit:cover;}
+.film::after{content:"";position:absolute;inset:0;background:rgba(30,10,38,.28);}
+.film .gp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;width:36px;height:36px;
+  border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;}
+.film .gp svg{width:13px;height:13px;fill:var(--plum);margin-left:2px;}
+
+.ws-banner{position:relative;border-radius:22px;overflow:hidden;margin-bottom:18px;
+  background:linear-gradient(160deg,#5E3579,#3B1B53);color:var(--cream);box-shadow:var(--sh-2);}
+.ws-banner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.4;}
+.ws-banner .wb-in{position:relative;z-index:1;padding:22px 18px;}
+.ws-banner .eyebrow{color:var(--gold-soft);}
+.ws-banner h3{font-size:20px;color:var(--cream);margin:6px 0 8px;}
+.ws-banner p{font-size:12.8px;color:rgba(255,249,244,.78);line-height:1.55;}
+
+.past{display:flex;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:18px;
+  padding:11px;margin-bottom:11px;box-shadow:var(--sh-1);}
+.past-img{width:96px;height:72px;flex-shrink:0;border-radius:13px;overflow:hidden;position:relative;background:var(--bg-2);}
+.past-img img{width:100%;height:100%;object-fit:cover;}
+.past-img::after{content:"";position:absolute;inset:0;background:rgba(30,10,38,.3);}
+.past-img .gp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;width:30px;height:30px;
+  border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;}
+.past-img .gp svg{width:11px;height:11px;fill:var(--plum);margin-left:2px;}
+.past b{font-size:13.8px;font-weight:800;display:block;line-height:1.3;margin-bottom:3px;}
+.past span{font-size:11.5px;color:var(--ink-soft);display:block;}
+
+.contact-row{display:flex;align-items:center;gap:13px;padding:13px 0;border-bottom:1px solid var(--line-2);}
+.contact-row:last-child{border-bottom:none;}
+.contact-row .ci{width:40px;height:40px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;
+  justify-content:center;background:var(--bg-2);}
+.contact-row .ci svg{width:18px;height:18px;stroke:var(--plum-2);stroke-width:2;fill:none;}
+.contact-row b{font-size:14px;font-weight:800;display:block;}
+.contact-row span{font-size:12.3px;color:var(--ink-soft);}
+.map{height:132px;border-radius:16px;background:
+  linear-gradient(135deg,var(--mint),var(--bg-2));position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;border:1px solid var(--line);}
+.map::before{content:"";position:absolute;inset:0;opacity:.5;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:26px 26px;}
+.map .pin{position:relative;z-index:1;width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--rose-2),var(--saffron));display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 22px -8px rgba(239,93,140,.9);}
+.map .pin svg{width:17px;height:17px;stroke:#fff;stroke-width:2.2;fill:none;}
+</style>
+</head>
+<body>
+
+<div class="device">
+  <div class="notch"></div>
+  <div class="app">
+    <div class="statusbar" id="statusbar">
+      <span>9:41</span>
+      <span class="sb-ic">
+        <svg viewBox="0 0 24 24"><path d="M2 17h3v4H2zM7 13h3v8H7zM12 9h3v12h-3zM17 4h3v17h-3z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 19l4-5a5 5 0 00-8 0zM12 19l-8-10a13 13 0 0116 0z" opacity=".95"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M2 8h16a2 2 0 012 2v4a2 2 0 01-2 2H2zM21 11h1v2h-1z"/></svg>
+      </span>
+    </div>
+
+    <div class="viewport">
+
+      <!-- ===================== SPLASH ===================== -->
+      <section class="screen on splash" id="scSplash">
+        <span class="mark"><svg viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1014 17V7h4V3h-6z"/></svg></span>
+        <h1>Chaarulaya</h1>
+        <p>Carnatic music and Bharatanatyam, taught live by devoted gurus — now in your pocket.</p>
+      </section>
+
+      <!-- ===================== ONBOARDING ===================== -->
+      <section class="screen" id="scOnboard">
+        <div class="bar"><span style="flex-grow:1"></span>
+          <button class="iconbtn plain" style="width:auto;font-size:13px;font-weight:800;color:var(--ink-soft)" onclick="show('scLogin')">Skip</button>
+        </div>
+        <div class="body" id="obBody"></div>
+        <div style="padding:0 18px 26px">
+          <div class="dots" id="obDots"></div>
+          <button class="btn btn-pri" id="obNext" onclick="obStep()">Next</button>
+        </div>
+      </section>
+
+      <!-- ===================== LOGIN ===================== -->
+      <section class="screen" id="scLogin">
+        <div class="bar"><button class="iconbtn plain" onclick="show('scOnboard')">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button></div>
+        <div class="body">
+          <h1 style="font-size:26px;margin-bottom:6px;">Welcome back</h1>
+          <p style="font-size:14px;margin-bottom:24px;">Sign in to reach your classes, notes and exams.</p>
+          <div class="seg" id="authSeg">
+            <button class="on" onclick="setAuth('in')">Log In</button>
+            <button onclick="setAuth('up')">Create Account</button>
+          </div>
+          <div id="authBody"></div>
+        </div>
+      </section>
+
+      <!-- ===================== HOME ===================== -->
+      <section class="screen" id="scHome">
+        <div class="body tabbed flush" id="homeBody"></div>
+      </section>
+
+      <!-- ===================== EXPLORE ===================== -->
+      <section class="screen" id="scExplore">
+        <div class="bar"><h1>Explore</h1>
+          <button class="iconbtn" onclick="show('scNotifs')" style="position:relative">
+            <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+            <span class="dot"></span></button>
+        </div>
+        <div class="seg" style="margin:0 18px 14px" id="expSeg">
+          <button class="on" onclick="setExplore('courses')">Courses</button>
+          <button onclick="setExplore('workshops')">Workshops</button>
+        </div>
+        <div class="body tabbed" id="expBody"></div>
+      </section>
+
+      <!-- ===================== CATEGORY LEVELS ===================== -->
+      <section class="screen" id="scCategory">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1 id="catTitle">Category</h1></div>
+        <div class="body" id="catBody"></div>
+      </section>
+
+      <!-- ===================== COURSE DETAIL (public) ===================== -->
+      <section class="screen" id="scCourse">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Course Details</h1></div>
+        <div class="body" id="courseBody"></div>
+        <div class="footbar">
+          <button class="btn btn-pri" id="courseCta">Enroll</button>
+        </div>
+      </section>
+
+      <!-- ===================== ENROL ===================== -->
+      <section class="screen" id="scEnroll">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Enrollment</h1></div>
+        <div class="body" id="enrollBody"></div>
+        <div class="footbar">
+          <button class="btn btn-pri" onclick="show('scPay')">Continue to Payment</button>
+        </div>
+      </section>
+
+      <!-- ===================== PAYMENT ===================== -->
+      <section class="screen" id="scPay">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Payment</h1></div>
+        <div class="body" id="payBody"></div>
+        <div class="footbar">
+          <button class="btn btn-pri" id="payBtn" onclick="payNow()">Pay</button>
+        </div>
+      </section>
+
+      <!-- ===================== SUCCESS ===================== -->
+      <section class="screen" id="scSuccess">
+        <div class="body" style="display:flex;flex-direction:column;justify-content:center;text-align:center;padding:30px 24px" id="successBody"></div>
+      </section>
+
+      <!-- ===================== MY COURSES ===================== -->
+      <section class="screen" id="scLearn">
+        <div class="bar"><h1 id="learnTitle">My Courses</h1>
+          <button class="iconbtn" onclick="show('scLive')" title="Live classes">
+            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l6 3-6 3z"/></svg></button>
+        </div>
+        <div class="body tabbed" id="learnBody"></div>
+      </section>
+
+      <!-- ===================== ENROLLED COURSE ===================== -->
+      <section class="screen" id="scMyCourse">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1 id="mcTitle">Course</h1></div>
+        <div class="body" id="mcBody"></div>
+      </section>
+
+      <!-- ===================== LIVE CLASSES ===================== -->
+      <section class="screen" id="scLive">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Live Classes</h1></div>
+        <div class="body" id="liveBody"></div>
+      </section>
+
+      <!-- ===================== EXAMS ===================== -->
+      <section class="screen" id="scExams">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Exams</h1></div>
+        <div class="seg" style="margin:0 18px 14px" id="examSeg">
+          <button class="on" onclick="setExamTab('upcoming')">Upcoming</button>
+          <button onclick="setExamTab('pending')">Pending</button>
+          <button onclick="setExamTab('completed')">Completed</button>
+        </div>
+        <div class="body" id="examBody"></div>
+      </section>
+
+      <!-- ===================== EXAM RUNNER ===================== -->
+      <section class="screen" id="scExamRun">
+        <div class="bar line"><button class="iconbtn plain" onclick="quitExam()">
+          <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+          <h1 id="runTitle">Exam</h1></div>
+        <div class="body" id="runBody"></div>
+        <div class="footbar">
+          <button class="btn btn-pri" onclick="submitExam()">Submit Exam</button>
+        </div>
+      </section>
+
+      <!-- ===================== EXAM RESULT ===================== -->
+      <section class="screen" id="scExamResult">
+        <div class="bar"><button class="iconbtn plain" onclick="show('scExams')">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Result</h1></div>
+        <div class="body" id="resultBody"></div>
+      </section>
+
+      <!-- ===================== DOUBTS ===================== -->
+      <section class="screen" id="scDoubts">
+        <div class="bar"><h1>Doubts</h1></div>
+        <div class="body tabbed" id="doubtBody"></div>
+        <button class="fab" onclick="show('scDoubtNew')">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Raise Doubt</button>
+      </section>
+
+      <!-- ===================== NEW DOUBT ===================== -->
+      <section class="screen" id="scDoubtNew">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Raise a Doubt</h1></div>
+        <div class="body" id="doubtNewBody"></div>
+        <div class="footbar">
+          <button class="btn btn-pri" onclick="sendDoubt()">Send to Guru</button>
+        </div>
+      </section>
+
+      <!-- ===================== ATTENDANCE ===================== -->
+      <section class="screen" id="scAttendance">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Attendance</h1></div>
+        <div class="body" id="attBody"></div>
+      </section>
+
+      <!-- ===================== PAYMENT LEDGER ===================== -->
+      <section class="screen" id="scLedger">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Payment Ledger</h1></div>
+        <div class="body" id="ledgerBody"></div>
+      </section>
+
+      <!-- ===================== WORKSHOP DETAIL ===================== -->
+      <section class="screen" id="scWorkshop">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Workshop</h1></div>
+        <div class="body flush" id="wsBody"></div>
+        <div class="footbar" id="wsFoot"></div>
+      </section>
+
+      <!-- ===================== NOTIFICATIONS ===================== -->
+      <section class="screen" id="scNotifs">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Notifications</h1></div>
+        <div class="body" id="notifBody"></div>
+      </section>
+
+
+      <!-- ===================== LANDING (website home) ===================== -->
+      <section class="screen" id="scLanding">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Chaarulaya</h1>
+          <button class="iconbtn" onclick="goTab('scExplore')">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button></div>
+        <div class="body flush" id="landingBody"></div>
+      </section>
+
+      <!-- ===================== FACULTY ===================== -->
+      <section class="screen" id="scFaculty">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Our Gurus<span class="sub">14 empanelled faculty</span></h1></div>
+        <div class="body flush" id="facBody"></div>
+      </section>
+
+      <!-- ===================== GALLERY ===================== -->
+      <section class="screen" id="scGallery">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Gallery<span class="sub">Moments at Chaarulaya</span></h1></div>
+        <div class="body flush" id="galBody"></div>
+      </section>
+
+      <!-- ===================== EVENTS ===================== -->
+      <section class="screen" id="scEvents">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Events<span class="sub">What is coming up</span></h1></div>
+        <div class="body" id="eventBody"></div>
+      </section>
+
+      <!-- ===================== ABOUT ===================== -->
+      <section class="screen" id="scAbout">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>About Us</h1></div>
+        <div class="body flush" id="aboutBody"></div>
+      </section>
+
+      <!-- ===================== CONTACT ===================== -->
+      <section class="screen" id="scContact">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Contact</h1></div>
+        <div class="body" id="contactBody"></div>
+      </section>
+
+      <!-- ===================== PROFILE ===================== -->
+      <section class="screen" id="scProfile">
+        <div class="body tabbed flush" id="profileBody"></div>
+      </section>
+
+      <!-- ===================== EDIT PROFILE ===================== -->
+      <section class="screen" id="scProfileEdit">
+        <div class="bar"><button class="iconbtn plain" onclick="back()">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <h1>Edit Profile</h1></div>
+        <div class="body" id="editBody"></div>
+        <div class="footbar">
+          <button class="btn btn-pri" onclick="toast('Profile saved','Your details have been updated.');back();">Save Changes</button>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ===================== TAB BAR ===================== -->
+    <nav class="tabbar" id="tabbar">
+      <button class="tab on" data-sc="scHome" onclick="goTab('scHome')">
+        <svg viewBox="0 0 24 24"><path d="M3 10l9-7 9 7v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 21v-7h6v7"/></svg><span>Home</span></button>
+      <button class="tab" data-sc="scExplore" onclick="goTab('scExplore')">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>Explore</span></button>
+      <button class="tab" data-sc="scLearn" onclick="goTab('scLearn')">
+        <svg viewBox="0 0 24 24"><path d="M4 19V5a2 2 0 012-2h12a2 2 0 012 2v13l-4-2-4 2-4-2-4 2z"/></svg><span>My Courses</span></button>
+      <button class="tab" data-sc="scDoubts" onclick="goTab('scDoubts')">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M9.6 9a2.5 2.5 0 114.9.6c0 1.4-2.5 1.5-2.5 2.9"/><circle cx="12" cy="15.4" r=".9"/></svg><span>Doubts</span></button>
+      <button class="tab" data-sc="scProfile" onclick="goTab('scProfile')">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>Profile</span></button>
+    </nav>
+
+    <!-- ===================== SHEET + TOAST ===================== -->
+    <div class="sheet" id="sheet">
+      <div class="sheet-back" onclick="closeSheet()"></div>
+      <div class="sheet-box" id="sheetBox"></div>
+    </div>
+
+    <div class="toast" id="toast">
+      <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+      <div><b id="toastT"></b><span id="toastM"></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- reviewer index, desktop only -->
+<aside class="index">
+  <div class="index-title">Chaarulaya Student App</div>
+  <div class="index-sub">Tap any screen to jump straight to it. On a phone this fills the whole display.</div>
+  <h5>Onboarding</h5>
+  <button onclick="show('scSplash')">Splash</button>
+  <button onclick="show('scOnboard')">Onboarding</button>
+  <button onclick="show('scLogin')">Login / Sign up</button>
+  <h5>Discover &amp; Enrol</h5>
+  <button onclick="goTab('scExplore')">Explore</button>
+  <button onclick="openCat('violin')">Category levels</button>
+  <button onclick="openCourse('violin','v1')">Course details</button>
+  <button onclick="openEnroll('violin','v1')">Enrollment form</button>
+  <button onclick="openCourse('violin','v1');show('scEnroll');show('scPay')">Payment options</button>
+  <button onclick="goTab('scExplore');setExplore('workshops')">Workshops + banner</button>
+  <button onclick="openWorkshop('w1')">Workshop detail</button>
+  <h5>Learning</h5>
+  <button onclick="goTab('scHome')">Home</button>
+  <button onclick="goTab('scLearn')">My Courses</button>
+  <button onclick="openMyCourse('e1')">Course &amp; sessions</button>
+  <button onclick="show('scLive')">Live classes</button>
+  <h5>Exams</h5>
+  <button onclick="show('scExams')">Exam list</button>
+  <button onclick="startExam('x1')">Quiz runner</button>
+  <button onclick="startExam('x2')">Written exam</button>
+  <button onclick="showResult('x3')">Result</button>
+  <h5>Support &amp; Money</h5>
+  <button onclick="goTab('scDoubts')">Doubts</button>
+  <button onclick="show('scDoubtNew')">Raise doubt</button>
+  <button onclick="show('scAttendance')">Attendance</button>
+  <button onclick="show('scLedger')">Payment ledger</button>
+  <h5>Academy</h5>
+  <button onclick="show('scLanding')">Landing page</button>
+  <button onclick="show('scFaculty')">Faculty</button>
+  <button onclick="show('scGallery')">Gallery</button>
+  <button onclick="show('scEvents')">Events</button>
+  <button onclick="show('scAbout')">About Us</button>
+  <button onclick="show('scContact')">Contact</button>
+  <h5>Account</h5>
+  <button onclick="goTab('scProfile')">Profile</button>
+  <button onclick="show('scProfileEdit')">Edit profile</button>
+  <button onclick="show('scNotifs')">Notifications</button>
+</aside>
+<script>
+/* =================================================================
+   CHAARULAYA — STUDENT MOBILE APP
+   Same product as the web portal, rebuilt around phone patterns:
+   bottom tabs, stacked screens with back, and bottom sheets.
+   ================================================================= */
+
+function PX(id, w, h){
+  return 'https://images.pexels.com/photos/' + id + '/pexels-photo-' + id +
+    '.jpeg?auto=compress&cs=tinysrgb&w=' + w + '&h=' + h + '&fit=crop';
+}
+function inr(n){ return '\u20B9' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/'/g, "\\'"); }
+function ini(n){ return n.split(' ').map(function(p){ return p.charAt(0); }).join('').slice(0, 2).toUpperCase(); }
+
+
+/* ---- content carried over from the website ---- */
+var FACULTY = [
+  {n:'Kavitha Ramesh', r:'Carnatic Vocal & Veena', img:PX(30481577,300,360), tags:['Vocal','Veena'],
+   bio:'20+ years teaching; trained under senior Carnatic vocalists in Chennai. Known for her patient, note-by-note method with young beginners.'},
+  {n:'Meenakshi Iyer', r:'Bharatanatyam', img:PX(30424952,300,360), tags:['Bharatanatyam'],
+   bio:'Arangetram-trained dancer and choreographer with 15 years of stage and teaching experience across India and the Gulf.'},
+  {n:'Arvind Krishnan', r:'Violin & Keyboard', img:PX(33638423,300,360), tags:['Violin','Keyboard'],
+   bio:'Carnatic and Western-trained violinist; accompanist to leading vocal concerts before turning to full-time teaching.'},
+  {n:'Divya Balaji', r:'Hindustani Vocal', img:PX(31880387,300,360), tags:['Vocal'],
+   bio:'Trained in the Kirana gharana tradition, Divya brings warmth and rigor to every Khayal and Bhajan lesson.'},
+  {n:'Suresh Pillai', r:'Piano', img:PX(9391639,300,360), tags:['Piano'],
+   bio:'Trinity-aligned piano pedagogy with 12 years guiding students through graded Western classical exams.'},
+  {n:'Lakshmi Narayan', r:'Bharatanatyam & Western Dance', img:PX(30481580,300,360), tags:['Dance'],
+   bio:'A rare dual specialist bridging classical Bharatanatyam and contemporary movement for the modern dancer.'},
+  {n:'Rahul Menon', r:'Western & Contemporary Dance', img:PX(33638418,300,360), tags:['Dance'],
+   bio:'Professionally trained choreographer bringing jazz and hip-hop technique to Chaarulaya\u2019s youngest performers.'},
+  {n:'Priya Subramaniam', r:'Carnatic Vocal', img:PX(31880368,300,360), tags:['Vocal'],
+   bio:'Specialist in children\u2019s pedagogy \u2014 her beginner batches are consistently the academy\u2019s most loved.'}
+];
+
+var GALLERY = [
+  {t:'Annual Day Recital', img:PX(31880387,600,760), cls:'tall', vid:true},
+  {t:'Veena Practice Room', img:PX(32858785,500,500)},
+  {t:'Bharatanatyam Rehearsal', img:PX(33638418,500,500)},
+  {t:'Live Vocal Session', img:PX(30481577,760,400), cls:'wide', vid:true},
+  {t:'Backstage, Naadha Utsav', img:PX(31880368,500,500)},
+  {t:'Grading Exam Day', img:PX(16824866,500,500)},
+  {t:'Piano Practice Room', img:PX(11199302,500,500)},
+  {t:'Graduation & Certificates', img:PX(30424952,760,400), cls:'wide', vid:true}
+];
+
+var EVENTS = [
+  {d:'14', m:'AUG', full:'Aug 14\u201318, 2026', t:'Voice Culture Intensive', tag:'Workshop',
+   p:'Our flagship breath-and-swara workshop returns, open to all enrolled vocal students.'},
+  {d:'12', m:'SEP', full:'Sep 12, 2026', t:'Naadha Utsav \u2014 Annual Day', tag:'Festival',
+   p:'Chaarulaya\u2019s biggest celebration of the year: a full evening of student performances across every discipline.'},
+  {d:'03', m:'OCT', full:'Oct 3\u20135, 2026', t:'Term 2 Grading Exams', tag:'Exam',
+   p:'Theory and practical examinations across all graded courses, with results published within two weeks.'},
+  {d:'01', m:'NOV', full:'Nov 1, 2026', t:'Guru Purnima Online Concert', tag:'Concert',
+   p:'A global livestreamed concert honouring our gurus, featuring senior students from every batch.'},
+  {d:'20', m:'DEC', full:'Dec 20, 2026', t:'Alumni & Arangetram Meet', tag:'Community',
+   p:'A reunion evening for Chaarulaya alumni, with two Arangetram debut performances.'}
+];
+
+var PAST_WS = [
+  {t:'Sruti & Breath Bootcamp', by:'Kavitha Ramesh', when:'12\u201316 May 2026 \u00B7 Online', img:PX(31880368,400,300),
+   p:'Five mornings on breath control, sruti alignment and swara placement. 34 vocal students, two time zones.'},
+  {t:'Adavu Intensive for Beginners', by:'Meenakshi Iyer', when:'18\u201320 April 2026 \u00B7 Nagercoil', img:PX(30424952,400,300),
+   p:'Three days of Tatta, Natta and Visharu adavus, corrected one student at a time on the studio floor.'},
+  {t:'Laya Lab \u00B7 Rhythm Clinic', by:'Arvind Krishnan', when:'7\u20138 March 2026 \u00B7 Online', img:PX(33638423,400,300),
+   p:'A weekend on talam, kanakku and rhythmic precision for Violin, Veena and Keyboard students.'}
+];
+
+var PERKS = [
+  ['Study Materials','Notation sheets, lyrics and theory notes for every lesson, downloadable.','var(--teal-soft)','var(--teal)','<path d="M4 19V5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M6 17h13"/>'],
+  ['Recorded Video Lessons','Every class recorded and shelved by level, so you never lose a session.','var(--peach)','var(--saffron-2)','<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9.5l5 2.5-5 2.5z"/>'],
+  ['Audio Practice Files','Guru-recorded sruti, talam and phrase-by-phrase tracks to practise with.','var(--lilac)','var(--plum-3)','<path d="M3 12h1.5M7 8.5v7M11 5v14M15 8v8M19 10.5v3M21.5 12H23"/>'],
+  ['Theory & Practical Exams','Graded assessments each term, with results and guru remarks in your portal.','var(--teal-soft)','var(--teal)','<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M9 13l2.5 2.5L16 11"/>'],
+  ['Ask Doubts to Faculty','Post a question or a practice clip between classes and get a reply.','var(--blush)','var(--rose-2)','<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>'],
+  ['Coupons & Discounts','Member-only pricing on workshops, sibling enrolment and full-year plans.','var(--peach)','var(--saffron-2)','<path d="M20.6 13.4l-7.2 7.2a2 2 0 01-2.8 0l-7-7A2 2 0 013 12.2V5a2 2 0 012-2h7.2a2 2 0 011.4.6l7 7a2 2 0 010 2.8z"/><circle cx="8" cy="8" r="1.4"/>']
+];
+
+var FILMS = [
+  {t:'Priya R. \u00B7 Parent', s:'Bharatanatyam student, Chicago', img:PX(31880387,320,420)},
+  {t:'Karthik V. \u00B7 Adult learner', s:'Carnatic Vocal, London', img:PX(33638418,320,420)},
+  {t:'Anjali M. \u00B7 Parent', s:'Veena student, Dubai', img:PX(30424952,320,420)},
+  {t:'Nithya S. \u00B7 Student', s:'Grade 4 Vocal, Chennai', img:PX(30481577,320,420)}
+];
+
+var VALUES = [
+  ['Authenticity','Taught in unbroken lineage, never diluted for convenience.'],
+  ['Discipline','Structured, graded progress \u2014 not random, feel-good lessons.'],
+  ['Joy','Rigor and delight are not opposites; great teachers hold both.'],
+  ['Global Access','World-class gurus, one login away, whichever time zone you are in.']
+];
+
+var MILESTONES = [
+  ['2011','The First Batch','Fifteen students, one teaching room, weekend Carnatic vocal and Bharatanatyam in Nagercoil.'],
+  ['2015','Instrumental Wing Opens','Veena, Violin and Keyboard added, alongside the academy\u2019s first graded certification track.'],
+  ['2019','Going Global','Chaarulaya launches live online classes, welcoming its first international students from the Gulf, US and UK.'],
+  ['2022','Western Wing & Piano','Piano and Western/Contemporary Dance join the curriculum, rounding out the academy\u2019s offering.'],
+  ['2026','Eight Disciplines','Fourteen empanelled gurus, students across twenty-four countries, and the room still feels small.']
+];
+
+var STUDENT = {name:'Ananya Suresh', email:'ananya.suresh@email.com', phone:'+91 98765 43210', since:'March 2025'};
+
+var LESSONS = {
+  violin:['Getting Started with the Violin','Bowing Fundamentals','Sarali Varisai on Violin','Janta and Dhaatu Varisai','Alankaram and Talam','First Geetham'],
+  vocal:['Voice and Shruti','Sarali Varisai','Janta Varisai','Alankaram','Geethams','Introduction to Gamakam'],
+  keyboard:['Keyboard Orientation','Right Hand Basics','Carnatic Swaras on Keyboard','Left Hand and Chords','Rhythm and Styles'],
+  veena:['Introduction to the Veena','Plucking and Fretting','Sarali Varisai on Veena','Gamaka on Veena','First Compositions'],
+  piano:['Piano Foundations','Reading Music','Scales and Technique','Chords and Harmony','Repertoire'],
+  bharatanatyam:['Namaskaram and Basics','Tatta Adavu','Natta Adavu','Hasta Mudras','Visharu and Tattimetti','First Alarippu']
+};
+
+var CATS = [
+  {id:'violin', name:'Violin', age:'7 Years & Above', img:PX(33638423,700,380),
+   blurb:'Carnatic violin in the traditional sitting position, from bow hold to your first Geetham.',
+   levels:[
+     {id:'v1', name:'Level 1 Beginner', dur:'7 Months',  fee:12000, days:'Mon, Tue & Sat', n:4},
+     {id:'v2', name:'Level 1 Beginner', dur:'10 Months', fee:16500, days:'Mon & Thu',      n:5},
+     {id:'v3', name:'Level 2 Intermediate', dur:'1 Year', fee:22000, days:'Tue & Fri',     n:6}
+   ]},
+  {id:'vocal', name:'Vocal', age:'4 Years & Above', img:PX(30481577,700,380),
+   blurb:'Carnatic vocal from shruti and Sarali Varisai through to your first compositions.',
+   levels:[
+     {id:'vo1', name:'Level 1 Beginner', dur:'6 Months', fee:9000,  days:'Mon & Wed',       n:3},
+     {id:'vo2', name:'Level 1 Beginner', dur:'1 Year',   fee:16000, days:'Tue & Thu',       n:5},
+     {id:'vo3', name:'Level 2 Intermediate', dur:'1 Year', fee:18500, days:'Mon, Wed & Sat', n:6}
+   ]},
+  {id:'veena', name:'Veena', age:'8 Years & Above', img:PX(32858785,700,380),
+   blurb:'Saraswati veena from instrument hold and plucking through to gamaka.',
+   levels:[
+     {id:'ve1', name:'Level 1 Beginner', dur:'8 Months', fee:15000, days:'Tue & Sat', n:4},
+     {id:'ve2', name:'Level 1 Beginner', dur:'1 Year',   fee:21000, days:'Mon & Fri', n:5}
+   ]},
+  {id:'bharatanatyam', name:'Bharatanatyam', age:'5 Years & Above', img:PX(30424952,700,380),
+   blurb:'Classical Bharatanatyam from namaskaram and adavus to your first Alarippu.',
+   levels:[
+     {id:'b1', name:'Level 1 Beginner', dur:'7 Months', fee:10500, days:'Wed & Sat', n:4},
+     {id:'b2', name:'Level 1 Beginner', dur:'1 Year',   fee:17000, days:'Mon & Thu', n:6}
+   ]},
+  {id:'keyboard', name:'Keyboard', age:'6 Years & Above', img:PX(16824866,700,380),
+   blurb:'Keyboard for Carnatic and light music — swaras, chords and rhythm styles.',
+   levels:[
+     {id:'k1', name:'Level 1 Beginner', dur:'6 Months', fee:11000, days:'Saturday', n:3},
+     {id:'k2', name:'Level 1 Beginner', dur:'1 Year',   fee:17500, days:'Wed & Sat', n:5}
+   ]},
+  {id:'piano', name:'Piano', age:'6 Years & Above', img:PX(9391639,700,380),
+   blurb:'Western classical piano with graded technique and a performance piece each term.',
+   levels:[
+     {id:'p1', name:'Level 1 Beginner', dur:'6 Months', fee:13000, days:'Thu & Sun', n:3},
+     {id:'p2', name:'Level 1 Beginner', dur:'1 Year',   fee:20500, days:'Tue & Fri', n:5}
+   ]}
+];
+
+var ENROLLED = [
+  {id:'e1', key:'vocal', short:'Vocal', course:'Level 1 Beginner', batch:'Vocal B2',
+   timing:'Mon & Wed \u00B7 6:00 PM', time:'6:00 PM', faculty:'Kavitha Ramesh',
+   att:85, total:30, done:20, prog:67, dur:'6 Months'},
+  {id:'e2', key:'violin', short:'Violin', course:'Level 1 Beginner', batch:'Violin A1',
+   timing:'Tue & Fri \u00B7 7:00 PM', time:'7:00 PM', faculty:'Arvind Krishnan',
+   att:92, total:28, done:12, prog:43, dur:'7 Months'},
+  {id:'e3', key:'keyboard', short:'Keyboard', course:'Level 1 Beginner', batch:'Keyboard C1',
+   timing:'Sat \u00B7 10:00 AM', time:'10:00 AM', faculty:'Suresh Pillai',
+   att:78, total:24, done:6, prog:25, dur:'6 Months'}
+];
+
+var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var SCACHE = {};
+function sessionsFor(e){
+  if(SCACHE[e.id]){ return SCACHE[e.id]; }
+  var topics = LESSONS[e.key] || LESSONS.vocal;
+  var rows = [], base = new Date(2026, 1, 3), i, miss = {3:1, 11:1, 17:1};
+  for(i = 0; i < e.done + 6; i++){
+    var d = new Date(base.getTime() + i * 7 * 86400000);
+    rows.push({n:i + 1, day:d.getDate(), mon:MON[d.getMonth()], year:d.getFullYear(),
+      time:e.time, topic:topics[i % topics.length], past:i < e.done,
+      present:i < e.done ? !miss[i] : null});
+  }
+  SCACHE[e.id] = rows;
+  return rows;
+}
+
+var QS = {
+  x1:[
+    {q:'How many Sarali Varisai exercises are in the standard beginner sequence?', o:['Seven','Ten','Fourteen','Twenty-one'], a:2},
+    {q:'Which raga is used for the first varisai exercises?', o:['Kalyani','Mayamalavagowla','Shankarabharanam','Kharaharapriya'], a:1},
+    {q:'What is the tambura used for in practice?', o:['Keeping talam','Holding the shruti','Playing the melody','Marking the ending'], a:1},
+    {q:'In Adi talam, how many beats make one avartanam?', o:['Six','Seven','Eight','Twelve'], a:2}
+  ],
+  x3:[
+    {q:'Which swara follows "Ri" in the ascending scale?', o:['Sa','Ga','Ma','Pa'], a:1},
+    {q:'"Pa" is known in Western terms as:', o:['The tonic','The third','The perfect fifth','The octave'], a:2},
+    {q:'Janta Varisai is characterised by:', o:['Paired swaras','Single swaras','Descending patterns','Three speeds'], a:0}
+  ]
+};
+var WQS = {
+  x2:[
+    {q:'Sing from Sarali Varisai 1 to 7, first and second speed, in one take.', f:'Video'},
+    {q:'Write out the seven exercises in full Carnatic notation.', f:'PDF'},
+    {q:'Photograph your notebook page showing the Adi talam markings.', f:'Image'}
+  ]
+};
+
+var EXAMS = [
+  {id:'x1', name:'Sarali Varisai \u2014 Theory Quiz', type:'Quiz', course:'Vocal \u00B7 Level 1',
+   faculty:'Kavitha Ramesh', marks:20, dur:'15 min', durMin:15, start:'Available now', status:'upcoming'},
+  {id:'x2', name:'Sarali Varisai \u2014 Practical', type:'Written', course:'Vocal \u00B7 Level 1',
+   faculty:'Kavitha Ramesh', marks:50, dur:'', durMin:0, start:'Available now', status:'upcoming'},
+  {id:'x4', name:'Violin Posture \u2014 Quiz', type:'Quiz', course:'Violin \u00B7 Level 1',
+   faculty:'Arvind Krishnan', marks:25, dur:'20 min', durMin:20, start:'02 Sep, 6:00 PM', status:'pending'},
+  {id:'x3', name:'Swara Recognition \u2014 Quiz', type:'Quiz', course:'Vocal \u00B7 Level 1',
+   faculty:'Kavitha Ramesh', marks:15, dur:'10 min', durMin:10, start:'14 Jun, 6:00 PM',
+   status:'completed', ans:[1,2,0]},
+  {id:'x5', name:'Janta Varisai \u2014 Written', type:'Written', course:'Vocal \u00B7 Level 1',
+   faculty:'Kavitha Ramesh', marks:40, dur:'', durMin:0, start:'12 Jun, 6:00 PM',
+   status:'completed', evaluated:true, obtained:33,
+   remarks:'Steady in the first speed and the notation is clean. The second speed loses shape from the fourth pattern \u2014 hold it at 60 bpm for two weeks.'}
+];
+
+var DOUBTS = [
+  {id:'d1', when:'02 Jul, 9:12 AM', course:'Vocal \u00B7 Level 1', lesson:'Lesson 3 \u00B7 Janta Varisai',
+   text:'My voice cracks when I move into the second speed. Is that breath or shruti?',
+   status:'Session Scheduled', slot:'08 Jul, 5:00 PM'},
+  {id:'d2', when:'18 Jun, 7:40 PM', course:'Violin \u00B7 Level 1', lesson:'Lesson 2 \u00B7 Bowing',
+   text:'The bow drifts towards the fingerboard on long down-bows. What is wrong with my wrist?',
+   status:'Completed', slot:'24 Jun, 6:30 PM'},
+  {id:'d3', when:'09 Jul, 8:05 AM', course:'Keyboard \u00B7 Level 1', lesson:'Lesson 1 \u00B7 Orientation',
+   text:'Which octave should I set as Sa on a 61-key keyboard?', status:'Raised', slot:''}
+];
+
+var PAYMENTS = [
+  {id:'r1', date:'10 Mar 2026', course:'Vocal \u00B7 Level 1 Beginner', amt:9000, mode:'Full payment', ref:'CHA-2026-0310-9001'},
+  {id:'r2', date:'02 May 2026', course:'Violin \u00B7 Level 1 Beginner', amt:6000, mode:'Instalment 1 of 2', ref:'CHA-2026-0502-7734'},
+  {id:'r3', date:'14 Jun 2026', course:'Keyboard \u00B7 Level 1 Beginner', amt:5500, mode:'Instalment 1 of 2', ref:'CHA-2026-0614-4420'}
+];
+var DUES = [
+  {id:'u1', course:'Violin \u00B7 Level 1 Beginner', amt:6000, due:'02 Aug 2026', label:'Instalment 2 of 2'},
+  {id:'u2', course:'Keyboard \u00B7 Level 1 Beginner', amt:5500, due:'14 Sep 2026', label:'Instalment 2 of 2'}
+];
+
+var WSHOPS = [
+  {id:'w1', img:PX(31880368,760,380), name:'Voice Culture Intensive', by:'Kavitha Ramesh',
+   post:'Breath, sruti and swara \u2014 five unbroken mornings to rebuild your vocal foundation.',
+   date:'14\u201318 Aug 2026', time:'7:00 \u2013 8:30 AM IST', fee:1499, seats:12, joined:false},
+  {id:'w2', img:PX(30424952,760,380), name:'Navaratri Varnam Marathon', by:'Meenakshi Iyer',
+   post:'A focused weekend for Bharatanatyam students to master one complete Varnam.',
+   date:'21\u201323 Aug 2026', time:'4:00 \u2013 7:00 PM IST', fee:2200, seats:8, joined:false},
+  {id:'w3', img:PX(33638418,760,380), name:'Open Talam Clinic', by:'Arvind Krishnan',
+   post:'A free introductory session on talam, kanakku and counting \u2014 open to everyone.',
+   date:'30 Aug 2026', time:'6:00 \u2013 7:00 PM IST', fee:0, seats:40, joined:false},
+  {id:'w4', img:PX(31880387,760,380), name:'Arangetram Preparation Clinic', by:'Meenakshi Iyer',
+   post:'A stage-readiness intensive for advanced Bharatanatyam students preparing for their debut performance.',
+   date:'19\u201320 Sep 2026', time:'4:00 \u2013 8:00 PM IST', fee:0, byInvite:true, seats:6, joined:false}
+];
+
+var NOTIFS = [
+  {t:'Class starts in 30 minutes', s:'Vocal \u00B7 Level 1 Beginner with Kavitha Ramesh', k:'live', w:'Just now'},
+  {t:'Sarali Varisai \u2014 Practical is open', s:'Written exam \u00B7 50 marks \u00B7 upload your answers', k:'exam', w:'2 h ago'},
+  {t:'Your doubt session is scheduled', s:'08 Jul, 5:00 PM with Kavitha Ramesh', k:'doubt', w:'Yesterday'},
+  {t:'Instalment due on 02 Aug', s:'Violin \u00B7 Level 1 Beginner \u2014 \u20B96,000', k:'pay', w:'2 days ago'},
+  {t:'New notes uploaded', s:'Shruti & Breath Control \u00B7 PDF + audio', k:'note', w:'3 days ago'}
+];
+
+
+/* =================================================================
+   WEBSITE PAGES, ADAPTED FOR MOBILE
+   ================================================================= */
+function renderLanding(){
+  var html = '<div class="mhero"><img src="' + PX(31880387,800,600) + '" alt="">' +
+    '<div class="mhero-in"><span class="eyebrow">Guru\u2013Shishya Parampara \u00B7 Since 2011</span>' +
+    '<h1>Where Every R\u0101ga Finds Its Voice.</h1>' +
+    '<p>Carnatic &amp; Hindustani vocal, Veena, Violin, Keyboard, Piano and Bharatanatyam \u2014 taught live by India\u2019s most devoted gurus, wherever in the world you are.</p>' +
+    '<div class="stat-strip">' +
+      '<div><b>12+</b><span>Years</span></div><div><b>3,200+</b><span>Students</span></div>' +
+      '<div><b>24</b><span>Countries</span></div><div><b>8</b><span>Disciplines</span></div></div>' +
+    '<div class="btn-row" style="margin-top:18px">' +
+      '<button class="btn btn-pri" onclick="goTab(\'scExplore\')">Explore Courses</button></div>' +
+    '</div></div>';
+
+  html += '<div style="padding:0 18px">';
+  html += '<div class="sec" style="margin-top:6px"><h3>Explore our courses</h3><a onclick="goTab(\'scExplore\')">See all</a></div>';
+  var i;
+  for(i = 0; i < 3; i++){
+    html += '<div class="row" onclick="openCat(\'' + CATS[i].id + '\')">' +
+      '<span class="fac-img" style="width:52px;height:52px;border-radius:14px;flex-shrink:0"><img src="' + CATS[i].img + '" alt="" style="min-height:0;height:52px"></span>' +
+      '<span class="tx"><b>' + CATS[i].name + '</b><span>' + CATS[i].age + ' \u00B7 from ' + inr(lowest(CATS[i])) + '</span></span>' +
+      '<svg class="go" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>';
+  }
+
+  html += '<div class="sec"><h3>In their own words</h3></div>' +
+    '<div class="scroller" style="padding-bottom:6px">';
+  for(i = 0; i < FILMS.length; i++){
+    html += '<div class="film" onclick="openPlayer(\'' + esc(FILMS[i].t) + '\')">' +
+      '<img src="' + FILMS[i].img + '" alt=""><span class="gp"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></div>';
+  }
+  html += '</div>';
+
+  html += '<div class="sec"><h3>What you get as a student</h3></div><div class="card">';
+  for(i = 0; i < PERKS.length; i++){
+    html += '<div class="perk"><span class="pi" style="background:' + PERKS[i][2] + '">' +
+      '<svg viewBox="0 0 24 24" style="stroke:' + PERKS[i][3] + '">' + PERKS[i][4] + '</svg></span>' +
+      '<span><b>' + PERKS[i][0] + '</b><span>' + PERKS[i][1] + '</span></span></div>';
+  }
+  html += '</div>';
+
+  html += '<div class="sec"><h3>Workshops</h3><a onclick="goTab(\'scExplore\');setExplore(\'workshops\')">See all</a></div>' +
+    wsTile(WSHOPS[0]);
+
+  html += '<div class="sec"><h3>The academy</h3></div>' +
+    linkRow('scFaculty', '', 'Our Gurus', 'The faculty behind every batch', '<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>') +
+    linkRow('scGallery', 'rose', 'Gallery', 'Stage moments and studio life', '<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-6 6"/>') +
+    linkRow('scEvents', 'gold', 'Events', 'Recitals, exams and annual day', '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/>') +
+    linkRow('scAbout', 'teal', 'About Us', 'Our story, method and values', '<circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/>') +
+    linkRow('scContact', '', 'Contact', 'Talk to an academic advisor', '<path d="M4 5h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V7a2 2 0 012-2z"/><path d="M2.5 7l9.5 7 9.5-7"/>') +
+    '</div>';
+  $('landingBody').innerHTML = html;
+}
+
+function linkRow(target, tone, t, s, path){
+  return '<div class="row" onclick="show(\'' + target + '\')"><span class="ic ' + tone + '"><svg viewBox="0 0 24 24">' + path + '</svg></span>' +
+    '<span class="tx"><b>' + t + '</b><span>' + s + '</span></span>' +
+    '<svg class="go" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>';
+}
+
+function renderFaculty(){
+  var html = '<div class="mhero" style="margin-bottom:16px"><img src="' + PX(30481580,800,500) + '" alt="">' +
+    '<div class="mhero-in" style="padding:24px 18px 22px"><span class="eyebrow">Our gurus</span>' +
+    '<h1 style="font-size:23px">The Lineage Behind Every Lesson</h1>' +
+    '<p>Each guru is empanelled through audition, trained in traditional pedagogy, and mentored to teach the modern, global classroom.</p></div></div>' +
+    '<div style="padding:0 18px">';
+  var i, j, f;
+  for(i = 0; i < FACULTY.length; i++){
+    f = FACULTY[i];
+    html += '<div class="fac"><span class="fac-img"><img src="' + f.img + '" alt="' + f.n + '"></span>' +
+      '<div class="fac-bd"><h4>' + f.n + '</h4><div class="fac-role">' + f.r + '</div>' +
+      '<p>' + f.bio + '</p><div class="fac-tags">';
+    for(j = 0; j < f.tags.length; j++){ html += '<span class="chip">' + f.tags[j] + '</span>'; }
+    html += '</div></div></div>';
+  }
+  $('facBody').innerHTML = html + '</div>';
+}
+
+function renderGallery(){
+  var html = '<div class="mhero" style="margin-bottom:16px"><img src="' + PX(30424952,800,500) + '" alt="">' +
+    '<div class="mhero-in" style="padding:24px 18px 22px"><span class="eyebrow">Moments at Chaarulaya</span>' +
+    '<h1 style="font-size:23px">Glimpses From the Academy</h1>' +
+    '<p>Classrooms, recitals, backstage jitters and graduation day glow.</p></div></div>' +
+    '<div style="padding:0 18px"><div class="gal">';
+  var i, g;
+  for(i = 0; i < GALLERY.length; i++){
+    g = GALLERY[i];
+    html += '<div class="gal-i ' + (g.cls || '') + '" onclick="' +
+      (g.vid ? 'openPlayer(\'' + esc(g.t) + '\')' : 'openPhoto(' + i + ')') + '">' +
+      '<img src="' + g.img + '" alt="' + g.t + '">' +
+      (g.vid ? '<span class="gp"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>' : '') +
+      '<b>' + g.t + '</b></div>';
+  }
+  $('galBody').innerHTML = html + '</div></div>';
+}
+
+function openPhoto(i){
+  var g = GALLERY[i];
+  openSheet(sheetHd(g.t, 'Chaarulaya gallery') +
+    '<div class="sheet-bd"><img src="' + g.img + '" alt="" style="width:100%;border-radius:16px;display:block"></div>' +
+    '<div class="sheet-ft"><button class="btn btn-soft" onclick="closeSheet()">Close</button></div>');
+}
+
+function renderEvents(){
+  var html = '', i, e;
+  for(i = 0; i < EVENTS.length; i++){
+    e = EVENTS[i];
+    html += '<div class="card"><div style="display:flex;gap:13px;align-items:flex-start">' +
+      '<span class="datebox"><b>' + e.d + '</b><span>' + e.m + '</span></span>' +
+      '<div style="flex-grow:1;min-width:0"><span class="chip" style="margin-bottom:7px">' + e.tag + '</span>' +
+      '<h4 style="font-size:16px;margin-bottom:4px">' + e.t + '</h4>' +
+      '<p style="font-size:12.5px;line-height:1.5;margin-bottom:9px">' + e.p + '</p>' +
+      '<span style="font-size:11.8px;font-weight:800;color:var(--rose-2)">' + e.full + '</span></div></div></div>';
+  }
+  $('eventBody').innerHTML = html;
+}
+
+function renderAbout(){
+  var html = '<div class="mhero" style="margin-bottom:16px"><img src="' + PX(31880368,800,500) + '" alt="">' +
+    '<div class="mhero-in" style="padding:24px 18px 22px"><span class="eyebrow">Our story</span>' +
+    '<h1 style="font-size:22px">Tradition Deserves a Global Stage</h1></div></div>' +
+    '<div style="padding:0 18px">' +
+    '<p style="font-size:13.8px;line-height:1.65;margin-bottom:12px">Chaarulaya began in 2011 in a small teaching room in Nagercoil, where a guru couple taught fifteen students Carnatic vocal and Bharatanatyam on weekend afternoons. Word travelled \u2014 first across the street, then across the ocean.</p>' +
+    '<p style="font-size:13.8px;line-height:1.65;margin-bottom:18px">Today, Chaarulaya spans eight disciplines, fourteen empanelled gurus and students across twenty-four countries \u2014 but the room still feels small. Every student is still known by name.</p>' +
+
+    '<div class="card" style="background:linear-gradient(160deg,var(--peach),var(--blush));border:none">' +
+      '<span class="eyebrow">Academy announcement</span>' +
+      '<h4 style="font-size:15.5px;margin:7px 0 7px">E.R. Ram Kumar joins the Senate of Manonmaniam Sundaranar University</h4>' +
+      '<p style="font-size:12.8px;line-height:1.55;color:var(--ink-2)">With the blessings of his Guru, violinist and music composer E.R. Ram Kumar has been selected by the Hon\u2019ble Governor &amp; Vice Chancellor as a member of the Senate, for a period of three years.</p></div>';
+
+  html += '<div class="sec"><h3>What we stand for</h3></div><div class="card">';
+  var i;
+  for(i = 0; i < VALUES.length; i++){
+    html += '<div class="perk"><span class="pi" style="background:var(--bg-2)">' +
+      '<svg viewBox="0 0 24 24" style="stroke:var(--plum-2)"><path d="M12 2l3 7 7 1-5.5 5 1.5 7-6-3.5L6 22l1.5-7L2 10l7-1z"/></svg></span>' +
+      '<span><b>' + VALUES[i][0] + '</b><span>' + VALUES[i][1] + '</span></span></div>';
+  }
+  html += '</div>';
+
+  html += '<div class="sec"><h3>Fourteen years, one note at a time</h3></div><div class="tl">';
+  for(i = 0; i < MILESTONES.length; i++){
+    html += '<div class="tl-i"><div class="yr">' + MILESTONES[i][0] + '</div>' +
+      '<h4>' + MILESTONES[i][1] + '</h4><p>' + MILESTONES[i][2] + '</p></div>';
+  }
+  html += '</div>' +
+    '<button class="btn btn-pri" style="margin:6px 0 4px" onclick="show(\'scContact\')">Talk to an Advisor</button></div>';
+  $('aboutBody').innerHTML = html;
+}
+
+function renderContact(){
+  function cr(path, t, s, act){
+    return '<div class="contact-row" onclick="' + (act || '') + '"><span class="ci"><svg viewBox="0 0 24 24">' + path + '</svg></span>' +
+      '<span style="flex-grow:1;min-width:0"><b>' + t + '</b><span>' + s + '</span></span></div>';
+  }
+  $('contactBody').innerHTML =
+    '<div class="map"><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span></div>' +
+    '<div class="card" style="margin-top:14px">' +
+      cr('<path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+         'Studio', '398A, MS Road, Kattayanvilai, Nagercoil \u2013 629003', 'toast(\'Opening maps\',\'Chaarulaya studio, Nagercoil.\')') +
+      cr('<path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.4 2.1L8.1 9.9a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.5c.9.4 1.8.6 2.8.7a2 2 0 011.7 2z"/>',
+         'Phone', '+91 96773 62634', 'toast(\'Calling\',\'+91 96773 62634\')') +
+      cr('<path d="M4 5h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V7a2 2 0 012-2z"/><path d="M2.5 7l9.5 7 9.5-7"/>',
+         'Email', 'hello@chaarulaya.in', 'toast(\'Opening mail\',\'hello@chaarulaya.in\')') +
+      cr('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>', 'Office hours', 'Mon \u2013 Sat \u00B7 9:00 AM to 8:00 PM IST', '') +
+    '</div>' +
+    '<div class="sec"><h3>Send an enquiry</h3></div>' +
+    '<div class="field"><label>Your Name</label><input type="text" placeholder="Ananya Suresh"></div>' +
+    '<div class="field"><label>Email</label><input type="email" placeholder="you@email.com"></div>' +
+    '<div class="field"><label>Interested In</label><select><option>Carnatic Vocal</option><option>Veena</option>' +
+      '<option>Violin</option><option>Bharatanatyam</option><option>Keyboard</option><option>Piano</option></select></div>' +
+    '<div class="field"><label>Message</label><textarea placeholder="Tell us a little about your goals\u2026"></textarea></div>' +
+    '<button class="btn btn-pri" onclick="toast(\'Enquiry sent\',\'An advisor will reply within one working day.\')">Send Enquiry</button>';
+}
+
+/* =================================================================
+   ROUTING
+   ================================================================= */
+var TABS = ['scHome','scExplore','scLearn','scDoubts','scProfile'];
+var stack = ['scSplash'];
+var loggedIn = false;
+
+var RENDER = {
+  scHome:renderHome, scExplore:renderExplore, scLearn:renderLearn, scDoubts:renderDoubts,
+  scProfile:renderProfile, scLive:renderLive, scExams:renderExams, scAttendance:renderAttendance,
+  scLedger:renderLedger, scNotifs:renderNotifs, scDoubtNew:renderDoubtNew, scProfileEdit:renderEdit,
+  scOnboard:renderOnboard, scLogin:renderAuth, scEnroll:renderEnroll, scPay:renderPay,
+  scLanding:renderLanding, scFaculty:renderFaculty, scGallery:renderGallery,
+  scEvents:renderEvents, scAbout:renderAbout, scContact:renderContact
+};
+
+function show(id, noPush){
+  if(RENDER[id]){ RENDER[id](); }
+  var all = document.querySelectorAll('.screen'), i;
+  for(i = 0; i < all.length; i++){ all[i].classList.remove('on'); }
+  var el = $(id);
+  el.classList.add('on');
+  var b = el.querySelector('.body');
+  if(b){ b.scrollTop = 0; }
+  if(!noPush && stack[stack.length - 1] !== id){ stack.push(id); }
+
+  var isTab = TABS.indexOf(id) > -1;
+  $('tabbar').classList.toggle('on', isTab && loggedIn);
+  var tabs = document.querySelectorAll('.tab');
+  for(i = 0; i < tabs.length; i++){ tabs[i].classList.toggle('on', tabs[i].getAttribute('data-sc') === id); }
+  $('statusbar').classList.toggle('dark', id === 'scSplash' || id === 'scHome' || id === 'scProfile');
+  return false;
+}
+
+function back(){
+  stack.pop();
+  var prev = stack[stack.length - 1] || 'scHome';
+  show(prev, true);
+}
+
+function goTab(id){
+  if(!loggedIn){ loggedIn = true; }
+  stack = [id];
+  show(id, true);
+}
+
+/* sheets */
+function openSheet(html){
+  $('sheetBox').innerHTML = html;
+  $('sheet').classList.add('on');
+}
+function closeSheet(){ $('sheet').classList.remove('on'); }
+function sheetHd(t, s){
+  return '<div class="grab"></div><div class="sheet-hd"><div><h3>' + t + '</h3>' +
+    (s ? '<div class="sub">' + s + '</div>' : '') + '</div>' +
+    '<button class="iconbtn plain" onclick="closeSheet()"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>';
+}
+
+var tTimer;
+function toast(t, m){
+  $('toastT').textContent = t; $('toastM').textContent = m || '';
+  $('toast').classList.add('on');
+  clearTimeout(tTimer);
+  tTimer = setTimeout(function(){ $('toast').classList.remove('on'); }, 3200);
+}
+
+/* =================================================================
+   ONBOARDING + AUTH
+   ================================================================= */
+var OB = [
+  {img:PX(30424952,700,700), t:'Learn from a real guru, live', p:'Small batches, corrected in the class it is taught \u2014 never a recording you watch alone.'},
+  {img:PX(32858785,700,700), t:'Practise between classes', p:'Notation sheets, guru-recorded audio and every session saved for you to revisit.'},
+  {img:PX(31880387,700,700), t:'Track every step', p:'Attendance, exams, doubts and fees \u2014 all in one place, all on your phone.'}
+];
+var obAt = 0;
+
+function renderOnboard(){
+  var s = OB[obAt];
+  $('obBody').innerHTML = '<div class="ob-img"><img src="' + s.img + '" alt=""></div>' +
+    '<h1 style="font-size:24px;margin-bottom:9px;">' + s.t + '</h1>' +
+    '<p style="font-size:14.5px;line-height:1.6;">' + s.p + '</p>';
+  var d = '', i;
+  for(i = 0; i < OB.length; i++){ d += '<i class="' + (i === obAt ? 'on' : '') + '"></i>'; }
+  $('obDots').innerHTML = d;
+  $('obNext').textContent = obAt === OB.length - 1 ? 'Get Started' : 'Next';
+}
+function obStep(){
+  if(obAt === OB.length - 1){ show('scLogin'); obAt = 0; return; }
+  obAt++; renderOnboard();
+}
+
+var authMode = 'in';
+function setAuth(m){
+  authMode = m;
+  var bs = $('authSeg').querySelectorAll('button'), i;
+  for(i = 0; i < bs.length; i++){ bs[i].classList.toggle('on', (i === 0) === (m === 'in')); }
+  renderAuth();
+}
+function renderAuth(){
+  var html = '';
+  if(authMode === 'up'){
+    html += '<div class="field"><label>Student Name</label><input type="text" placeholder="Ananya Suresh"></div>';
+  }
+  html += '<div class="field"><label>Email ID</label><input type="email" value="ananya.suresh@email.com"></div>';
+  if(authMode === 'up'){
+    html += '<div class="field"><label>Phone Number</label><div class="frow">' +
+      '<select><option>+91</option><option>+1</option><option>+44</option><option>+971</option><option>+65</option></select>' +
+      '<input type="tel" placeholder="98765 43210"></div></div>';
+  }
+  html += '<div class="field"><label>Password</label><input type="password" value="password"></div>';
+  if(authMode === 'in'){
+    html += '<div style="text-align:right;margin:-4px 0 18px"><a style="font-size:12.5px;font-weight:800;color:var(--rose-2)" onclick="toast(\'Reset link sent\',\'Check your email for the reset link.\')">Forgot password?</a></div>';
+  } else {
+    html += '<div style="height:8px"></div>';
+  }
+  html += '<button class="btn btn-pri" onclick="doLogin()">' + (authMode === 'in' ? 'Log In' : 'Create Account') + '</button>' +
+    '<p style="text-align:center;font-size:12.5px;margin-top:16px">Not enrolled yet? ' +
+    '<a style="font-weight:800;color:var(--rose-2)" onclick="browseFirst()">Browse courses</a></p>';
+  $('authBody').innerHTML = html;
+}
+function doLogin(){
+  loggedIn = true;
+  goTab('scHome');
+  toast('Welcome back, Ananya', 'Your next class starts in 30 minutes.');
+}
+function browseFirst(){ loggedIn = true; stack = ['scExplore']; show('scLanding'); }
+
+/* =================================================================
+   HOME
+   ================================================================= */
+function renderHome(){
+  var e = ENROLLED[0];
+  var html = '<div class="hero">' +
+    '<div class="hero-top"><span class="av">' + ini(STUDENT.name) + '</span>' +
+      '<div style="flex-grow:1"><div class="eyebrow" style="color:rgba(255,249,244,.6)">Good evening</div>' +
+      '<b style="font-size:17px;color:var(--cream)">' + STUDENT.name.split(' ')[0] + '</b></div>' +
+      '<button class="iconbtn" style="background:rgba(255,249,244,.14);border-color:rgba(255,249,244,.2);position:relative" onclick="show(\'scNotifs\')">' +
+        '<svg viewBox="0 0 24 24" style="stroke:var(--cream)"><path d="M18 8a6 6 0 10-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>' +
+        '<span class="dot" style="border-color:var(--plum)"></span></button></div>' +
+    '<div class="next-card"><div class="nc-top"><span class="chip live">Starts in 30 min</span>' +
+      '<span style="font-size:11.5px;color:rgba(255,249,244,.7);font-weight:800">' + e.timing + '</span></div>' +
+      '<b>' + e.short + ' \u00B7 ' + e.course + '</b>' +
+      '<span>' + e.faculty + ' \u00B7 ' + e.batch + '</span>' +
+      '<button class="btn btn-pri" style="margin-top:12px;padding:12px" onclick="toast(\'Joining class\',\'Opening the live session.\')">Join Class</button>' +
+    '</div></div>';
+
+  html += '<div style="padding:0 18px">';
+  html += '<div class="quick">' +
+    qa('scLive', 'Live', 'linear-gradient(135deg,#EF5D8C,#FF7CA3)', '<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l6 3-6 3z"/>', '') +
+    qa('scExams', 'Exams', 'linear-gradient(135deg,#5E3579,#7A4A96)', '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/>', '2') +
+    qa('scAttendance', 'Attendance', 'linear-gradient(135deg,#0E8C86,#22B3A8)', '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M9 14l2 2 4-4"/>', '') +
+    qa('scLedger', 'Payments', 'linear-gradient(135deg,#F58B3C,#FFA552)', '<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/>', '2') +
+  '</div>';
+
+  html += '<div class="sec"><h3>Continue learning</h3><a onclick="goTab(\'scLearn\')">See all</a></div>';
+  var i, c;
+  for(i = 0; i < 2; i++){
+    c = ENROLLED[i];
+    html += '<div class="mc" onclick="openMyCourse(\'' + c.id + '\')">' +
+      '<div class="mc-top"><div><span class="eyebrow">' + c.short + ' \u00B7 ' + c.batch + '</span>' +
+      '<h4>' + c.course + '</h4></div>' +
+      '<div class="mc-att"><b>' + c.att + '%</b><span>Attend.</span></div></div>' +
+      '<div class="mc-foot"><span class="s">' + c.done + ' of ' + c.total + ' sessions</span><span>' + c.prog + '%</span></div>' +
+      '<div class="bar-track"><div class="bar-fill" style="width:' + c.prog + '%"></div></div></div>';
+  }
+
+  html += '<div class="sec"><h3>This week</h3></div>';
+  var next = upcomingSessions(3), j;
+  for(j = 0; j < next.length; j++){
+    html += '<div class="lrow"><span class="datebox"><b>' + next[j].day + '</b><span>' + next[j].mon + '</span></span>' +
+      '<span class="tx"><b>' + next[j].topic + '</b><span>' + next[j].course + ' \u00B7 ' + next[j].time + '</span></span></div>';
+  }
+
+  html += '<div class="sec"><h3>Workshops</h3><a onclick="goTab(\'scExplore\');setExplore(\'workshops\')">See all</a></div>';
+  html += wsTile(WSHOPS[0]);
+  html += '<div class="sec"><h3>From the academy</h3></div>' +
+    linkRow('scEvents', 'gold', 'Events', 'Naadha Utsav and grading exams', '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/>') +
+    linkRow('scGallery', 'rose', 'Gallery', 'Stage moments and studio life', '<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-6 6"/>') +
+    linkRow('scFaculty', '', 'Our Gurus', 'The faculty behind every batch', '<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>');
+  html += '</div>';
+  $('homeBody').innerHTML = html;
+}
+
+function qa(target, label, grad, path, badge){
+  return '<button class="qa" onclick="show(\'' + target + '\')">' +
+    (badge ? '<span class="badge">' + badge + '</span>' : '') +
+    '<span class="qi" style="background:' + grad + '"><svg viewBox="0 0 24 24">' + path + '</svg></span>' +
+    '<span>' + label + '</span></button>';
+}
+
+function upcomingSessions(n){
+  var out = [], i, j, rows;
+  for(i = 0; i < ENROLLED.length; i++){
+    rows = sessionsFor(ENROLLED[i]);
+    for(j = 0; j < rows.length; j++){
+      if(!rows[j].past){ out.push({day:rows[j].day, mon:rows[j].mon, topic:rows[j].topic,
+        time:rows[j].time, course:ENROLLED[i].short}); break; }
+    }
+  }
+  return out.slice(0, n);
+}
+
+/* =================================================================
+   EXPLORE + COURSES
+   ================================================================= */
+var expTab = 'courses';
+function setExplore(t){
+  expTab = t;
+  var bs = $('expSeg').querySelectorAll('button'), i;
+  for(i = 0; i < bs.length; i++){ bs[i].classList.toggle('on', (i === 0) === (t === 'courses')); }
+  renderExplore();
+}
+function renderExplore(){
+  var html = '', i;
+  if(expTab === 'courses'){
+    for(i = 0; i < CATS.length; i++){
+      html += '<div class="tile" onclick="openCat(\'' + CATS[i].id + '\')">' +
+        '<div class="tile-img"><img src="' + CATS[i].img + '" alt="' + CATS[i].name + '">' +
+        '<span class="tag">' + CATS[i].age + '</span></div>' +
+        '<div class="tile-bd"><h4>' + CATS[i].name + '</h4><p>' + CATS[i].blurb + '</p>' +
+        '<div class="tile-foot"><div><small>From</small><b>' + inr(lowest(CATS[i])) + '</b></div>' +
+        '<span class="chip">' + CATS[i].levels.length + ' levels</span></div></div></div>';
+    }
+  } else {
+    html += '<div class="ws-banner"><img src="' + PX(30424952,800,420) + '" alt="">' +
+      '<div class="wb-in"><span class="eyebrow">Workshops</span>' +
+      '<h3>Short, Intensive, Unforgettable</h3>' +
+      '<p>A few unbroken days on one form, with a senior artist in the room. Seats are capped by design.</p></div></div>';
+    html += '<div class="sec" style="margin-top:2px"><h3>Upcoming</h3></div>';
+    for(i = 0; i < WSHOPS.length; i++){ html += wsTile(WSHOPS[i]); }
+    html += '<div class="sec"><h3>Past workshops</h3></div>';
+    for(i = 0; i < PAST_WS.length; i++){
+      html += '<div class="past" onclick="openPlayer(\'' + esc(PAST_WS[i].t) + '\')">' +
+        '<span class="past-img"><img src="' + PAST_WS[i].img + '" alt="">' +
+        '<span class="gp"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></span>' +
+        '<span style="flex-grow:1;min-width:0"><b>' + PAST_WS[i].t + '</b>' +
+        '<span>' + PAST_WS[i].when + '</span>' +
+        '<span style="margin-top:4px;color:var(--rose-2);font-weight:800">' + PAST_WS[i].by + '</span></span></div>';
+    }
+  }
+  if(expTab === 'courses'){
+    html += '<div class="sec"><h3>The academy</h3></div>' +
+      linkRow('scLanding', 'gold', 'About Chaarulaya', 'The full academy story', '<path d="M12 3v10.55A4 4 0 1014 17V7h4V3h-6z"/>') +
+      linkRow('scFaculty', '', 'Our Gurus', 'Meet the faculty', '<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>') +
+      linkRow('scGallery', 'rose', 'Gallery', 'Stage moments and studio life', '<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-6 6"/>') +
+      linkRow('scEvents', 'gold', 'Events', 'Recitals, exams and annual day', '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/>') +
+      linkRow('scAbout', 'teal', 'About Us', 'Our story and values', '<circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/>') +
+      linkRow('scContact', '', 'Contact', 'Talk to an advisor', '<path d="M4 5h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V7a2 2 0 012-2z"/><path d="M2.5 7l9.5 7 9.5-7"/>');
+  }
+  $('expBody').innerHTML = html;
+}
+function lowest(c){
+  var m = c.levels[0].fee, i;
+  for(i = 1; i < c.levels.length; i++){ if(c.levels[i].fee < m){ m = c.levels[i].fee; } }
+  return m;
+}
+function findCat(id){ var i; for(i = 0; i < CATS.length; i++){ if(CATS[i].id === id){ return CATS[i]; } } return CATS[0]; }
+function findLvl(c, id){ var i; for(i = 0; i < c.levels.length; i++){ if(c.levels[i].id === id){ return c.levels[i]; } } return c.levels[0]; }
+
+function openCat(id){
+  var c = findCat(id);
+  $('catTitle').innerHTML = c.name + '<span class="sub">' + c.age + '</span>';
+  var html = '<p style="font-size:13.8px;line-height:1.6;margin-bottom:18px">' + c.blurb + '</p>', i, l;
+  for(i = 0; i < c.levels.length; i++){
+    l = c.levels[i];
+    html += '<div class="lvl"><h4>' + l.name + '</h4>' +
+      '<div class="lr"><span>Duration</span><b>' + l.dur + '</b></div>' +
+      '<div class="lr"><span>Course Fee</span><b>' + inr(l.fee) + '</b></div>' +
+      '<div class="lr"><span>Class Days</span><b>' + l.days + '</b></div>' +
+      '<div class="lvl-act">' +
+        '<button class="btn btn-out sm" style="flex:1" onclick="openCourse(\'' + c.id + '\',\'' + l.id + '\')">Details</button>' +
+        '<button class="btn btn-pri sm" style="flex:1" onclick="openEnroll(\'' + c.id + '\',\'' + l.id + '\')">Enroll</button>' +
+      '</div></div>';
+  }
+  $('catBody').innerHTML = html;
+  show('scCategory');
+}
+
+var pick = null;
+function openCourse(catId, lvlId){
+  var c = findCat(catId), l = findLvl(c, lvlId);
+  pick = {c:c, l:l};
+  var pool = LESSONS[c.id] || [], n = Math.min(l.n, pool.length), i;
+  var html = '<div class="tile-img" style="border-radius:18px;overflow:hidden;margin-bottom:16px;aspect-ratio:16/9">' +
+    '<img src="' + c.img + '" alt=""></div>' +
+    '<span class="eyebrow">' + c.name + ' \u00B7 ' + c.age + '</span>' +
+    '<h1 style="font-size:23px;margin:5px 0 14px">' + l.name + '</h1>' +
+    '<div class="kpi-row three"><div class="kpi"><small>Duration</small><b style="font-size:16px">' + l.dur + '</b></div>' +
+    '<div class="kpi"><small>Fee</small><b style="font-size:16px">' + inr(l.fee) + '</b></div>' +
+    '<div class="kpi"><small>Days</small><b style="font-size:13px;line-height:1.3">' + l.days + '</b></div></div>' +
+    '<div class="sec"><h3>Lessons</h3><span class="chip">' + n + '</span></div><div class="card">';
+  for(i = 0; i < n; i++){
+    html += '<div class="lrow"><span class="qn">' + (i + 1) + '</span>' +
+      '<span class="tx"><b style="font-weight:700;font-size:13.8px">' + pool[i] + '</b></span></div>';
+  }
+  html += '</div>';
+  $('courseBody').innerHTML = html;
+  $('courseCta').textContent = 'Enroll \u00B7 ' + inr(l.fee);
+  $('courseCta').setAttribute('onclick', "openEnroll('" + catId + "','" + lvlId + "')");
+  show('scCourse');
+}
+
+/* =================================================================
+   ENROL + PAYMENT
+   ================================================================= */
+function openEnroll(catId, lvlId){
+  pick = {c:findCat(catId), l:findLvl(findCat(catId), lvlId)};
+  show('scEnroll');
+}
+function renderEnroll(){
+  if(!pick){ return; }
+  var c = pick.c, l = pick.l;
+  $('enrollBody').innerHTML =
+    '<div class="card" style="background:var(--cream-2);border:none">' +
+      '<div class="lrow" style="border:none;padding:4px 0"><span class="tx"><span style="font-size:12px;color:var(--ink-soft);font-weight:700">Category</span><b>' + c.name + ' \u00B7 ' + c.age + '</b></span></div>' +
+      '<div class="lrow" style="border:none;padding:4px 0"><span class="tx"><span style="font-size:12px;color:var(--ink-soft);font-weight:700">Course</span><b>' + l.name + ' \u00B7 ' + l.dur + '</b></span></div>' +
+      '<div class="lrow" style="border:none;padding:8px 0 4px;border-top:1px solid var(--line)"><span class="tx"><span style="font-size:12px;color:var(--ink-soft);font-weight:700">Pay Amount</span><b style="font-size:21px">' + inr(l.fee) + '</b></span></div>' +
+    '</div>' +
+    '<div class="sec"><h3>Student Details</h3></div>' +
+    '<div class="field"><label>Student Name</label><input type="text" placeholder="Ananya Suresh"></div>' +
+    '<div class="field"><label>Email ID</label><input type="email" placeholder="you@email.com"></div>' +
+    '<div class="field"><label>Phone Number</label><div class="frow">' +
+      '<select><option>+91</option><option>+1</option><option>+44</option><option>+971</option><option>+65</option></select>' +
+      '<input type="tel" placeholder="98765 43210"></div></div>';
+}
+
+var payMode = 'full';
+function setPay(m){ payMode = m; renderPay(); }
+function renderPay(){
+  if(!pick){ return; }
+  var l = pick.l, half = Math.round(l.fee / 2);
+  $('payBody').innerHTML =
+    '<p style="font-size:13.8px;margin-bottom:16px">Choose how you would like to pay for <b style="color:var(--ink)">' + l.name + '</b>.</p>' +
+    payCard('full', 'Pay Full Amount', l.fee, 'Full access for ' + l.dur.toLowerCase() + '.') +
+    payCard('part', 'Pay in Installments', half, 'A single installment must be completed next month to keep access to your classes.') +
+    '<div class="card" style="background:var(--mint);border:none;margin-top:6px">' +
+      '<div style="display:flex;gap:10px;align-items:flex-start">' +
+      '<svg viewBox="0 0 24 24" style="width:17px;height:17px;stroke:var(--teal);stroke-width:2.2;fill:none;flex-shrink:0;margin-top:2px"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>' +
+      '<span style="font-size:12.3px;color:var(--ink-2);line-height:1.5">Payments are processed securely. Your receipt lands in Payment Ledger straight away.</span></div></div>';
+  $('payBtn').textContent = 'Pay ' + inr(payMode === 'full' ? l.fee : half);
+}
+function payCard(mode, label, amt, info){
+  var on = payMode === mode;
+  return '<div class="card" style="border-color:' + (on ? 'var(--rose-2)' : 'var(--line)') +
+    ';background:' + (on ? 'var(--blush)' : 'var(--white)') + '" onclick="setPay(\'' + mode + '\')">' +
+    '<div style="display:flex;align-items:center;gap:11px;margin-bottom:8px">' +
+      '<span style="width:20px;height:20px;border-radius:50%;border:2px solid ' + (on ? 'var(--rose-2)' : 'var(--line)') +
+        ';display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
+        (on ? '<i style="width:10px;height:10px;border-radius:50%;background:var(--rose-2);display:block"></i>' : '') + '</span>' +
+      '<b style="font-size:15px;font-weight:800">' + label + '</b></div>' +
+    '<div style="font-size:24px;font-weight:800;margin-bottom:6px">' + inr(amt) + '</div>' +
+    '<p style="font-size:12.3px;line-height:1.5">' + info + '</p></div>';
+}
+
+function payNow(){
+  var l = pick.l, half = Math.round(l.fee / 2);
+  var paid = payMode === 'full' ? l.fee : half;
+  $('successBody').innerHTML =
+    '<div style="width:84px;height:84px;border-radius:50%;margin:0 auto 22px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#3E9E68,#2E7D4F)">' +
+      '<svg viewBox="0 0 24 24" style="width:36px;height:36px;stroke:#fff;stroke-width:2.6;fill:none"><path d="M20 6L9 17l-5-5"/></svg></div>' +
+    '<h1 style="font-size:24px;margin-bottom:8px">' + inr(paid) + ' received</h1>' +
+    '<p style="font-size:14px;margin-bottom:24px">You are enrolled in <b style="color:var(--ink)">' + pick.l.name + '</b> under ' + pick.c.name + '. Your batch details are in My Courses.</p>' +
+    (payMode === 'part' ? '<div class="card" style="text-align:left;background:var(--peach);border:none;margin-bottom:20px">' +
+      '<div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:var(--ink-soft);font-weight:700">Balance due next month</span>' +
+      '<b style="font-weight:800">' + inr(l.fee - half) + '</b></div></div>' : '') +
+    '<button class="btn btn-pri" onclick="goTab(\'scLearn\')">Go to My Courses</button>' +
+    '<button class="btn btn-soft" style="margin-top:10px" onclick="show(\'scLedger\')">View Receipt</button>';
+  loggedIn = true;
+  show('scSuccess');
+}
+
+/* =================================================================
+   MY COURSES
+   ================================================================= */
+function renderLearn(){
+  $('learnTitle').innerHTML = 'My Courses<span class="sub">' + ENROLLED.length + ' active</span>';
+  var html = '', i, e;
+  for(i = 0; i < ENROLLED.length; i++){
+    e = ENROLLED[i];
+    html += '<div class="mc" onclick="openMyCourse(\'' + e.id + '\')">' +
+      '<div class="mc-top"><div><span class="eyebrow">' + e.short + ' \u00B7 ' + e.batch + '</span>' +
+      '<h4>' + e.course + '</h4></div><div class="mc-att"><b>' + e.att + '%</b><span>Attend.</span></div></div>' +
+      '<div class="mc-meta"><div>' + e.timing + '</div><div>Faculty: <b>' + e.faculty + '</b></div></div>' +
+      '<div class="mc-foot"><span class="s">' + e.done + ' of ' + e.total + ' sessions</span><span>' + e.prog + '%</span></div>' +
+      '<div class="bar-track"><div class="bar-fill" style="width:' + e.prog + '%"></div></div></div>';
+  }
+  $('learnBody').innerHTML = html;
+}
+
+var mcNow = null, mcTab = 'upcoming';
+function openMyCourse(id){
+  var i;
+  for(i = 0; i < ENROLLED.length; i++){ if(ENROLLED[i].id === id){ mcNow = ENROLLED[i]; } }
+  mcTab = 'upcoming';
+  renderMyCourse();
+  show('scMyCourse');
+}
+function setMcTab(t){ mcTab = t; renderMyCourse(); }
+
+function renderMyCourse(){
+  var e = mcNow;
+  $('mcTitle').innerHTML = e.course + '<span class="sub">' + e.short + ' \u00B7 ' + e.batch + '</span>';
+  var html = '<div class="card" style="background:var(--white)">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
+      '<span style="font-size:12px;font-weight:800;color:var(--ink-soft)">Course progress</span>' +
+      '<b style="font-size:15px;font-weight:800">' + e.prog + '%</b></div>' +
+    '<div class="bar-track" style="margin-bottom:14px"><div class="bar-fill" style="width:' + e.prog + '%"></div></div>' +
+    '<div class="kpi-row three" style="margin:0">' +
+      '<div class="kpi" style="border:none;background:var(--cream-2);padding:11px"><small>Sessions</small><b style="font-size:17px">' + e.done + '/' + e.total + '</b></div>' +
+      '<div class="kpi ok" style="border:none;background:var(--cream-2);padding:11px"><small>Attendance</small><b style="font-size:17px">' + e.att + '%</b></div>' +
+      '<div class="kpi" style="border:none;background:var(--cream-2);padding:11px"><small>Duration</small><b style="font-size:14px">' + e.dur + '</b></div>' +
+    '</div></div>' +
+    '<div class="row" style="margin-top:12px" onclick="show(\'scAttendance\')"><span class="ic teal">' +
+      '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M9 14l2 2 4-4"/></svg></span>' +
+      '<span class="tx"><b>Attendance</b><span>' + e.faculty + ' \u00B7 ' + e.timing + '</span></span>' +
+      '<svg class="go" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>';
+
+  html += '<div class="seg" style="margin-top:16px">' +
+    '<button class="' + (mcTab === 'upcoming' ? 'on' : '') + '" onclick="setMcTab(\'upcoming\')">Upcoming</button>' +
+    '<button class="' + (mcTab === 'past' ? 'on' : '') + '" onclick="setMcTab(\'past\')">Completed</button></div>';
+
+  var rows = sessionsFor(e), i, r, shown = 0;
+  for(i = 0; i < rows.length; i++){
+    r = rows[i];
+    if(mcTab === 'upcoming' && r.past){ continue; }
+    if(mcTab === 'past' && !r.past){ continue; }
+    shown++;
+    html += '<div class="lrow"><span class="datebox"><b>' + r.day + '</b><span>' + r.mon + '</span></span>' +
+      '<span class="tx"><b>' + r.topic + '</b><span>' + r.time + ' \u00B7 Session ' + r.n + '</span></span>';
+    if(r.past){
+      html += '<span class="rt" style="display:flex;gap:7px">' +
+        '<button class="iconbtn" onclick="event.stopPropagation();openPlayer(\'' + esc(r.topic) + '\')" title="Recording">' +
+          '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l6 3-6 3z"/></svg></button>' +
+        '<button class="iconbtn" onclick="event.stopPropagation();openPdf(\'' + esc(r.topic) + '\')" title="Notes">' +
+          '<svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg></button></span>';
+    } else {
+      html += '<span class="rt"><button class="btn btn-pri sm" onclick="event.stopPropagation();toast(\'Not yet live\',\'Join opens 10 minutes before the class.\')">Join</button></span>';
+    }
+    html += '</div>';
+  }
+  if(!shown){ html += '<div class="empty"><h3>Nothing here yet</h3><p>No ' + mcTab + ' sessions in this batch.</p></div>'; }
+  $('mcBody').innerHTML = html;
+}
+
+function openPlayer(title){
+  openSheet(sheetHd(title, 'Class recording') +
+    '<div class="sheet-bd"><div class="player"><button class="pbtn" onclick="toast(\'Playing\',\'Streaming the class recording.\')">' +
+      '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>' +
+    '<div class="pctrl"><span class="t">00:00</span><span class="sk"><i style="width:0%"></i></span><span class="t">58:24</span></div>' +
+    '<p class="hint" style="margin-top:12px">DEV: point this at the recording URL for the session.</p></div>' +
+    '<div class="sheet-ft"><button class="btn btn-soft" onclick="closeSheet()">Close</button></div>');
+}
+function openPdf(title){
+  openSheet(sheetHd('Session Notes', title) +
+    '<div class="sheet-bd"><div class="pdf">' +
+      '<svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>' +
+      '<b>' + title.toLowerCase().replace(/\s+/g, '-') + '.pdf</b><span>2 pages \u00B7 480 KB</span>' +
+      '<div class="pg"></div></div></div>' +
+    '<div class="sheet-ft"><button class="btn btn-pri" onclick="toast(\'Download started\',\'Notes are downloading.\');closeSheet()">Download PDF</button></div>');
+}
+
+/* =================================================================
+   LIVE CLASSES
+   ================================================================= */
+function renderLive(){
+  var html = '<div class="sec" style="margin-top:4px"><h3>Today</h3></div>', i, e, rows, j, done;
+  e = ENROLLED[0];
+  html += '<div class="card" style="background:var(--plum);border:none;color:var(--cream)">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
+      '<span class="chip live">Starts in 30 min</span>' +
+      '<span style="font-size:11.5px;color:rgba(255,249,244,.7);font-weight:800">' + e.time + '</span></div>' +
+    '<b style="font-size:16px;color:var(--cream);display:block">' + e.short + ' \u00B7 ' + e.course + '</b>' +
+    '<span style="font-size:12.5px;color:rgba(255,249,244,.7)">' + e.faculty + ' \u00B7 ' + e.batch + '</span>' +
+    '<button class="btn btn-pri" style="margin-top:13px;padding:12px" onclick="toast(\'Joining class\',\'Opening the live session.\')">Join Class</button></div>';
+
+  html += '<div class="sec"><h3>Upcoming</h3></div>';
+  for(i = 0; i < ENROLLED.length; i++){
+    rows = sessionsFor(ENROLLED[i]);
+    for(j = 0; j < rows.length; j++){
+      if(!rows[j].past){
+        html += '<div class="lrow"><span class="datebox"><b>' + rows[j].day + '</b><span>' + rows[j].mon + '</span></span>' +
+          '<span class="tx"><b>' + rows[j].topic + '</b><span>' + ENROLLED[i].short + ' \u00B7 ' + rows[j].time + ' \u00B7 ' + ENROLLED[i].faculty + '</span></span></div>';
+        break;
+      }
+    }
+  }
+
+  html += '<div class="sec"><h3>Recently completed</h3></div>';
+  for(i = 0; i < ENROLLED.length; i++){
+    rows = sessionsFor(ENROLLED[i]);
+    done = null;
+    for(j = rows.length - 1; j >= 0; j--){ if(rows[j].past){ done = rows[j]; break; } }
+    if(done){
+      html += '<div class="lrow"><span class="datebox"><b>' + done.day + '</b><span>' + done.mon + '</span></span>' +
+        '<span class="tx"><b>' + done.topic + '</b><span>' + ENROLLED[i].short + ' \u00B7 recording ready</span></span>' +
+        '<span class="rt"><button class="iconbtn" onclick="openPlayer(\'' + esc(done.topic) + '\')">' +
+        '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l6 3-6 3z"/></svg></button></span></div>';
+    }
+  }
+  $('liveBody').innerHTML = html;
+}
+
+/* =================================================================
+   EXAMS
+   ================================================================= */
+var examTab = 'upcoming';
+function setExamTab(t){
+  examTab = t;
+  var bs = $('examSeg').querySelectorAll('button'), i, k = ['upcoming','pending','completed'];
+  for(i = 0; i < bs.length; i++){ bs[i].classList.toggle('on', k[i] === t); }
+  renderExams();
+}
+function findExam(id){ var i; for(i = 0; i < EXAMS.length; i++){ if(EXAMS[i].id === id){ return EXAMS[i]; } } return null; }
+
+function renderExams(){
+  var html = '', i, x, shown = 0;
+  for(i = 0; i < EXAMS.length; i++){
+    x = EXAMS[i];
+    if(x.status !== examTab){ continue; }
+    shown++;
+    var act;
+    if(x.status === 'completed'){
+      act = '<button class="btn btn-out sm" onclick="showResult(\'' + x.id + '\')">Result</button>';
+    } else if(x.status === 'upcoming'){
+      act = '<button class="btn btn-pri sm" onclick="startExam(\'' + x.id + '\')">Start</button>';
+    } else {
+      act = '<span class="chip">Opens ' + x.start + '</span>';
+    }
+    html += '<div class="card"><div style="display:flex;gap:9px;margin-bottom:9px">' +
+      '<span class="chip ' + (x.type === 'Quiz' ? 'teal' : '') + '">' + x.type + '</span>' +
+      '<span class="chip">' + x.marks + ' marks</span>' +
+      (x.type === 'Quiz' ? '<span class="chip">' + x.dur + '</span>' : '') + '</div>' +
+      '<h4 style="font-size:16px;margin-bottom:4px">' + x.name + '</h4>' +
+      '<p style="font-size:12.5px;margin-bottom:13px">' + x.course + ' \u00B7 ' + x.faculty + '</p>' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:12px;border-top:1px solid var(--line)">' +
+      '<span style="font-size:12px;color:var(--ink-soft);font-weight:700">' + x.start + '</span>' + act + '</div></div>';
+  }
+  $('examBody').innerHTML = shown ? html :
+    '<div class="empty"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6"/></svg>' +
+    '<h3>No ' + examTab + ' exams</h3><p>Anything your guru sets will show up here.</p></div>';
+}
+
+var runX = null, runAns = [], runFiles = [], runLeft = 0, runT = null;
+
+function startExam(id){
+  runX = findExam(id);
+  if(!runX){ return; }
+  $('runTitle').innerHTML = runX.name + '<span class="sub">' + runX.course + ' \u00B7 ' + runX.marks + ' marks</span>';
+  clearInterval(runT);
+  var html = '', i;
+
+  if(runX.type === 'Written'){
+    var wq = WQS[runX.id] || [];
+    runFiles = [];
+    for(i = 0; i < wq.length; i++){ runFiles.push(null); }
+    html += '<div class="card" style="background:var(--lilac);border:none;margin-top:10px">' +
+      '<div style="display:flex;gap:10px;align-items:flex-start">' +
+      '<svg viewBox="0 0 24 24" style="width:17px;height:17px;stroke:var(--plum-2);stroke-width:2.2;fill:none;flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>' +
+      '<span style="font-size:12.5px;color:var(--ink-2);line-height:1.5">No time limit. Upload your answer in the format each question asks for, then submit.</span></div></div>';
+    for(i = 0; i < wq.length; i++){
+      html += '<div class="q"><div class="q-hd"><span class="qn">' + (i + 1) + '</span><p>' + wq[i].q + '</p></div>' +
+        '<span class="chip" style="margin-bottom:11px">Answer format \u00B7 ' + wq[i].f + '</span>' +
+        '<input type="file" id="uf' + i + '" style="display:none" onchange="onUp(' + i + ',this)">' +
+        '<div id="uw' + i + '"><div class="drop" onclick="document.getElementById(\'uf' + i + '\').click()">' +
+          '<svg viewBox="0 0 24 24"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>' +
+          '<button class="btn btn-out sm" style="margin:0 auto">Upload ' + wq[i].f + '</button>' +
+          '<span>Tap to choose from your phone</span></div></div></div>';
+    }
+  } else {
+    var q = QS[runX.id] || [];
+    runAns = [];
+    for(i = 0; i < q.length; i++){ runAns.push(-1); }
+    runLeft = runX.durMin * 60;
+    html += '<div class="timer"><div class="timer-in" id="timerBox">' +
+      '<span style="font-size:12.5px;font-weight:800;color:var(--ink-soft)">Time remaining</span>' +
+      '<b id="clock">--:--</b></div></div>';
+    var j;
+    for(i = 0; i < q.length; i++){
+      html += '<div class="q"><div class="q-hd"><span class="qn">' + (i + 1) + '</span><p>' + q[i].q + '</p></div>';
+      for(j = 0; j < q[i].o.length; j++){
+        html += '<div class="opt" data-q="' + i + '" onclick="pickAns(' + i + ',' + j + ')">' +
+          '<span class="ob"><i></i></span>' + q[i].o[j] + '</div>';
+      }
+      html += '</div>';
+    }
+  }
+  $('runBody').innerHTML = html;
+  show('scExamRun');
+  if(runX.type === 'Quiz'){ tick(); runT = setInterval(tick, 1000); }
+}
+
+function tick(){
+  var m = Math.floor(runLeft / 60), s = runLeft % 60;
+  if($('clock')){ $('clock').textContent = (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s); }
+  if($('timerBox')){ $('timerBox').classList.toggle('low', runLeft <= 60); }
+  if(runLeft <= 0){ clearInterval(runT); submitExam(true); return; }
+  runLeft--;
+}
+function pickAns(q, o){
+  runAns[q] = o;
+  var opts = document.querySelectorAll('#runBody .opt[data-q="' + q + '"]'), i;
+  for(i = 0; i < opts.length; i++){ opts[i].classList.toggle('on', i === o); }
+}
+function onUp(i, input){
+  var n = input.files && input.files[0] ? input.files[0].name : '';
+  if(!n){ return; }
+  runFiles[i] = n;
+  $('uw' + i).innerHTML = '<div class="done-file"><span class="fi"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>' +
+    '<span style="flex-grow:1;min-width:0"><b style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + n + '</b><small>Uploaded</small></span>' +
+    '<button class="btn btn-out sm" onclick="document.getElementById(\'uf' + i + '\').click()">Replace</button></div>';
+}
+function quitExam(){ clearInterval(runT); show('scExams'); }
+
+function submitExam(auto){
+  if(!runX){ return; }
+  clearInterval(runT);
+  var id = runX.id;
+  if(runX.type === 'Written'){
+    runX.files = runFiles.slice(); runX.status = 'completed'; runX.evaluated = false;
+  } else {
+    runX.ans = runAns.slice(); runX.status = 'completed'; runX.evaluated = true;
+  }
+  runX = null;
+  examTab = 'completed';
+  showResult(id);
+  toast(auto === true ? 'Time up' : 'Submitted',
+    findExam(id).type === 'Written' ? 'Your guru will evaluate and publish the marks.' : 'Your result is ready.');
+}
+
+function showResult(id){
+  var x = findExam(id), i, j, html = '';
+  if(!x){ return; }
+
+  if(x.type === 'Written'){
+    if(!x.evaluated){
+      html += '<div class="card" style="text-align:center;padding:26px">' +
+        '<div style="width:54px;height:54px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;background:var(--lilac)">' +
+        '<svg viewBox="0 0 24 24" style="width:24px;height:24px;stroke:var(--plum-2);stroke-width:2;fill:none"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>' +
+        '<h3 style="font-size:18px;margin-bottom:6px">Awaiting evaluation</h3>' +
+        '<p style="font-size:13px">' + x.faculty + ' will review your answers and publish the marks here.</p></div>' +
+        '<div class="kpi-row" style="margin-top:14px"><div class="kpi"><small>Total Marks</small><b>' + x.marks + '</b></div>' +
+        '<div class="kpi warn"><small>Result</small><b style="font-size:15px">Pending</b></div></div>';
+      var wq = WQS[x.id] || [];
+      html += '<div class="sec"><h3>Your submission</h3></div>';
+      for(i = 0; i < wq.length; i++){
+        html += '<div class="lrow"><span class="qn">' + (i + 1) + '</span><span class="tx">' +
+          '<b style="font-weight:700;font-size:13.5px">' + wq[i].q + '</b>' +
+          '<span>' + ((x.files && x.files[i]) || ('answer.' + wq[i].f.toLowerCase())) + '</span></span>' +
+          '<span class="chip ok">Sent</span></div>';
+      }
+    } else {
+      var pc = Math.round(x.obtained / x.marks * 100), pass = pc >= 50;
+      html += '<div class="result"><h3>' + x.name + '</h3><p>' + x.course + ' \u00B7 Written \u00B7 ' + x.faculty + '</p>' +
+        '<div class="score">' + x.obtained + '<span style="font-size:20px;opacity:.6"> / ' + x.marks + '</span></div>' +
+        '<span class="verdict ' + (pass ? 'pass' : 'fail') + '">' + (pass ? 'Passed \u00B7 ' + pc + '%' : 'Not cleared \u00B7 ' + pc + '%') + '</span></div>' +
+        '<div class="card" style="background:var(--cream-2);border:none">' +
+        '<span class="eyebrow">' + x.faculty + '\u2019s remarks</span>' +
+        '<p style="font-size:13.5px;line-height:1.6;margin-top:7px;color:var(--ink-2)">' + x.remarks + '</p></div>';
+    }
+    $('resultBody').innerHTML = html;
+    show('scExamResult');
+    return;
+  }
+
+  var q = QS[x.id] || [], ans = x.ans || [];
+  var right = 0, wrong = 0, blank = 0;
+  for(i = 0; i < q.length; i++){
+    if(ans[i] === undefined || ans[i] === -1){ blank++; }
+    else if(ans[i] === q[i].a){ right++; } else { wrong++; }
+  }
+  var per = q.length ? x.marks / q.length : 0, got = Math.round(right * per);
+  var pct = x.marks ? Math.round(got / x.marks * 100) : 0, ok = pct >= 50;
+
+  html += '<div class="result"><h3>' + x.name + '</h3><p>' + x.course + ' \u00B7 Quiz \u00B7 ' + x.faculty + '</p>' +
+    '<div class="score">' + got + '<span style="font-size:20px;opacity:.6"> / ' + x.marks + '</span></div>' +
+    '<span class="verdict ' + (ok ? 'pass' : 'fail') + '">' + (ok ? 'Passed \u00B7 ' + pct + '%' : 'Not cleared \u00B7 ' + pct + '%') + '</span></div>' +
+    '<div class="kpi-row three"><div class="kpi ok"><small>Correct</small><b>' + right + '</b></div>' +
+    '<div class="kpi bad"><small>Wrong</small><b>' + wrong + '</b></div>' +
+    '<div class="kpi warn"><small>Skipped</small><b>' + blank + '</b></div></div>' +
+    '<div class="sec"><h3>Answer review</h3></div>';
+
+  for(i = 0; i < q.length; i++){
+    html += '<div class="q"><div class="q-hd"><span class="qn">' + (i + 1) + '</span><p>' + q[i].q + '</p></div>';
+    for(j = 0; j < q[i].o.length; j++){
+      var cls = 'opt', fl = '';
+      if(j === q[i].a){ cls += ' right'; fl = '<span class="fl">Correct</span>'; }
+      if(ans[i] === j && j !== q[i].a){ cls += ' wrong'; fl = '<span class="fl">Your answer</span>'; }
+      else if(ans[i] === j){ fl = '<span class="fl">Your answer \u2713</span>'; }
+      html += '<div class="' + cls + '">' + q[i].o[j] + fl + '</div>';
+    }
+    html += '</div>';
+  }
+  $('resultBody').innerHTML = html;
+  show('scExamResult');
+}
+
+/* =================================================================
+   DOUBTS
+   ================================================================= */
+function renderDoubts(){
+  if(!DOUBTS.length){
+    $('doubtBody').innerHTML = '<div class="empty">' +
+      '<svg viewBox="0 0 130 300" style="width:74px;height:120px"><ellipse cx="65" cy="232" rx="52" ry="58"/>' +
+      '<ellipse cx="65" cy="232" rx="26" ry="28"/><rect x="48" y="188" width="34" height="14" rx="4"/>' +
+      '<path d="M52 188 L52 60"/><path d="M78 188 L78 60"/><ellipse cx="40" cy="44" rx="26" ry="22"/></svg>' +
+      '<h3>No Doubts Yet</h3><p>When something in a lesson does not sit right, raise it here and a guru will schedule a session with you.</p>' +
+      '<button class="btn btn-pri" style="max-width:220px;margin:0 auto" onclick="show(\'scDoubtNew\')">Raise a Doubt</button></div>';
+    return;
+  }
+  var html = '', i, d;
+  for(i = 0; i < DOUBTS.length; i++){
+    d = DOUBTS[i];
+    var k = d.status === 'Completed' ? 'ok' : (d.status === 'Session Scheduled' ? 'teal' : 'warn');
+    html += '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:9px">' +
+      '<span class="chip ' + k + '">' + d.status + '</span>' +
+      '<span style="font-size:11.5px;color:var(--ink-soft);font-weight:700">' + d.when + '</span></div>' +
+      '<p style="font-size:13.8px;color:var(--ink);line-height:1.5;margin-bottom:10px">' + d.text + '</p>' +
+      '<div style="font-size:12px;color:var(--ink-soft);font-weight:700;margin-bottom:11px">' + d.course + ' \u00B7 ' + d.lesson + '</div>';
+    if(d.status === 'Session Scheduled'){
+      html += '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:11px;border-top:1px solid var(--line)">' +
+        '<span style="font-size:12.5px;font-weight:800">' + d.slot + '</span>' +
+        '<button class="btn btn-pri sm" onclick="toast(\'Not yet live\',\'Join opens 10 minutes before ' + d.slot + '.\')">Join</button></div>';
+    } else if(d.status === 'Completed'){
+      html += '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:11px;border-top:1px solid var(--line)">' +
+        '<span style="font-size:12.5px;color:var(--ink-soft);font-weight:700">Held ' + d.slot + '</span>' +
+        '<button class="btn btn-out sm" onclick="openPdf(\'' + esc(d.lesson) + '\')">Notes</button></div>';
+    }
+    html += '</div>';
+  }
+  $('doubtBody').innerHTML = html;
+}
+
+function renderDoubtNew(){
+  var opts = '', i;
+  for(i = 0; i < ENROLLED.length; i++){ opts += '<option>' + ENROLLED[i].short + ' \u00B7 ' + ENROLLED[i].course + '</option>'; }
+  var ls = '', pool = LESSONS.vocal;
+  for(i = 0; i < pool.length; i++){ ls += '<option>Lesson ' + (i + 1) + ' \u00B7 ' + pool[i] + '</option>'; }
+  $('doubtNewBody').innerHTML =
+    '<p style="font-size:13.8px;margin-bottom:18px">Describe where you are stuck. Your guru groups similar doubts and schedules a session.</p>' +
+    '<div class="field"><label>Course</label><select id="dnCourse">' + opts + '</select></div>' +
+    '<div class="field"><label>Lesson</label><select id="dnLesson">' + ls + '</select></div>' +
+    '<div class="field"><label>Your Doubt</label><textarea id="dnText" placeholder="Tell your guru exactly where you are stuck\u2026"></textarea></div>';
+}
+function sendDoubt(){
+  var t = $('dnText').value.trim();
+  if(!t){ toast('Nothing to send', 'Describe your doubt first.'); return; }
+  DOUBTS.unshift({id:'d' + Date.now(), when:'Just now', course:$('dnCourse').value,
+    lesson:$('dnLesson').value, text:t, status:'Raised', slot:''});
+  goTab('scDoubts');
+  toast('Doubt raised', 'Your guru will review it and schedule a session.');
+}
+
+/* =================================================================
+   ATTENDANCE
+   ================================================================= */
+var attPick = 'e1';
+function renderAttendance(){
+  var opts = '', i, e = null;
+  for(i = 0; i < ENROLLED.length; i++){
+    opts += '<option value="' + ENROLLED[i].id + '"' + (ENROLLED[i].id === attPick ? ' selected' : '') + '>' +
+      ENROLLED[i].short + ' \u00B7 ' + ENROLLED[i].course + '</option>';
+    if(ENROLLED[i].id === attPick){ e = ENROLLED[i]; }
+  }
+  var rows = sessionsFor(e), pr = 0, ab = 0, html = '', r;
+  for(i = 0; i < rows.length; i++){
+    r = rows[i];
+    if(!r.past){ continue; }
+    if(r.present){ pr++; } else { ab++; }
+    html += '<div class="lrow"><span class="datebox"><b>' + r.day + '</b><span>' + r.mon + '</span></span>' +
+      '<span class="tx"><b>' + r.topic + '</b><span>' + r.time + '</span></span>' +
+      '<span class="chip ' + (r.present ? 'ok' : 'bad') + '">' + (r.present ? 'Present' : 'Absent') + '</span></div>';
+  }
+  var tot = pr + ab, pct = tot ? Math.round(pr / tot * 100) : 0;
+  $('attBody').innerHTML =
+    '<div class="field"><label>Course</label><select onchange="attPick=this.value;renderAttendance()">' + opts + '</select></div>' +
+    '<div class="kpi-row"><div class="kpi ok"><small>Overall Attendance</small><b>' + pct + '%</b></div>' +
+    '<div class="kpi"><small>Total Classes</small><b>' + tot + '</b></div></div>' +
+    '<div class="kpi-row"><div class="kpi ok"><small>Present</small><b>' + pr + '</b></div>' +
+    '<div class="kpi bad"><small>Absent</small><b>' + ab + '</b></div></div>' +
+    '<div class="sec"><h3>Class by class</h3></div>' + html;
+}
+
+/* =================================================================
+   PAYMENT LEDGER
+   ================================================================= */
+function renderLedger(){
+  var paid = 0, out = 0, i;
+  for(i = 0; i < PAYMENTS.length; i++){ paid += PAYMENTS[i].amt; }
+  for(i = 0; i < DUES.length; i++){ out += DUES[i].amt; }
+  var html = '<div class="card" style="background:var(--plum);border:none;color:var(--cream)">' +
+    '<span class="eyebrow" style="color:rgba(255,249,244,.6)">Total course fee</span>' +
+    '<div style="font-size:28px;font-weight:800;margin:5px 0 14px">' + inr(paid + out) + '</div>' +
+    '<div style="display:flex;gap:10px">' +
+      '<div style="flex:1;background:rgba(255,249,244,.12);border-radius:13px;padding:11px">' +
+        '<div style="font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,249,244,.6)">Paid</div>' +
+        '<b style="font-size:17px;color:var(--cream)">' + inr(paid) + '</b></div>' +
+      '<div style="flex:1;background:rgba(255,249,244,.12);border-radius:13px;padding:11px">' +
+        '<div style="font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,249,244,.6)">Outstanding</div>' +
+        '<b style="font-size:17px;color:var(--gold-soft)">' + inr(out) + '</b></div>' +
+    '</div></div>';
+
+  if(DUES.length){
+    html += '<div class="sec"><h3>Due</h3></div>';
+    for(i = 0; i < DUES.length; i++){
+      html += '<div class="row"><span class="ic gold"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/></svg></span>' +
+        '<span class="tx"><b>' + DUES[i].course + '</b><span>' + DUES[i].label + ' \u00B7 due ' + DUES[i].due + '</span></span>' +
+        '<button class="btn btn-pri sm" onclick="payDue(\'' + DUES[i].id + '\')">' + inr(DUES[i].amt) + '</button></div>';
+    }
+  }
+
+  html += '<div class="sec"><h3>Payment history</h3></div>';
+  for(i = 0; i < PAYMENTS.length; i++){
+    html += '<div class="lrow" onclick="openReceipt(\'' + PAYMENTS[i].id + '\')">' +
+      '<span class="tx"><b>' + PAYMENTS[i].course + '</b><span>' + PAYMENTS[i].date + ' \u00B7 ' + PAYMENTS[i].mode + '</span></span>' +
+      '<span class="rt"><b style="font-size:15px;font-weight:800;display:block">' + inr(PAYMENTS[i].amt) + '</b>' +
+      '<span class="chip ok" style="margin-top:4px">Paid</span></span></div>';
+  }
+  $('ledgerBody').innerHTML = html;
+}
+
+function payDue(id){
+  var d = null, i;
+  for(i = 0; i < DUES.length; i++){ if(DUES[i].id === id){ d = DUES[i]; } }
+  if(!d){ return; }
+  openSheet(sheetHd('Pay Instalment', d.course) +
+    '<div class="sheet-bd"><div class="card" style="background:var(--cream-2);border:none">' +
+      '<div style="display:flex;justify-content:space-between;font-size:13.5px;padding:5px 0"><span style="color:var(--ink-soft);font-weight:700">Instalment</span><b>' + d.label + '</b></div>' +
+      '<div style="display:flex;justify-content:space-between;font-size:13.5px;padding:5px 0"><span style="color:var(--ink-soft);font-weight:700">Due date</span><b>' + d.due + '</b></div>' +
+      '<div style="display:flex;justify-content:space-between;padding:10px 0 4px;border-top:1px solid var(--line);margin-top:6px"><span style="color:var(--ink-soft);font-weight:700;font-size:13.5px">Pay amount</span><b style="font-size:21px">' + inr(d.amt) + '</b></div>' +
+    '</div></div><div class="sheet-ft"><button class="btn btn-pri" onclick="confirmDue(\'' + id + '\')">Pay ' + inr(d.amt) + '</button></div>');
+}
+function confirmDue(id){
+  var i, d = null;
+  for(i = 0; i < DUES.length; i++){ if(DUES[i].id === id){ d = DUES[i]; DUES.splice(i, 1); break; } }
+  if(!d){ return; }
+  PAYMENTS.push({id:'r' + Date.now(), date:'Today', course:d.course, amt:d.amt, mode:d.label,
+    ref:'CHA-2026-' + Math.floor(1000 + Math.random() * 8999)});
+  closeSheet(); renderLedger();
+  toast('Payment received', inr(d.amt) + ' paid towards ' + d.course + '.');
+}
+function openReceipt(id){
+  var p = null, i;
+  for(i = 0; i < PAYMENTS.length; i++){ if(PAYMENTS[i].id === id){ p = PAYMENTS[i]; } }
+  if(!p){ return; }
+  function rr(k, v){ return '<div style="display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:13.3px">' +
+    '<span style="color:var(--ink-soft);font-weight:700">' + k + '</span><b style="text-align:right">' + v + '</b></div>'; }
+  openSheet(sheetHd('Payment Receipt', p.ref) +
+    '<div class="sheet-bd">' + rr('Receipt No.', p.ref) + rr('Date', p.date) + rr('Student', STUDENT.name) +
+    rr('Course', p.course) + rr('Type', p.mode) + rr('Amount Paid', inr(p.amt)) + rr('Status', 'Paid') +
+    '<p style="text-align:center;font-size:11px;letter-spacing:.06em;color:var(--ink-soft);margin-top:16px">CHAARULAYA MUSIC &amp; DANCE ACADEMY \u00B7 NAGERCOIL</p></div>' +
+    '<div class="sheet-ft"><button class="btn btn-pri" onclick="toast(\'Download started\',\'Receipt ' + p.ref + '\');closeSheet()">Download Receipt</button></div>');
+}
+
+/* =================================================================
+   WORKSHOPS
+   ================================================================= */
+function wsTile(w){
+  return '<div class="tile" onclick="openWorkshop(\'' + w.id + '\')">' +
+    '<div class="tile-img"><img src="' + w.img + '" alt="' + w.name + '">' +
+    '<span class="tag"' + (w.fee === 0 ? ' style="background:#DFF1E4;color:#2E7D4F"' : '') + '>' +
+      (w.byInvite ? 'By invitation' : (w.fee === 0 ? 'Free' : inr(w.fee))) + '</span></div>' +
+    '<div class="tile-bd"><h4>' + w.name + '</h4>' +
+    '<p>' + w.date + ' \u00B7 ' + w.time + '</p>' +
+    '<div class="tile-foot"><span style="font-size:12.3px;color:var(--ink-soft);font-weight:700">' + w.by + '</span>' +
+    (w.joined ? '<span class="chip ok">Joined</span>' : '<span class="chip warn">' + w.seats + ' seats left</span>') +
+    '</div></div></div>';
+}
+function findWs(id){ var i; for(i = 0; i < WSHOPS.length; i++){ if(WSHOPS[i].id === id){ return WSHOPS[i]; } } return null; }
+
+function openWorkshop(id){
+  var w = findWs(id);
+  if(!w){ return; }
+  $('wsBody').innerHTML =
+    '<div style="aspect-ratio:16/9;position:relative"><img src="' + w.img + '" alt="" style="width:100%;height:100%;object-fit:cover">' +
+      '<span class="tag" style="position:absolute;top:12px;left:12px;font-size:10.5px;font-weight:800;padding:6px 12px;border-radius:100px;background:' +
+      (w.fee === 0 ? '#DFF1E4;color:#2E7D4F' : 'rgba(255,255,255,.94)') + '">' + (w.fee === 0 ? 'Free' : 'Paid') + '</span></div>' +
+    '<div style="padding:16px 18px 0">' +
+      '<span class="eyebrow">Workshop \u00B7 ' + w.by + '</span>' +
+      '<h1 style="font-size:22px;margin:5px 0 10px">' + w.name + '</h1>' +
+      '<p style="font-size:13.8px;line-height:1.6;margin-bottom:16px">' + w.post + '</p>' +
+      '<div class="kpi-row"><div class="kpi"><small>Date</small><b style="font-size:14px">' + w.date + '</b></div>' +
+        '<div class="kpi"><small>Time</small><b style="font-size:14px">' + w.time + '</b></div></div>' +
+      '<div class="kpi-row"><div class="kpi"><small>Amount</small><b style="font-size:17px">' + (w.fee === 0 ? 'Free' : inr(w.fee)) + '</b></div>' +
+        '<div class="kpi warn"><small>Seats Left</small><b>' + w.seats + '</b></div></div>' +
+    '</div>';
+  $('wsFoot').innerHTML = w.joined
+    ? '<div class="chip ok" style="width:100%;justify-content:center;padding:15px;font-size:14px">' +
+      '<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;stroke-width:2.6;fill:none"><path d="M20 6L9 17l-5-5"/></svg>Joined</div>'
+    : '<button class="btn btn-pri" onclick="joinWs(\'' + w.id + '\')">' + (w.fee === 0 ? 'Join Free Workshop' : 'Join \u00B7 ' + inr(w.fee)) + '</button>';
+  show('scWorkshop');
+}
+
+function joinWs(id){
+  var w = findWs(id);
+  openSheet(sheetHd('Join Workshop', w.name) +
+    '<div class="sheet-bd">' +
+      '<div class="field"><label>Student Name</label><input type="text" value="' + STUDENT.name + '"></div>' +
+      '<div class="field"><label>Email ID</label><input type="email" value="' + STUDENT.email + '"></div>' +
+      '<div class="field"><label>Phone Number</label><div class="frow">' +
+        '<select><option>+91</option><option>+1</option><option>+44</option></select>' +
+        '<input type="tel" value="98765 43210"></div></div>' +
+    '</div><div class="sheet-ft"><button class="btn btn-pri" onclick="confirmWs(\'' + id + '\')">' +
+      (w.fee === 0 ? 'Confirm Registration' : 'Pay ' + inr(w.fee)) + '</button></div>');
+}
+function confirmWs(id){
+  var w = findWs(id);
+  w.joined = true;
+  if(w.seats > 0){ w.seats--; }
+  closeSheet();
+  openWorkshop(id);
+  renderExplore();
+  toast('You are in', w.fee > 0 ? inr(w.fee) + ' paid \u2014 your seat is confirmed.' : 'Your free seat is confirmed.');
+}
+
+/* =================================================================
+   NOTIFICATIONS
+   ================================================================= */
+function renderNotifs(){
+  var icons = {
+    live:['rose','<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l6 3-6 3z"/>'],
+    exam:['','<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6"/>'],
+    doubt:['teal','<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>'],
+    pay:['gold','<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/>'],
+    note:['','<path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/>']
+  };
+  var html = '', i, n, ic;
+  for(i = 0; i < NOTIFS.length; i++){
+    n = NOTIFS[i]; ic = icons[n.k] || icons.note;
+    html += '<div class="row"><span class="ic ' + ic[0] + '"><svg viewBox="0 0 24 24">' + ic[1] + '</svg></span>' +
+      '<span class="tx"><b>' + n.t + '</b><span>' + n.s + '</span></span>' +
+      '<span style="font-size:11px;color:var(--ink-soft);font-weight:700;flex-shrink:0">' + n.w + '</span></div>';
+  }
+  $('notifBody').innerHTML = html;
+}
+
+/* =================================================================
+   PROFILE
+   ================================================================= */
+function renderProfile(){
+  var html = '<div class="hero" style="text-align:center;padding-bottom:26px">' +
+    '<div style="display:flex;justify-content:flex-end;margin-bottom:4px">' +
+      '<button class="iconbtn" style="background:rgba(255,249,244,.14);border-color:rgba(255,249,244,.2)" onclick="show(\'scProfileEdit\')">' +
+      '<svg viewBox="0 0 24 24" style="stroke:var(--cream)"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></div>' +
+    '<span class="av lg" style="margin:0 auto 14px">' + ini(STUDENT.name) + '</span>' +
+    '<h2>' + STUDENT.name + '</h2><p>Student since ' + STUDENT.since + '</p></div>';
+
+  html += '<div style="padding:0 18px">' +
+    '<div class="kpi-row three"><div class="kpi"><small>Courses</small><b>' + ENROLLED.length + '</b></div>' +
+    '<div class="kpi ok"><small>Attendance</small><b>85%</b></div>' +
+    '<div class="kpi"><small>Exams</small><b>2</b></div></div>';
+
+  html += profRow('scAttendance', 'teal', 'Attendance', 'Class-by-class record', '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M9 14l2 2 4-4"/>');
+  html += profRow('scLedger', 'gold', 'Payment Ledger', 'Receipts and instalments', '<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/>');
+  html += profRow('scExams', '', 'Exams', 'Quizzes and written assessments', '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6"/>');
+  html += profRow('scNotifs', 'rose', 'Notifications', 'Class, exam and fee alerts', '<path d="M18 8a6 6 0 10-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 01-3.4 0"/>');
+
+  html += '<div class="sec"><h3>The academy</h3></div>' +
+    linkRow('scFaculty', '', 'Our Gurus', 'Meet the faculty', '<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>') +
+    linkRow('scGallery', 'rose', 'Gallery', 'Stage moments and studio life', '<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-6 6"/>') +
+    linkRow('scEvents', 'gold', 'Events', 'Recitals and annual day', '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/>') +
+    linkRow('scAbout', 'teal', 'About Us', 'Our story and values', '<circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/>') +
+    linkRow('scContact', '', 'Contact', 'Talk to an advisor', '<path d="M4 5h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V7a2 2 0 012-2z"/><path d="M2.5 7l9.5 7 9.5-7"/>');
+
+  html += '<div class="sec"><h3>Account</h3></div>' +
+    '<div class="row" onclick="show(\'scProfileEdit\')"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span>' +
+      '<span class="tx"><b>Edit Profile</b><span>Name, email and phone</span></span>' +
+      '<svg class="go" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>' +
+    '<div class="row" onclick="openPassword()"><span class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></span>' +
+      '<span class="tx"><b>Change Password</b><span>Update your login</span></span>' +
+      '<svg class="go" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>' +
+    '<div class="row" onclick="show(\'scLogin\')"><span class="ic rose"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg></span>' +
+      '<span class="tx"><b>Log Out</b></span></div>' +
+    '<p style="text-align:center;font-size:11.5px;color:var(--ink-soft);margin-top:18px">Chaarulaya Student App \u00B7 v1.0</p></div>';
+  $('profileBody').innerHTML = html;
+}
+function profRow(target, tone, t, s, path){
+  return '<div class="row" onclick="show(\'' + target + '\')"><span class="ic ' + tone + '"><svg viewBox="0 0 24 24">' + path + '</svg></span>' +
+    '<span class="tx"><b>' + t + '</b><span>' + s + '</span></span>' +
+    '<svg class="go" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>';
+}
+function openPassword(){
+  openSheet(sheetHd('Change Password', 'Update your login') +
+    '<div class="sheet-bd">' +
+      '<div class="field"><label>Current Password</label><input type="password" placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"></div>' +
+      '<div class="field"><label>New Password</label><input type="password" placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"></div>' +
+      '<div class="field"><label>Confirm New Password</label><input type="password" placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"></div>' +
+    '</div><div class="sheet-ft"><button class="btn btn-pri" onclick="toast(\'Password updated\',\'Use it next time you log in.\');closeSheet()">Update Password</button></div>');
+}
+
+function renderEdit(){
+  $('editBody').innerHTML =
+    '<div style="text-align:center;margin-bottom:22px"><span class="av lg" style="margin:0 auto 12px">' + ini(STUDENT.name) + '</span>' +
+    '<button class="btn btn-out sm" style="margin:0 auto" onclick="toast(\'Photo\',\'Choose a new photo from your device.\')">Change Photo</button></div>' +
+    '<div class="field"><label>Full Name</label><input type="text" value="' + STUDENT.name + '"></div>' +
+    '<div class="field"><label>Email</label><input type="email" value="' + STUDENT.email + '"></div>' +
+    '<div class="field"><label>Phone</label><input type="tel" value="' + STUDENT.phone + '"></div>' +
+    '<div class="field"><label>Time Zone</label><select><option>India (IST)</option><option>USA (EST/PST)</option><option>UK (GMT)</option><option>UAE (GST)</option></select></div>' +
+    '<div class="field"><label>Member Since</label><input type="text" value="' + STUDENT.since + '" disabled></div>';
+}
+
+/* =================================================================
+   BOOT
+   ================================================================= */
+renderOnboard();
+setTimeout(function(){ if(stack[stack.length - 1] === 'scSplash'){ show('scOnboard'); } }, 1900);
+</script>
+</body>
+</html>
