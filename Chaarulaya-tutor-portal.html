@@ -1,0 +1,2275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chaarulaya — Tutor Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,500;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+/* ============================= TOKENS ============================= */
+:root{
+  --ink:#16324A; --ink-soft:#6C8299; --ink-2:#334B60;
+  --plum:#0E2A42; --plum-2:#12A594; --plum-3:#1C455F;
+  --cream:#EAF2F8; --cream-2:#DCE9F2; --blush:#E1F5F1; --lilac:#EEE8FB;
+  --peach:#FBF0D9; --mint:#DFF5EC; --white:#FFFFFF;
+  --saffron:#C5841D; --saffron-2:#A66B18; --rose:#5FC4B5; --rose-2:#0D8778;
+  --violet:#7C5CD6; --gold:#C5841D; --gold-soft:#4FE0CB;
+  --teal:#12A594; --teal-2:#0D8778; --teal-soft:#E1F5F1;
+  --line:rgba(16,42,66,0.11); --line-light:rgba(255,255,255,0.12);
+  --shadow:0 24px 60px -24px rgba(14,42,66,0.28);
+  --shadow-sm:0 10px 28px -14px rgba(14,42,66,0.22);
+  --serif:'Nunito',-apple-system,BlinkMacSystemFont,sans-serif;
+  --sans:'Nunito',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --ease:cubic-bezier(.22,.9,.28,1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--cream);color:var(--ink);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:800;letter-spacing:-.01em;line-height:1.25;}
+p{color:var(--ink-soft);}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;border:none;background:none;cursor:pointer;color:inherit;}
+input,select,textarea{font-family:inherit;}
+ul{list-style:none;}
+::selection{background:var(--blush);}
+
+/* ============================= BUTTONS ============================= */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:100px;
+  font-size:14px;font-weight:800;transition:.25s var(--ease);white-space:nowrap;}
+.btn-primary{background:linear-gradient(100deg,var(--plum-2),var(--rose-2));color:#fff;box-shadow:0 12px 26px -14px rgba(90,50,110,.7);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 32px -14px rgba(90,50,110,.75);}
+.btn-outline{border:1.5px solid var(--line);color:var(--ink);background:var(--white);}
+.btn-outline:hover{border-color:var(--rose-2);color:var(--rose-2);}
+.btn-sm{padding:9px 17px;font-size:13px;}
+.btn-block{width:100%;}
+.btn-danger{background:#FCE6E9;color:#D6455A;}
+.btn-danger:hover{background:#F9D3D8;}
+.btn svg{width:15px;height:15px;stroke:currentColor;stroke-width:2.2;fill:none;}
+
+.mini{font-size:12px;font-weight:800;padding:7px 13px;border-radius:100px;white-space:nowrap;transition:.2s;display:inline-flex;align-items:center;gap:6px;}
+.mini svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.2;fill:none;}
+.mini.solid{background:linear-gradient(100deg,var(--plum-2),var(--rose-2));color:#fff;}
+.mini.solid:hover{opacity:.9;}
+.mini.ghost{border:1.5px solid var(--line);color:var(--ink);background:var(--white);}
+.mini.ghost:hover{border-color:var(--rose-2);color:var(--rose-2);}
+.mini.live{background:#FCE6E9;color:#D6455A;}
+.mini.live::before{content:"";width:7px;height:7px;border-radius:50%;background:#D6455A;
+  box-shadow:0 0 0 0 rgba(229,64,95,.6);animation:pulse 1.8s infinite;}
+@keyframes pulse{70%{box-shadow:0 0 0 7px rgba(229,64,95,0);}100%{box-shadow:0 0 0 0 rgba(229,64,95,0);}}
+.mini.mute{color:var(--ink-soft);opacity:.55;cursor:default;}
+.mini[disabled]{opacity:.42;cursor:not-allowed;}
+.mini[disabled]:hover{border-color:var(--line);color:var(--ink);}
+.countdown{font-size:11.5px;font-weight:800;color:var(--rose-2);display:block;margin-top:3px;}
+.countdown.soon{color:#1E9A6C;}
+.icon-btn{width:32px;height:32px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;
+  border:1.5px solid var(--line);background:var(--white);transition:.2s;}
+.icon-btn:hover{border-color:var(--rose-2);background:var(--blush);}
+.icon-btn svg{width:15px;height:15px;stroke:var(--ink-2);stroke-width:2;fill:none;}
+.icon-btn:hover svg{stroke:var(--rose-2);}
+
+/* ============================= STATUS TAGS ============================= */
+.tag{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:6px 12px;
+  border-radius:100px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
+.tag.assigned{background:var(--lilac);color:#7C5CD6;}
+.tag.live{background:#FCE6E9;color:#D6455A;}
+.tag.pending{background:#FBF0D9;color:#C5841D;}
+.tag.rescheduled{background:#E6EEFD;color:#2E6FE0;}
+.tag.cancelled{background:#DCE9F2;color:#6C8299;}
+.tag.completed{background:#DFF5EC;color:#1E9A6C;}
+.tag.scheduled{background:#E6EEFD;color:#2E6FE0;}
+.tag.review{background:#FBF0D9;color:#C5841D;}
+.tag.present{background:#DFF5EC;color:#1E9A6C;}
+.tag.absent{background:#FCE6E9;color:#D6455A;}
+.tag.late{background:#FBF0D9;color:#C5841D;}
+.tag.good{background:#DFF5EC;color:#1E9A6C;}
+.tag.average{background:#FBF0D9;color:#C5841D;}
+.tag.below{background:#FCE6E9;color:#D6455A;}
+.tag.quiz{background:var(--teal-soft);color:var(--teal-2);}
+.tag.written{background:var(--lilac);color:#7C5CD6;}
+.tag.live::before{content:"";width:6px;height:6px;border-radius:50%;background:#D6455A;animation:pulse 1.8s infinite;}
+
+/* ============================= LOGIN ============================= */
+#login{min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr;}
+.lg-art{position:relative;background:radial-gradient(120% 130% at 15% 0%,var(--plum-3),var(--plum) 65%,#081B2B 100%);
+  padding:56px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;color:var(--cream);}
+.lg-art::after{content:"";position:absolute;inset:0;opacity:.18;
+  background-image:radial-gradient(rgba(244,206,134,.6) 1px,transparent 1.4px);background-size:22px 22px;}
+.lg-brand{position:relative;z-index:1;display:flex;align-items:center;gap:12px;}
+.lg-mark{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--teal),#1FC4AE);}
+.lg-mark svg{width:21px;height:21px;stroke:#fff;stroke-width:2;fill:none;}
+.lg-brand b{font-family:var(--serif);font-size:19px;display:block;line-height:1.1;}
+.lg-brand span{font-size:9.5px;letter-spacing:.2em;color:rgba(255,249,244,.6);font-weight:700;}
+.lg-copy{position:relative;z-index:1;max-width:420px;}
+.lg-copy h1{font-size:clamp(30px,3.4vw,42px);color:var(--cream);margin-bottom:14px;}
+.lg-copy p{color:rgba(255,249,244,.72);font-size:15.5px;}
+.lg-feats{position:relative;z-index:1;display:grid;gap:12px;}
+.lg-feat{display:flex;align-items:center;gap:12px;font-size:13.5px;color:rgba(255,249,244,.8);font-weight:600;}
+.lg-feat svg{width:16px;height:16px;stroke:var(--gold-soft);stroke-width:2.4;fill:none;flex-shrink:0;}
+.lg-form{display:flex;align-items:center;justify-content:center;padding:40px 48px;background:var(--cream);}
+.lg-card{width:100%;max-width:400px;}
+.lg-card h2{font-size:27px;margin-bottom:6px;}
+.lg-card > p{font-size:14.5px;margin-bottom:28px;}
+@media(max-width:900px){#login{grid-template-columns:1fr;}.lg-art{display:none;}}
+
+/* ============================= FORM FIELDS ============================= */
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:7px;}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid var(--line);border-radius:12px;
+  padding:12px 14px;font-size:14px;color:var(--ink);background:var(--white);transition:border-color .2s;}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--rose-2);}
+.field textarea{resize:vertical;min-height:84px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.field-row.three{grid-template-columns:repeat(3,1fr);}
+.hint{font-size:12px;color:var(--ink-soft);margin-top:6px;}
+@media(max-width:640px){.field-row,.field-row.three{grid-template-columns:1fr;}}
+
+/* ============================= SHELL ============================= */
+#portal{display:none;}
+#portal.on{display:block;}
+.shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh;}
+.side{background:#152656;color:var(--cream);padding:26px 18px;position:sticky;top:0;height:100vh;
+  display:flex;flex-direction:column;}
+.side-brand{display:flex;align-items:center;gap:11px;padding:0 6px 22px;border-bottom:1px solid var(--line-light);margin-bottom:8px;}
+.side-brand .lg-mark{width:36px;height:36px;border-radius:11px;}
+.side-brand b{font-family:var(--serif);font-size:16px;display:block;line-height:1.1;}
+.side-brand span{font-size:9px;letter-spacing:.18em;color:rgba(255,249,244,.55);font-weight:700;}
+.side-user{display:flex;align-items:center;gap:11px;padding:14px 6px;margin-bottom:12px;}
+.av{width:38px;height:38px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:14px;font-weight:800;color:#fff;
+  background:linear-gradient(135deg,var(--teal),var(--teal-2));}
+.side-user b{font-size:13.5px;display:block;line-height:1.2;}
+.side-user span{font-size:11px;color:rgba(255,249,244,.6);}
+.side-nav{flex-grow:1;overflow-y:auto;}
+.side-nav a{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:10px;font-size:13.8px;
+  font-weight:700;color:rgba(255,249,244,.72);margin-bottom:2px;transition:.2s;}
+.side-nav a svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;flex-shrink:0;}
+.side-nav a:hover{background:rgba(255,249,244,.08);color:var(--cream);}
+/* .side-nav a.active{background:linear-gradient(100deg,var(--rose-2),var(--saffron));color:#fff;} */
+.side-nav a.active{background:linear-gradient(100deg,var(--teal),var(--teal-2));color:#fff;
+  box-shadow:0 8px 18px -8px rgba(18,165,148,.6);}
+.side-foot{padding-top:14px;border-top:1px solid var(--line-light);}
+.side-foot a{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:10px;font-size:13.8px;
+  font-weight:700;color:rgba(255,249,244,.72);transition:.2s;}
+.side-foot a:hover{background:rgba(255,249,244,.08);color:var(--cream);}
+.side-foot svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;}
+
+.main{padding:0 36px 60px;background:var(--cream);min-width:0;}
+.topbar{display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:14px 0 16px;
+  margin-bottom:22px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;
+  background:var(--cream);}
+.tb-user{display:flex;align-items:center;gap:11px;padding:6px 8px 6px 6px;border-radius:100px;transition:background .2s;}
+.tb-user:hover{background:var(--white);}
+.tb-user .av{width:38px;height:38px;}
+.tb-user b{font-size:13.8px;display:block;line-height:1.2;font-weight:800;}
+.tb-user span{font-size:11.5px;color:var(--white);font-weight:700;}
+@media(max-width:900px){.topbar{position:static;padding-top:18px;}.tb-user span{display:none;}}
+.panel{display:none;}
+.panel.on{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:24px;}
+.head h2{font-size:25px;}
+.head p{font-size:13.8px;margin-top:3px;}
+.back{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;color:var(--ink-soft);margin-bottom:16px;}
+.back:hover{color:var(--rose-2);}
+.back svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.4;fill:none;}
+@media(max-width:900px){
+  .shell{grid-template-columns:1fr;}
+  .side{position:relative;height:auto;flex-direction:row;align-items:center;padding:12px;overflow-x:auto;gap:8px;}
+  .side-brand,.side-user{display:none;}
+  .side-nav{display:flex;gap:4px;}
+  .side-nav a{white-space:nowrap;margin:0;}
+  .side-foot{border:none;padding:0;}
+  .main{padding:22px 16px 50px;}
+}
+
+/* ============================= FILTER BAR ============================= */
+.fbar{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;background:var(--white);border:1px solid var(--line);
+  border-radius:16px;padding:14px 16px;margin-bottom:18px;}
+.fbar .fb{display:flex;flex-direction:column;gap:6px;min-width:150px;}
+.fbar .fb.grow{flex-grow:1;min-width:200px;}
+.fbar label{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+.fbar select,.fbar input{border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13.5px;
+  color:var(--ink);background:var(--white);width:100%;}
+.fbar select:focus,.fbar input:focus{outline:none;border-color:var(--rose-2);}
+.search-wrap{position:relative;}
+.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;
+  stroke:var(--ink-soft);stroke-width:2;fill:none;pointer-events:none;}
+.search-wrap input{padding-left:34px;}
+.seg{display:inline-flex;background:var(--cream-2);border-radius:100px;padding:4px;gap:2px;}
+.seg button{padding:9px 18px;border-radius:100px;font-size:13px;font-weight:800;color:var(--ink-soft);transition:.2s;}
+.seg button.active{background:var(--white);color:var(--ink);box-shadow:0 2px 8px -4px rgba(58,36,64,.3);}
+.seg.att button{min-width:78px;}
+.seg.att button.active[data-v="present"]{background:#1E9A6C;color:#fff;}
+.seg.att button.active[data-v="absent"]{background:#D6455A;color:#fff;}
+.seg.att button.active[data-v="late"]{background:#C5841D;color:#16324A;}
+
+/* ============================= TABLES ============================= */
+.tbl{background:var(--white);border:1px solid var(--line);border-radius:16px;overflow:hidden;}
+.tbl-scroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;min-width:100%;}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:800;
+  color:var(--ink-soft);background:var(--cream-2);padding:13px 18px;white-space:nowrap;}
+td{padding:14px 18px;font-size:13.8px;border-top:1px solid var(--line);vertical-align:middle;}
+tbody tr:hover{background:var(--cream);}
+td.nowrap{white-space:nowrap;}
+td b{font-weight:800;display:block;}
+td small{font-size:12px;color:var(--ink-soft);display:block;margin-top:2px;}
+.acts{display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
+.empty-row{text-align:center;color:var(--ink-soft);padding:38px !important;}
+.clickable{cursor:pointer;}
+tr.sel{background:var(--blush) !important;}
+.count-link{font-weight:800;color:var(--rose-2);border-bottom:1.5px dashed var(--rose-2);cursor:pointer;}
+
+/* ============================= MODAL ============================= */
+.mdl{position:fixed;inset:0;z-index:3000;display:flex;align-items:flex-start;justify-content:center;
+  padding:50px 18px 40px;overflow-y:auto;opacity:0;visibility:hidden;transition:opacity .26s var(--ease),visibility .26s;}
+.mdl.on{opacity:1;visibility:visible;}
+.mdl-back{position:fixed;inset:0;background:rgba(30,14,38,.66);backdrop-filter:blur(5px);}
+.mdl-box{position:relative;width:min(480px,100%);background:var(--white);border-radius:20px;margin:auto 0;
+  box-shadow:0 50px 100px -40px rgba(40,10,50,.7);transform:translateY(14px) scale(.985);transition:transform .3s var(--ease);}
+.mdl.on .mdl-box{transform:none;}
+.mdl-box.wide{width:min(720px,100%);}
+.mdl-box.xl{width:min(900px,100%);}
+.mdl-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:20px 22px 14px;border-bottom:1px solid var(--line);}
+.mdl-hd h3{font-size:19px;margin-bottom:3px;}
+.mdl-hd .sub{font-size:12.5px;color:var(--ink-soft);font-weight:700;}
+.mdl-x{width:32px;height:32px;border-radius:50%;background:var(--cream-2);flex-shrink:0;display:flex;
+  align-items:center;justify-content:center;transition:.2s;}
+.mdl-x:hover{background:var(--blush);}
+.mdl-x svg{width:14px;height:14px;stroke:var(--ink);stroke-width:2.4;fill:none;}
+.mdl-bd{padding:18px 22px 20px;}
+.mdl-ft{padding:14px 22px 18px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;}
+body.locked{overflow:hidden;}
+
+.plist li{display:grid;grid-template-columns:34px 1fr;align-items:center;column-gap:12px;
+  padding:9px 2px;border-top:1px solid var(--line);}
+.plist li:first-child{border-top:none;}
+.plist li .av{width:34px;height:34px;font-size:12px;margin:0;}
+.plist li b{font-size:13.8px;font-weight:800;line-height:1.25;display:block;}
+.plist li em{font-style:normal;font-size:12px;color:var(--ink-soft);display:block;margin-top:1px;}
+
+/* upload */
+.drop{border:1.5px dashed var(--line);border-radius:14px;padding:26px;text-align:center;transition:.2s;cursor:pointer;}
+.drop:hover{border-color:var(--rose-2);background:var(--cream);}
+.drop svg{width:26px;height:26px;stroke:var(--rose-2);stroke-width:1.8;fill:none;margin-bottom:9px;}
+.drop b{display:block;font-size:14px;font-weight:800;margin-bottom:4px;}
+.drop span{font-size:12.2px;color:var(--ink-soft);}
+.file-row{display:flex;align-items:center;gap:11px;border:1.5px solid #8FD1AE;background:#DFF5EC;border-radius:12px;
+  padding:11px 14px;margin-bottom:9px;}
+.file-row .fi{width:32px;height:32px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#1E9A6C;}
+.file-row .fi svg{width:15px;height:15px;stroke:#fff;stroke-width:2.4;fill:none;}
+.file-row b{font-size:13.2px;font-weight:800;display:block;}
+.file-row small{font-size:11.5px;color:var(--ink-soft);}
+.file-row button{margin-left:auto;}
+.up-head{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.up-head b{font-size:11.5px;color:var(--rose-2);}
+.file-row .ft{width:34px;height:34px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;
+  justify-content:center;font-size:9.5px;font-weight:800;letter-spacing:.03em;color:#fff;}
+.file-row .ft.vid{background:#7C5CD6;} .file-row .ft.pdf{background:#D6455A;}
+.file-row .ft.aud{background:#12A594;} .file-row .ft.doc{background:#2E6FE0;}
+.up-list{margin-bottom:14px;}
+
+/* video / pdf stand-ins */
+.player{background:#0C1E30;border-radius:14px;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;}
+.player img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5;}
+.player .pbtn{position:relative;z-index:1;width:62px;height:62px;border-radius:50%;background:rgba(255,255,255,.94);
+  display:flex;align-items:center;justify-content:center;transition:transform .25s var(--ease);}
+.player .pbtn:hover{transform:scale(1.08);}
+.player .pbtn svg{width:22px;height:22px;fill:var(--plum);margin-left:3px;}
+.player.full{aspect-ratio:16/9;border-radius:14px 14px 0 0;}
+.pctrl{display:flex;align-items:center;gap:12px;background:#0E2A42;border-radius:0 0 14px 14px;
+  padding:12px 16px;flex-wrap:wrap;}
+.pctrl button{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  transition:background .2s;flex-shrink:0;}
+.pctrl button:hover{background:rgba(255,255,255,.12);}
+.pctrl button svg{width:16px;height:16px;stroke:var(--cream);stroke-width:2;fill:none;}
+.pctrl button.play svg{fill:var(--cream);stroke:none;width:15px;height:15px;}
+.pctrl .time{font-size:12px;color:rgba(255,249,244,.8);font-weight:700;font-variant-numeric:tabular-nums;min-width:44px;}
+.pctrl .seek{flex-grow:1;min-width:120px;height:6px;border-radius:100px;background:rgba(255,249,244,.2);
+  cursor:pointer;overflow:hidden;}
+.pctrl .seek i{display:block;height:100%;border-radius:100px;background:linear-gradient(90deg,var(--rose-2),var(--saffron));transition:width .2s linear;}
+.pctrl .rate{font-size:12px;font-weight:800;color:var(--cream);width:auto;padding:0 10px;}
+.player-bar{display:flex;align-items:center;gap:12px;padding:12px 4px 0;}
+.player-bar .track{flex-grow:1;height:5px;border-radius:100px;background:var(--cream-2);overflow:hidden;}
+.player-bar .track i{display:block;height:100%;width:34%;border-radius:100px;background:linear-gradient(90deg,var(--rose-2),var(--saffron));}
+.player-bar span{font-size:12px;color:var(--ink-soft);font-weight:700;}
+.pdfview{background:var(--cream-2);border-radius:14px;padding:26px;text-align:center;}
+.pdfview svg{width:44px;height:44px;stroke:var(--rose-2);stroke-width:1.6;fill:none;margin-bottom:12px;}
+.pdfview b{display:block;font-size:14.5px;font-weight:800;margin-bottom:4px;}
+.pdfview span{font-size:12.5px;color:var(--ink-soft);}
+.pdfpage{background:var(--white);border:1px solid var(--line);border-radius:10px;height:170px;margin-top:16px;
+  background-image:repeating-linear-gradient(180deg,transparent 0 14px,var(--line) 14px 15px);
+  background-position:0 20px;background-size:100% 15px;background-repeat:repeat-y;}
+
+/* ============================= INFO CARDS ============================= */
+.info{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:20px;}
+.info-hd{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--line);}
+.info-hd h3{font-size:20px;margin-bottom:3px;}
+.info-hd p{font-size:13px;}
+.info-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px 18px;}
+.info-grid > div small{display:block;font-size:9.8px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:3px;}
+.info-grid > div b{font-size:13.6px;font-weight:800;}
+@media(max-width:900px){.info-grid{grid-template-columns:repeat(2,1fr);}}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.kpi{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:16px 18px;}
+.kpi small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px;}
+.kpi b{font-family:var(--serif);font-size:25px;font-weight:800;display:block;line-height:1;}
+.kpi.good b{color:#1E9A6C;} .kpi.warn b{color:#C5841D;} .kpi.bad b{color:#D6455A;}
+@media(max-width:700px){.kpis{grid-template-columns:repeat(2,1fr);}}
+
+/* ============================= EXAM BUILDER ============================= */
+.qblock{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px;}
+.qblock-hd{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.qno{width:28px;height:28px;border-radius:9px;flex-shrink:0;font-size:12.5px;font-weight:800;color:#fff;
+  display:flex;align-items:center;justify-content:center;background:var(--plum-2);}
+.qblock-hd b{font-size:14.5px;font-weight:800;flex-grow:1;}
+.opt-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+.opt-row input[type=text]{flex-grow:1;border:1.5px solid var(--line);border-radius:10px;padding:10px 13px;font-size:13.8px;}
+.opt-row input[type=text]:focus{outline:none;border-color:var(--rose-2);}
+.pick{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex-shrink:0;display:flex;
+  align-items:center;justify-content:center;cursor:pointer;transition:.2s;}
+.pick.on{border-color:#1E9A6C;background:#DFF5EC;}
+.pick.on::after{content:"";width:9px;height:9px;border-radius:50%;background:#1E9A6C;}
+.marks-in{width:78px;}
+.tot-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--lilac);
+  border-radius:14px;padding:14px 20px;margin-bottom:16px;flex-wrap:wrap;}
+.tot-bar span{font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--plum-2);}
+.tot-bar b{font-family:var(--serif);font-size:24px;font-weight:800;color:var(--plum);}
+
+/* submissions split */
+.split{display:grid;grid-template-columns:326px 1fr;gap:18px;align-items:start;}
+.split .tbl table{min-width:0;}
+.split .tbl th,.split .tbl td{padding:11px 14px;white-space:nowrap;}
+.split .tbl th:last-child,.split .tbl td:last-child{text-align:right;}
+.ans-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  background:var(--white);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:14px;}
+.ans-head h3{font-size:18px;margin-bottom:2px;}
+.ans-head p{font-size:12.5px;}
+.ans-total{text-align:right;}
+.ans-total small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+.ans-total b{font-family:var(--serif);font-size:20px;font-weight:800;color:var(--ink);}
+.ansrow{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:flex-start;
+  border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:10px;}
+.ansrow small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:3px;}
+.ansrow b{font-size:13.8px;font-weight:800;}
+.ansrow.ok{border-color:#8FD1AE;background:#DFF5EC;}
+.ansrow.no{border-color:#EFAAB8;background:#FCE6E9;}
+.verdict{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;
+  padding:5px 11px;border-radius:100px;}
+.verdict.ok{background:#DFF5EC;color:#1E9A6C;} .verdict.no{background:#FCE6E9;color:#D6455A;}
+.verdict.skip{background:#DCE9F2;color:#6C8299;}
+.qmark{font-family:var(--serif);font-size:15px;font-weight:800;white-space:nowrap;margin-left:12px;}
+@media(max-width:1900px){.split{grid-template-columns:1fr;}}
+.ansq{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:12px;}
+.ansq .q{font-size:14.5px;font-weight:800;margin-bottom:12px;display:flex;gap:11px;}
+.ansopt{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:11px;
+  padding:10px 14px;font-size:13.5px;margin-bottom:7px;}
+.ansopt.correct{border-color:#1E9A6C;background:#DFF5EC;}
+.ansopt.wrong{border-color:#D97C90;background:#FCE6E9;}
+.ansopt .flag{margin-left:auto;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;}
+.ansopt.correct .flag{color:#1E9A6C;} .ansopt.wrong .flag{color:#D6455A;}
+.markbox{display:flex;align-items:center;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);}
+.markbox label{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);}
+.markbox input{width:74px;border:1.5px solid var(--line);border-radius:9px;padding:8px 10px;font-size:13.5px;text-align:center;}
+.markbox input:focus{outline:none;border-color:var(--rose-2);}
+.markbox .of{font-size:13px;color:var(--ink-soft);font-weight:700;}
+
+/* ============================= PLANNER ============================= */
+.plan-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;}
+@media(max-width:1200px){.plan-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:700px){.plan-grid{grid-template-columns:1fr;}}
+.day{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:14px;min-height:150px;display:flex;flex-direction:column;}
+.day.today{border-color:var(--rose-2);box-shadow:0 0 0 3px var(--blush);}
+.day-hd{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:11px;}
+.day-hd b{font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;}
+.day-hd span{font-size:11px;color:var(--ink-soft);font-weight:700;}
+.task{background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:9px 10px;margin-bottom:7px;}
+.task.done{opacity:.55;}
+.task.done .t-title{text-decoration:line-through;}
+.t-top{display:flex;align-items:flex-start;gap:7px;}
+.chk{width:16px;height:16px;border-radius:5px;border:1.8px solid var(--line);flex-shrink:0;margin-top:1px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.18s;}
+.chk.on{background:#1E9A6C;border-color:#1E9A6C;}
+.chk svg{width:10px;height:10px;stroke:#fff;stroke-width:3.2;fill:none;opacity:0;}
+.chk.on svg{opacity:1;}
+.t-title{font-size:12.5px;font-weight:800;line-height:1.35;flex-grow:1;}
+.t-time{font-size:11px;color:var(--rose-2);font-weight:800;margin:4px 0 0 23px;}
+.t-desc{font-size:11.5px;color:var(--ink-soft);margin:3px 0 0 23px;line-height:1.4;}
+.t-meta{margin:6px 0 0 23px;display:grid;gap:2px;}
+.t-meta span{font-size:10.8px;color:var(--ink-soft);line-height:1.35;}
+.t-meta span b{color:var(--ink-2);font-weight:800;}
+.t-acts{display:flex;gap:5px;margin:7px 0 0 23px;}
+.t-acts button{font-size:11px;font-weight:800;color:var(--ink-soft);}
+.t-acts button:hover{color:var(--rose-2);}
+.day-add{margin-top:auto;font-size:11.5px;font-weight:800;color:var(--ink-soft);padding-top:6px;}
+.day-add:hover{color:var(--rose-2);}
+
+/* ============================= WHITEBOARD ============================= */
+.wb-wrap{background:var(--white);border:1px solid var(--line);border-radius:16px;overflow:hidden;}
+.wb-bar{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;background:var(--cream-2);}
+.wb-group{display:flex;gap:4px;background:var(--white);border-radius:10px;padding:4px;border:1px solid var(--line);}
+.wb-tool{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:.18s;}
+.wb-tool svg{width:16px;height:16px;stroke:var(--ink-2);stroke-width:2;fill:none;}
+.wb-tool:hover{background:var(--cream-2);}
+.wb-tool.on{background:linear-gradient(100deg,var(--plum-2),var(--rose-2));}
+.wb-tool.on svg{stroke:#fff;}
+.sw{width:22px;height:22px;border-radius:50%;border:2px solid var(--white);box-shadow:0 0 0 1.5px var(--line);cursor:pointer;transition:.18s;}
+.sw.on{box-shadow:0 0 0 2.5px var(--rose-2);transform:scale(1.12);}
+.wb-size{display:flex;align-items:center;gap:8px;padding:0 8px;}
+.wb-size input{width:92px;}
+.wb-size span{font-size:11.5px;font-weight:800;color:var(--ink-soft);min-width:30px;}
+.wb-canvas{display:block;width:100%;height:min(66vh,620px);background:#fff;cursor:crosshair;touch-action:none;}
+.wb-hint{font-size:12px;color:var(--ink-soft);padding:10px 14px;border-top:1px solid var(--line);}
+
+/* ============================= PROFILE ============================= */
+.prof{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+@media(max-width:900px){.prof{grid-template-columns:1fr;}}
+.card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:22px;}
+.card h4{font-size:16px;margin-bottom:16px;}
+.prof-photo{text-align:center;}
+.prof-photo .av{width:96px;height:96px;font-size:32px;margin:0 auto 14px;}
+.prof-photo b{font-size:17px;font-family:var(--serif);display:block;}
+.prof-photo span{font-size:12.5px;color:var(--white);}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;justify-content:center;}
+.chip{font-size:11.5px;font-weight:800;padding:6px 12px;border-radius:100px;background:var(--ink-soft);color:var(--cream);}
+
+/* ============================= TOAST ============================= */
+.toast{position:fixed;top:24px;right:24px;z-index:4000;background:var(--ink);color:var(--cream);padding:14px 20px;
+  border-radius:12px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;max-width:340px;
+  transform:translateX(150%);transition:transform .38s var(--ease);}
+.toast.on{transform:none;}
+.toast svg{width:19px;height:19px;stroke:var(--gold-soft);stroke-width:2.2;fill:none;flex-shrink:0;}
+.toast b{font-size:13.5px;display:block;}
+.toast span{font-size:12px;color:rgba(255,249,244,.72);}
+
+.empty{text-align:center;padding:56px 22px;background:var(--white);border:1px solid var(--line);border-radius:16px;}
+.empty svg{width:56px;height:56px;stroke:var(--rose-2);stroke-width:1.5;fill:none;opacity:.5;margin-bottom:16px;}
+.empty h3{font-size:19px;margin-bottom:6px;}
+.empty p{font-size:13.8px;max-width:340px;margin:0 auto;}
+:focus-visible{outline:2px solid var(--rose-2);outline-offset:2px;border-radius:6px;}
+</style>
+</head>
+<body>
+
+<!-- ============================= 1. LOGIN ============================= -->
+<section id="login">
+  <div class="lg-art">
+    <div class="lg-brand">
+      <span class="lg-mark"><svg viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1014 17V7h4V3h-6z"/></svg></span>
+      <div><b>Chaarulaya</b><span>TUTOR PORTAL</span></div>
+    </div>
+    <div class="lg-copy">
+      <h1>Your classes, your students, one place.</h1>
+      <p>Sessions the admin assigns to you, doubt sessions, attendance, exams and your weekly plan — all in a single portal.</p>
+    </div>
+    <div class="lg-feats">
+      <div class="lg-feat"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Only your assigned sessions and students</div>
+      <div class="lg-feat"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Zoom attendance you can correct by hand</div>
+      <div class="lg-feat"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Quiz and written exams, built and marked here</div>
+    </div>
+  </div>
+  <div class="lg-form">
+    <div class="lg-card">
+      <h2>Tutor Login</h2>
+      <p>Sign in with the email address the academy issued you.</p>
+      <form onsubmit="return doLogin(event)">
+        <div class="field"><label>Email ID</label><input type="email" required value="kavitha.ramesh@chaarulaya.in"></div>
+        <div class="field"><label>Password</label><input type="password" required value="password"></div>
+        <button class="btn btn-primary btn-block" type="submit">Log In</button>
+      </form>
+      <p class="hint" style="text-align:center;margin-top:16px;">Forgotten your password? Contact the academy coordinator.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= PORTAL ============================= -->
+<div id="portal">
+<div class="shell">
+
+  <!-- ============================= 2. SIDEBAR ============================= -->
+  <aside class="side">
+    <div class="side-brand">
+      <span class="lg-mark"><svg viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1014 17V7h4V3h-6z"/></svg></span>
+      <div><b>Chaarulaya</b><span>TUTOR PORTAL</span></div>
+    </div>
+    <nav class="side-nav" id="nav">
+      <a href="#" data-p="pSessions" onclick="return go(this)">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>My Sessions</a>
+      <a href="#" data-p="pDoubts" onclick="return go(this)">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M9.6 9a2.5 2.5 0 114.9.6c0 1.4-2.5 1.5-2.5 2.9"/><circle cx="12" cy="15.4" r=".9"/></svg>Doubt Sessions</a>
+      <a href="#" data-p="pAtt" onclick="return go(this)">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M9 14l2 2 4-4"/></svg>Attendance</a>
+      <a href="#" data-p="pExams" onclick="return go(this)">
+        <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>Exams</a>
+      <a href="#" data-p="pPlan" onclick="return go(this)">
+        <svg viewBox="0 0 24 24"><path d="M9 11l2 2 4-4"/><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4"/></svg>Weekly Planner</a>
+      <a href="#" data-p="pBoard" onclick="return go(this)">
+        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M12 17v4M8 21h8"/></svg>Whiteboard</a>
+      <a href="#" data-p="pProfile" onclick="return go(this)">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>My Profile</a>
+    </nav>
+    <div class="side-foot">
+      <a href="#" onclick="doLogout();return false;">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>Logout</a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <header class="topbar">
+      <a href="#" class="tb-user" id="tbUser" onclick="goPanel('pProfile');return false;" title="My Profile">
+        <span class="av" id="tbAv">KR</span>
+        <div><b id="tbName">Kavitha Ramesh</b><span style="color: var(--ink-soft);" id="tbRole">Carnatic Vocal &amp; Veena</span></div>
+      </a>
+    </header>
+
+    <!-- ============================= 3. MY SESSIONS ============================= -->
+    <div class="panel on" id="pSessions">
+      <div class="head"><div><h2>My Sessions</h2><p>Sessions the admin has assigned to you.</p></div></div>
+      <div class="fbar" id="sFilter"></div>
+      <div class="tbl"><div class="tbl-scroll">
+        <table>
+          <thead><tr><th>Course + Category</th><th>Session</th><th>Date</th><th>Start</th><th>End</th><th>Batch</th>
+            <th>Students</th><th>Attendance %</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="sBody"></tbody>
+        </table>
+      </div></div>
+    </div>
+
+    <!-- ============================= 5. DOUBT SESSIONS ============================= -->
+    <div class="panel" id="pDoubts">
+      <div class="head"><div><h2>Doubt Sessions</h2><p>Grouped student doubts the admin has assigned to you. Set a date and time to schedule each one.</p></div></div>
+      <div class="fbar" id="dFilter"></div>
+      <div class="tbl"><div class="tbl-scroll">
+        <table>
+          <thead><tr><th>Doubt / Topic</th><th>Students</th><th>Batch</th><th>Category + Course</th>
+            <th>Date &amp; Time</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="dBody"></tbody>
+        </table>
+      </div></div>
+    </div>
+
+    <!-- ============================= 6-8. ATTENDANCE ============================= -->
+    <div class="panel" id="pAtt">
+      <div class="head">
+        <div><h2>Attendance</h2><p>Zoom marks attendance automatically — correct anything that needs correcting and save.</p></div>
+        <div class="seg" id="attSeg">
+          <button type="button" class="active" onclick="setAttTab('session')">Session-wise</button>
+          <button type="button" onclick="setAttTab('overall')">Overall Course</button>
+        </div>
+      </div>
+
+      <div id="attSession">
+        <div class="fbar" id="asFilter"></div>
+        <div id="asInfo"></div>
+        <div class="tbl"><div class="tbl-scroll">
+          <table>
+            <thead><tr><th>Student Name</th><th>Email ID</th><th style="width:280px;">Attendance</th></tr></thead>
+            <tbody id="asBody"></tbody>
+          </table>
+        </div></div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;">
+          <button class="btn btn-outline btn-sm" type="button" onclick="renderAttSession()">Reset</button>
+          <button class="btn btn-primary btn-sm" type="button" onclick="saveAttendance()">Save Attendance</button>
+        </div>
+      </div>
+
+      <div id="attOverall" style="display:none;">
+        <div class="fbar" id="aoFilter"></div>
+        <div class="kpis" id="aoKpi"></div>
+        <div class="tbl"><div class="tbl-scroll">
+          <table>
+            <thead><tr><th>Student</th><th>Attended</th><th>Absent</th><th>Late</th><th>Overall %</th><th>Overall Standing</th></tr></thead>
+            <tbody id="aoBody"></tbody>
+          </table>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- ============================= 9 & 13. EXAM LIST ============================= -->
+    <div class="panel" id="pExams">
+      <div class="head">
+        <div><h2>Exams</h2><p>Quizzes are marked automatically. Written exams come back to you for review.</p></div>
+        <button class="btn btn-primary btn-sm" type="button" onclick="openCreate()">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Create Exam</button>
+      </div>
+      <div class="fbar" id="eFilter"></div>
+      <div class="tbl"><div class="tbl-scroll">
+        <table>
+          <thead><tr><th>Exam Name</th><th>Exam Type</th><th>Batch</th><th>Category</th><th>Status</th><th>Submission Status</th><th>Action</th></tr></thead>
+          <tbody id="eBody"></tbody>
+        </table>
+      </div></div>
+    </div>
+
+    <!-- ============================= 10-12. EXAM BUILDER ============================= -->
+    <div class="panel" id="pBuild">
+      <a href="#" class="back" onclick="goPanel('pExams');return false;">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> Back to Exams</a>
+      <div class="head"><div><h2 id="buildTitle">Create Exam</h2><p id="buildSub">Choose the exam type, then add your questions.</p></div></div>
+      <div id="buildBody"></div>
+    </div>
+
+    <!-- ============================= 14-15. EXAM VIEW ============================= -->
+    <div class="panel" id="pView">
+      <a href="#" class="back" onclick="goPanel('pExams');return false;">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> Back to Exams</a>
+      <div id="vInfo"></div>
+      <div class="seg" id="vSeg" style="margin-bottom:18px;">
+        <button type="button" class="active" onclick="setViewTab('subs')">Student Submissions</button>
+        <button type="button" onclick="setViewTab('qs')">View Questions</button>
+      </div>
+      <div id="vSubs" class="split">
+        <div class="tbl">
+          <table>
+            <thead><tr><th>Student</th><th>Status</th><th>Marks</th></tr></thead>
+            <tbody id="vSubBody"></tbody>
+          </table>
+        </div>
+        <div id="vAnswers"></div>
+      </div>
+      <div id="vQs" style="display:none;"></div>
+    </div>
+
+    <!-- ============================= 16. WEEKLY PLANNER ============================= -->
+    <div class="panel" id="pPlan">
+      <div class="head">
+        <div><h2>Weekly Planner</h2><p>Your own plan for the week. Only you can see this.</p></div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button class="icon-btn" type="button" onclick="shiftWeek(-1)" aria-label="Previous week">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <b id="weekLabel" style="font-size:13.5px;min-width:180px;text-align:center;"></b>
+          <button class="icon-btn" type="button" onclick="shiftWeek(1)" aria-label="Next week">
+            <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+          <button class="btn btn-primary btn-sm" type="button" onclick="openTask()">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add Plan</button>
+        </div>
+      </div>
+      <div class="plan-grid" id="planGrid"></div>
+    </div>
+
+    <!-- ============================= 17. WHITEBOARD ============================= -->
+    <div class="panel" id="pBoard">
+      <div class="head"><div><h2>Whiteboard</h2><p>A quick board for explaining a phrase, a talam cycle or a notation line.</p></div></div>
+      <div class="wb-wrap">
+        <div class="wb-bar">
+          <div class="wb-group">
+            <button class="wb-tool on" data-tool="pen" onclick="setTool('pen')" title="Pen"><svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18z"/><path d="M2 2l7.586 7.586"/></svg></button>
+            <button class="wb-tool" data-tool="line" onclick="setTool('line')" title="Line"><svg viewBox="0 0 24 24"><path d="M5 19L19 5"/></svg></button>
+            <button class="wb-tool" data-tool="rect" onclick="setTool('rect')" title="Rectangle"><svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="2"/></svg></button>
+            <button class="wb-tool" data-tool="circle" onclick="setTool('circle')" title="Ellipse"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg></button>
+            <button class="wb-tool" data-tool="text" onclick="setTool('text')" title="Text"><svg viewBox="0 0 24 24"><path d="M5 6V4h14v2M12 4v16M9 20h6"/></svg></button>
+            <button class="wb-tool" data-tool="eraser" onclick="setTool('eraser')" title="Eraser"><svg viewBox="0 0 24 24"><path d="M3 16l7-7 8 8-4 4H7z"/><path d="M11 21h9"/></svg></button>
+          </div>
+          <div class="wb-group" id="swatches" style="align-items:center;padding:6px 8px;"></div>
+          <div class="wb-group wb-size">
+            <input type="range" id="wbSize" min="1" max="26" value="3" oninput="setSize(this.value)">
+            <span id="wbSizeLbl">3px</span>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:8px;">
+            <button class="mini ghost" type="button" onclick="wbUndo()">
+              <svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 010 10h-4"/></svg>Undo</button>
+            <button class="mini ghost" type="button" onclick="wbClear()">
+              <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>Clear</button>
+            <button class="mini solid" type="button" onclick="wbSave()">
+              <svg viewBox="0 0 24 24"><path d="M12 4v12M8 12l4 4 4-4"/><path d="M4 18v2h16v-2"/></svg>Save PNG</button>
+          </div>
+        </div>
+        <canvas class="wb-canvas" id="wb"></canvas>
+        <div class="wb-hint">Pick a tool, drag on the board. Text tool: click where you want the text and type it in. Undo steps back one shape at a time.</div>
+      </div>
+    </div>
+
+    <!-- ============================= 18. MY PROFILE ============================= -->
+    <div class="panel" id="pProfile">
+      <div class="head"><div><h2>My Profile</h2><p>Your details and the courses you are assigned to teach.</p></div></div>
+      <div class="prof">
+        <div class="card prof-photo">
+          <span class="av" id="profAv">KR</span>
+          <b id="profName">Kavitha Ramesh</b>
+          <span style="color: var(--ink-soft);">Empanelled guru · since Mar 2019</span>
+          <div class="chips" id="profChips"></div>
+          <button class="btn btn-outline btn-sm" type="button" style="margin-top:18px;width:100%;"
+            onclick="toast('Photo','Choose a new profile photo from your device.')">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Change Photo</button>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:18px;">
+            <h4>Profile Information</h4>
+            <div class="field-row">
+              <div class="field"><label>Name</label><input type="text" id="pfName" value="Kavitha Ramesh"></div>
+              <div class="field"><label>Email</label><input type="email" id="pfMail" value="kavitha.ramesh@chaarulaya.in"></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label>Phone Number</label><input type="tel" id="pfPhone" value="+91 98430 22118"></div>
+              <div class="field"><label>Category</label><input type="text" value="Vocal, Veena" disabled></div>
+            </div>
+            <div class="field"><label>Courses Assigned</label><input type="text" value="Vocal – Level 1 Beginner, Vocal – Level 2 Intermediate, Veena – Level 1 Beginner" disabled>
+              <div class="hint">Categories and courses are set by the academy admin.</div></div>
+            <button class="btn btn-primary btn-sm" type="button" onclick="saveProfile()">Save Changes</button>
+          </div>
+          <div class="card">
+            <h4><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--rose-2);stroke-width:2;fill:none;vertical-align:-2px;margin-right:7px;"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Login Credentials</h4>
+            <div class="field"><label>Current Password</label><input type="password" placeholder="••••••••"></div>
+            <div class="field-row">
+              <div class="field"><label>New Password</label><input type="password" placeholder="••••••••"></div>
+              <div class="field"><label>Confirm New Password</label><input type="password" placeholder="••••••••"></div>
+            </div>
+            <button class="btn btn-outline btn-sm" type="button"
+              onclick="toast('Password updated','Use your new password the next time you log in.')">Change Password</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+</div>
+
+<!-- ============================= MODAL + TOAST ============================= -->
+<div class="mdl" id="mdl" role="dialog" aria-modal="true">
+  <div class="mdl-back" onclick="closeMdl()"></div>
+  <div class="mdl-box" id="mdlBox"></div>
+</div>
+
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+  <div><b id="toastT"></b><span id="toastM"></span></div>
+</div>
+<script>
+/* =================================================================
+   CHAARULAYA TUTOR PORTAL
+   Demo data sits at the top; every list is rendered from it, so real
+   API data drops into the same shapes without touching the views.
+   ================================================================= */
+
+var TUTOR = {name:'Kavitha Ramesh', initials:'KR', email:'kavitha.ramesh@chaarulaya.in',
+  categories:['Vocal','Veena'],
+  courses:['Vocal – Level 1 Beginner','Vocal – Level 2 Intermediate','Veena – Level 1 Beginner']};
+
+var BATCHES = ['Vocal B1','Vocal B2','Veena A1'];
+var COURSES = ['Vocal – Level 1 Beginner','Vocal – Level 2 Intermediate','Veena – Level 1 Beginner'];
+
+var SESSIONS = [
+  {id:'s1', cat:'Vocal',  course:'Level 1 Beginner',      session:'Sarali Varisai 5–7',      date:'28 Jul 2026', st:'6:00 PM', en:'7:00 PM', batch:'Vocal B2', students:12, att:null, status:'live'},
+  {id:'s2', cat:'Vocal',  course:'Level 1 Beginner',      session:'Janta Varisai 1–4',       date:'28 Jul 2026', st:'7:15 PM', en:'8:15 PM', batch:'Vocal B1', students:10, att:null, status:'assigned'},
+  {id:'s3', cat:'Veena',  course:'Level 1 Beginner',      session:'Plucking &amp; Fret Pressure', date:'27 Jul 2026', st:'5:00 PM', en:'6:00 PM', batch:'Veena A1', students:8,  att:88, status:'pending'},
+  {id:'s4', cat:'Vocal',  course:'Level 2 Intermediate',  session:'Alankaram in Rupaka Talam', date:'26 Jul 2026', st:'6:00 PM', en:'7:00 PM', batch:'Vocal B1', students:10, att:90, status:'pending'},
+  {id:'s5', cat:'Vocal',  course:'Level 1 Beginner',      session:'Shruti &amp; Breath Control',  date:'24 Jul 2026', st:'6:00 PM', en:'7:00 PM', batch:'Vocal B2', students:12, att:92, status:'completed', notes:['shruti-breath-notes.pdf','sarali-demo-01.mp4'], rec:true},
+  {id:'s6', cat:'Veena',  course:'Level 1 Beginner',      session:'Parts of the Veena',       date:'23 Jul 2026', st:'5:00 PM', en:'6:00 PM', batch:'Veena A1', students:8,  att:100, status:'completed', notes:['veena-intro.mp4','veena-parts.pdf','fret-audio.mp3'], rec:true},
+  {id:'s7', cat:'Vocal',  course:'Level 2 Intermediate',  session:'Geetham — Lambodara',      date:'29 Jul 2026', st:'6:00 PM', en:'7:00 PM', batch:'Vocal B1', students:10, att:null, status:'rescheduled', note:'Moved to 31 Jul, 6:00 PM'},
+  {id:'s8', cat:'Vocal',  course:'Level 1 Beginner',      session:'Revision — Sarali 1–4',    date:'22 Jul 2026', st:'6:00 PM', en:'7:00 PM', batch:'Vocal B2', students:12, att:null, status:'cancelled', note:'Academy holiday'},
+  {id:'s9', cat:'Veena',  course:'Level 1 Beginner',      session:'Sarali Varisai on Veena',  date:'30 Jul 2026', st:'5:00 PM', en:'6:00 PM', batch:'Veena A1', students:8,  att:null, status:'assigned'},
+  {id:'s10',cat:'Vocal',  course:'Level 2 Intermediate',  session:'Gamakam — Kampitam',       date:'21 Jul 2026', st:'6:00 PM', en:'7:00 PM', batch:'Vocal B1', students:10, att:80, status:'completed', notes:['kampitam-notes.pdf'], rec:true}
+];
+
+var STUDENTS = {
+  'Vocal B2':[
+    {n:'Ananya Suresh', e:'ananya.suresh@email.com'},   {n:'Nithya Balan', e:'nithya.b@email.com'},
+    {n:'Karthik Vinod', e:'karthik.v@email.com'},       {n:'Meera Rajan', e:'meera.rajan@email.com'},
+    {n:'Aditya Menon', e:'aditya.menon@email.com'},     {n:'Shreya Pillai', e:'shreya.p@email.com'},
+    {n:'Rahul Nair', e:'rahul.nair@email.com'},         {n:'Divya Krishnan', e:'divya.k@email.com'},
+    {n:'Vikram Iyer', e:'vikram.iyer@email.com'},       {n:'Lakshmi Das', e:'lakshmi.das@email.com'},
+    {n:'Arjun Ramesh', e:'arjun.r@email.com'},          {n:'Sanjana Pillai', e:'sanjana.p@email.com'}],
+  'Vocal B1':[
+    {n:'Harini Mohan', e:'harini.m@email.com'},         {n:'Sandeep Kumar', e:'sandeep.k@email.com'},
+    {n:'Priya Venkat', e:'priya.v@email.com'},          {n:'Gokul Raj', e:'gokul.raj@email.com'},
+    {n:'Aishwarya Nair', e:'aishwarya.n@email.com'},    {n:'Manoj Pillai', e:'manoj.p@email.com'},
+    {n:'Swetha Kannan', e:'swetha.k@email.com'},        {n:'Deepak Menon', e:'deepak.m@email.com'},
+    {n:'Ramya Suresh', e:'ramya.s@email.com'},          {n:'Nikhil Varma', e:'nikhil.v@email.com'}],
+  'Veena A1':[
+    {n:'Kavya Anand', e:'kavya.anand@email.com'},       {n:'Sriram Bala', e:'sriram.b@email.com'},
+    {n:'Ishita Nambiar', e:'ishita.n@email.com'},       {n:'Pranav Kumar', e:'pranav.k@email.com'},
+    {n:'Tara Menon', e:'tara.menon@email.com'},         {n:'Adarsh Pillai', e:'adarsh.p@email.com'},
+    {n:'Nivedha Raj', e:'nivedha.r@email.com'},         {n:'Hari Prasad', e:'hari.p@email.com'}]
+};
+
+var DOUBTS = [
+  {id:'d1', topic:'Voice cracks moving into second speed', count:5, batch:'Vocal B2', cat:'Vocal', course:'Level 1 Beginner', when:'', status:'assigned'},
+  {id:'d2', topic:'Counting Adi talam while singing',      count:4, batch:'Vocal B1', cat:'Vocal', course:'Level 2 Intermediate', when:'02 Aug 2026, 5:00 PM', status:'scheduled'},
+  {id:'d3', topic:'Fret pressure and buzzing strings',     count:3, batch:'Veena A1', cat:'Veena', course:'Level 1 Beginner', when:'28 Jul 2026, 4:00 PM', status:'live'},
+  {id:'d4', topic:'Difference between Janta and Dhaatu',   count:6, batch:'Vocal B2', cat:'Vocal', course:'Level 1 Beginner', when:'25 Jul 2026, 5:00 PM', status:'pending'},
+  {id:'d5', topic:'Holding shruti without the tambura',    count:7, batch:'Vocal B1', cat:'Vocal', course:'Level 2 Intermediate', when:'20 Jul 2026, 5:00 PM', status:'completed', notes:['shruti-doubt-notes.pdf','shruti-walkthrough.mp4'], rec:true},
+  {id:'d6', topic:'Which octave to set as Sa',             count:2, batch:'Veena A1', cat:'Veena', course:'Level 1 Beginner', when:'', status:'assigned'}
+];
+
+/* attendance register: sessionId -> [{student, status}] */
+var REGISTER = {};
+function registerFor(sid){
+  if(REGISTER[sid]){ return REGISTER[sid]; }
+  var s = findSession(sid);
+  var list = STUDENTS[s.batch] || [];
+  var out = [], i, mark;
+  for(i = 0; i < list.length; i++){
+    mark = 'present';
+    if(i % 7 === 3){ mark = 'absent'; }
+    else if(i % 5 === 2){ mark = 'late'; }
+    out.push({n:list[i].n, e:list[i].e, status:mark});
+  }
+  REGISTER[sid] = out;
+  return out;
+}
+
+var EXAMS = [
+  {id:'x1', title:'Sarali Varisai — Theory Quiz', type:'Quiz', cat:'Vocal', course:'Level 1 Beginner',
+   subject:'Carnatic Theory', batch:'Vocal B2', duration:'15 min', end:'28 Aug 2026', marks:20, status:'Completed',
+   qs:[
+     {q:'How many Sarali Varisai exercises are in the standard beginner sequence?', t:'mcq', o:['Seven','Ten','Fourteen','Twenty-one'], a:2, m:5},
+     {q:'Which raga is used for the first varisai exercises?', t:'mcq', o:['Kalyani','Mayamalavagowla','Shankarabharanam','Kharaharapriya'], a:1, m:5},
+     {q:'The tambura is used to keep talam.', t:'tf', o:['True','False'], a:1, m:5},
+     {q:'In Adi talam, how many beats make one avartanam?', t:'mcq', o:['Six','Seven','Eight','Twelve'], a:2, m:5}
+   ],
+   subs:[
+     {n:'Ananya Suresh', status:'Submitted', ans:[2,1,1,2]},
+     {n:'Nithya Balan',  status:'Submitted', ans:[2,1,0,3]},
+     {n:'Karthik Vinod', status:'Submitted', ans:[1,1,1,2]},
+     {n:'Meera Rajan',   status:'Not attempted', ans:null}
+   ]},
+  {id:'x2', title:'Sarali Varisai — Practical Submission', type:'Written', cat:'Vocal', course:'Level 1 Beginner',
+   subject:'Practical', batch:'Vocal B2', duration:'', end:'05 Sep 2026', marks:50, status:'Review Pending',
+   qs:[
+     {q:'Sing from Sarali Varisai 1 to 7, first and second speed, in one take.', t:'w', f:'Video', m:20},
+     {q:'Write out the seven exercises in full Carnatic notation.', t:'w', f:'PDF', m:20},
+     {q:'Photograph your practice notebook page showing Adi talam markings.', t:'w', f:'Image', m:10}
+   ],
+   subs:[
+     {n:'Ananya Suresh', status:'Submitted', files:['sarali-take2.mp4','sarali-notation.pdf','talam-page.jpg'], marks:[null,null,null]},
+     {n:'Shreya Pillai', status:'Submitted', files:['shreya-sarali.mp4','shreya-notation.pdf','shreya-notebook.jpg'], marks:[18,17,9]},
+     {n:'Rahul Nair',    status:'Not attempted', files:null, marks:null}
+   ]},
+  {id:'x3', title:'Veena Fret Positions — Quiz', type:'Quiz', cat:'Veena', course:'Level 1 Beginner',
+   subject:'Instrument Theory', batch:'Veena A1', duration:'10 min', end:'12 Sep 2026', marks:15, status:'Assigned',
+   qs:[
+     {q:'How many main playing strings does a Saraswati veena have?', t:'mcq', o:['Three','Four','Five','Seven'], a:1, m:5},
+     {q:'The tala strings are plucked with the left hand.', t:'tf', o:['True','False'], a:1, m:5},
+     {q:'Gamaka on the veena is produced by:', t:'mcq', o:['Plucking harder','Pulling the string sideways','Changing the mizrab','Loosening the peg'], a:1, m:5}
+   ],
+   subs:[]},
+  {id:'x4', title:'Geetham Recital — Written Assessment', type:'Written', cat:'Vocal', course:'Level 2 Intermediate',
+   subject:'Practical', batch:'Vocal B1', duration:'', end:'18 Aug 2026', marks:40, status:'Completed',
+   qs:[
+     {q:'Sing the Geetham "Lambodara Lakumikara" with talam, in one take.', t:'w', f:'Video', m:25},
+     {q:'Write the sahityam and swaras of the Geetham, line by line.', t:'w', f:'PDF', m:15}
+   ],
+   subs:[
+     {n:'Harini Mohan',  status:'Submitted', files:['harini-geetham.mp4','harini-sahityam.pdf'], marks:[21,13]},
+     {n:'Sandeep Kumar', status:'Submitted', files:['sandeep-geetham.mp4','sandeep-sahityam.pdf'], marks:[18,11]}
+   ]}
+];
+
+var PLANS = [
+  {id:'p1', date:'2026-07-27', time:'09:00', title:'Prepare Janta Varisai sheets', desc:'Print for both batches',
+   batch:'Vocal B1', cat:'Vocal', course:'Level 1 Beginner', done:true},
+  {id:'p2', date:'2026-07-28', time:'17:30', title:'Review Zoom link for B2', desc:'',
+   batch:'Vocal B2', cat:'Vocal', course:'Level 1 Beginner', done:false},
+  {id:'p3', date:'2026-07-29', time:'', title:'Evaluate Sarali written submissions', desc:'3 students pending',
+   batch:'Vocal B2', cat:'Vocal', course:'Level 1 Beginner', done:false},
+  {id:'p4', date:'2026-07-30', time:'11:00', title:'Call parent — Meera Rajan', desc:'Attendance has slipped below 70%',
+   batch:'Vocal B2', cat:'Vocal', course:'Level 1 Beginner', done:false},
+  {id:'p5', date:'2026-08-01', time:'', title:'Plan Navaratri recital order', desc:'Shortlist 6 students',
+   batch:'Veena A1', cat:'Veena', course:'Level 1 Beginner', done:false}
+];
+
+/* Demo seeding: place the scheduled sessions at fixed offsets from now so
+   every state of the timing rule above is visible without waiting. */
+(function seedWindows(){
+  function at(minsFromNow){
+    var t = new Date(Date.now() + minsFromNow * 60000);
+    var hh = t.getHours(), mm = t.getMinutes(), ap = hh >= 12 ? 'PM' : 'AM';
+    var h12 = hh % 12; if(h12 === 0){ h12 = 12; }
+    return {ms:t.getTime(),
+      txt:t.getDate() + ' ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][t.getMonth()] +
+        ' ' + t.getFullYear() + ', ' + h12 + ':' + (mm < 10 ? '0' + mm : mm) + ' ' + ap};
+  }
+  var plan = {d2:120, d7:35, d8:3};
+  DOUBTS.push({id:'d7', topic:'Breath support for long phrases', count:4, batch:'Vocal B2', cat:'Vocal',
+    course:'Level 1 Beginner', when:'', status:'scheduled'});
+  DOUBTS.push({id:'d8', topic:'Reading notation for Geethams', count:3, batch:'Vocal B1', cat:'Vocal',
+    course:'Level 2 Intermediate', when:'', status:'scheduled'});
+  var i, k;
+  for(i = 0; i < DOUBTS.length; i++){
+    k = plan[DOUBTS[i].id];
+    if(k !== undefined){ var a = at(k); DOUBTS[i].when = a.txt; DOUBTS[i].whenMs = a.ms; }
+  }
+})();
+
+/* =================================================================
+   PLUMBING
+   ================================================================= */
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/'/g, "\\'"); }
+function findSession(id){ var i; for(i = 0; i < SESSIONS.length; i++){ if(SESSIONS[i].id === id){ return SESSIONS[i]; } } return null; }
+function findDoubt(id){ var i; for(i = 0; i < DOUBTS.length; i++){ if(DOUBTS[i].id === id){ return DOUBTS[i]; } } return null; }
+function findExam(id){ var i; for(i = 0; i < EXAMS.length; i++){ if(EXAMS[i].id === id){ return EXAMS[i]; } } return null; }
+
+var toastTimer;
+function initials(n){
+  return n.split(' ').map(function(p){ return p.charAt(0); }).join('').slice(0, 2).toUpperCase();
+}
+
+function toast(t, m){
+  $('toastT').textContent = t; $('toastM').textContent = m || '';
+  var el = $('toast'); el.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ el.classList.remove('on'); }, 3600);
+}
+
+function openMdl(html, size){
+  var b = $('mdlBox');
+  b.className = 'mdl-box' + (size ? ' ' + size : '');
+  b.innerHTML = html;
+  $('mdl').classList.add('on');
+  document.body.classList.add('locked');
+}
+function closeMdl(){
+  if(typeof pStop === 'function'){ pStop(); }
+  $('mdl').classList.remove('on');
+  document.body.classList.remove('locked');
+}
+function mHead(t, s){
+  return '<div class="mdl-hd"><div><h3>' + t + '</h3>' + (s ? '<div class="sub">' + s + '</div>' : '') +
+    '</div><button class="mdl-x" type="button" aria-label="Close" onclick="closeMdl()">' +
+    '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>';
+}
+
+function doLogin(e){
+  e.preventDefault();
+  $('login').style.display = 'none';
+  $('portal').classList.add('on');
+  toast('Welcome back, Kavitha', 'You have 1 live session right now.');
+  return false;
+}
+function doLogout(){
+  $('portal').classList.remove('on');
+  $('login').style.display = 'grid';
+  window.scrollTo(0, 0);
+}
+
+function goPanel(id){
+  var ps = document.querySelectorAll('.panel'), i;
+  for(i = 0; i < ps.length; i++){ ps[i].classList.remove('on'); }
+  if($(id)){ $(id).classList.add('on'); }
+  var links = document.querySelectorAll('.side-nav a');
+  for(i = 0; i < links.length; i++){ links[i].classList.toggle('active', links[i].getAttribute('data-p') === id); }
+  window.scrollTo(0, 0);
+  if(id === 'pBoard'){ wbFit(); }
+}
+function go(el){ goPanel(el.getAttribute('data-p')); return false; }
+
+function selectHtml(id, label, opts, onchange, all){
+  var o = all === false ? '' : '<option value="all">All ' + label.toLowerCase() + '</option>', i;
+  for(i = 0; i < opts.length; i++){ o += '<option>' + opts[i] + '</option>'; }
+  return '<div class="fb"><label>' + label + '</label><select id="' + id + '" onchange="' + onchange + '">' + o + '</select></div>';
+}
+function searchHtml(id, onkey){
+  return '<div class="fb grow"><label>Search</label><div class="search-wrap">' +
+    '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>' +
+    '<input type="text" id="' + id + '" placeholder="Search…" oninput="' + onkey + '"></div></div>';
+}
+function val(id, dflt){ var e = $(id); return e ? e.value : (dflt || 'all'); }
+function hit(hay, q){ return !q || hay.toLowerCase().indexOf(q.toLowerCase()) > -1; }
+
+/* =================================================================
+   3-4. MY SESSIONS
+   ================================================================= */
+var S_LABEL = {assigned:'Assigned', live:'Live', pending:'Pending Notes',
+  rescheduled:'Rescheduled', cancelled:'Cancelled', completed:'Completed'};
+
+function renderSessionFilter(){
+  $('sFilter').innerHTML =
+    searchHtml('sQ', 'renderSessions()') +
+    '<div class="fb"><label>Status</label><select id="sStatus" onchange="renderSessions()">' +
+      '<option value="all">All statuses</option><option value="assigned">Assigned</option><option value="live">Live</option>' +
+      '<option value="pending">Pending Notes</option><option value="rescheduled">Rescheduled</option>' +
+      '<option value="cancelled">Cancelled</option><option value="completed">Completed</option></select></div>' +
+    selectHtml('sBatch', 'Batch', BATCHES, 'renderSessions()') +
+    selectHtml('sCourse', 'Category + Course', COURSES, 'renderSessions()') +
+    '<div class="fb"><label>&nbsp;</label><button class="btn btn-outline btn-sm" type="button" onclick="resetF([\'sQ\',\'sStatus\',\'sBatch\',\'sCourse\'],renderSessions)">Reset</button></div>';
+  renderSessions();
+}
+
+function resetF(ids, fn){
+  var i, e;
+  for(i = 0; i < ids.length; i++){
+    e = $(ids[i]);
+    if(e){ e.value = e.tagName === 'SELECT' ? e.options[0].value : ''; }
+  }
+  if(fn){ fn(); }
+}
+
+function renderSessions(){
+  var q = val('sQ', ''), st = val('sStatus'), ba = val('sBatch'), co = val('sCourse');
+  var html = '', i, s, shown = 0;
+  for(i = 0; i < SESSIONS.length; i++){
+    s = SESSIONS[i];
+    var full = s.cat + ' – ' + s.course;
+    if(st !== 'all' && s.status !== st){ continue; }
+    if(ba !== 'all' && s.batch !== ba){ continue; }
+    if(co !== 'all' && full !== co){ continue; }
+    if(!hit(s.session + ' ' + full + ' ' + s.batch, q)){ continue; }
+    shown++;
+    html += '<tr>' +
+      '<td><b>' + s.cat + '</b><small>' + s.course + '</small></td>' +
+      '<td><b>' + s.session + '</b>' + (s.note ? '<small>' + s.note + '</small>' : '') + '</td>' +
+      '<td class="nowrap">' + s.date + '</td>' +
+      '<td class="nowrap">' + s.st + '</td>' +
+      '<td class="nowrap">' + s.en + '</td>' +
+      '<td class="nowrap">' + s.batch + '</td>' +
+      '<td class="nowrap"><span class="count-link" onclick="showStudents(\'' + s.batch + '\')">' + s.students + '</span></td>' +
+      '<td class="nowrap">' + (s.att === null ? '<span style="color:var(--ink-soft)">—</span>' : '<b>' + s.att + '%</b>') + '</td>' +
+      '<td><span class="tag ' + s.status + '">' + S_LABEL[s.status] + '</span></td>' +
+      '<td><div class="acts">' + sessionAction(s) + '</div></td>' +
+    '</tr>';
+  }
+  $('sBody').innerHTML = shown ? html : '<tr><td colspan="10" class="empty-row">No sessions match these filters.</td></tr>';
+}
+
+function sessionAction(s){
+  if(s.status === 'live'){
+    return '<button class="mini live" type="button" onclick="joinZoom(\'' + esc(s.session) + '\')">Join</button>';
+  }
+  if(s.status === 'pending'){
+    return '<button class="mini solid" type="button" onclick="openUpload(\'session\',\'' + s.id + '\')">' +
+      '<svg viewBox="0 0 24 24"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>Upload Notes</button>';
+  }
+  if(s.status === 'completed'){
+    var out = '<button class="icon-btn" type="button" title="Recording" onclick="openRecording(\'' + esc(s.session) + '\')">' +
+      '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l6 3-6 3z"/></svg></button>';
+    if(s.notes && s.notes.length){
+      out += '<button class="icon-btn" type="button" title="Notes" onclick="openNoteSet(\'session\',\'' + s.id + '\')">' +
+        '<svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg></button>';
+    }
+    return out;
+  }
+  return '<span class="mini mute">No action</span>';
+}
+
+function joinZoom(name){
+  toast('Opening Zoom', 'Launching the meeting for ' + name + '.');
+}
+
+function showStudents(batch){
+  var list = STUDENTS[batch] || [];
+  var html = mHead(batch, list.length + ' students'), i, ini;
+  html += '<div class="mdl-bd"><ul class="plist">';
+  for(i = 0; i < list.length; i++){
+    ini = initials(list[i].n);
+    html += '<li><span class="av">' + ini + '</span>' +
+      '<span><b>' + list[i].n + '</b><em>' + list[i].e + '</em></span></li>';
+  }
+  html += '</ul></div>';
+  openMdl(html, '');
+}
+
+/* uploads (sessions + doubt sessions) */
+var upTarget = null;
+function openUpload(kind, id){
+  upTarget = {kind:kind, id:id};
+  var name = kind === 'session' ? findSession(id).session : findDoubt(id).topic;
+  var html = mHead('Upload Session Notes', name);
+  html += '<div class="mdl-bd">' +
+    '<div id="upList"></div>' +
+    '<input type="file" id="upFile" multiple style="display:none" accept="video/*,audio/*,.pdf,.doc,.docx,.ppt,.pptx" onchange="onFiles(this)">' +
+    '<div class="drop" onclick="document.getElementById(\'upFile\').click()">' +
+      '<svg viewBox="0 0 24 24"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>' +
+      '<b>Choose files to upload</b><span>Pick several at once — videos, audio, PDFs or documents</span></div>' +
+  '</div><div class="mdl-ft">' +
+    '<button class="btn btn-outline btn-sm" type="button" onclick="closeMdl()">Cancel</button>' +
+    '<button class="btn btn-primary btn-sm" type="button" onclick="confirmUpload()">Upload &amp; Complete</button>' +
+  '</div>';
+  openMdl(html, '');
+  upFiles = [];
+}
+
+var upFiles = [];
+
+function fileKind(name){
+  var e = String(name).split('.').pop().toLowerCase();
+  if(e === 'mp4' || e === 'mov' || e === 'webm' || e === 'avi'){ return {k:'vid', l:'VIDEO'}; }
+  if(e === 'mp3' || e === 'wav' || e === 'm4a' || e === 'aac'){ return {k:'aud', l:'AUDIO'}; }
+  if(e === 'pdf'){ return {k:'pdf', l:'PDF'}; }
+  return {k:'doc', l:'DOC'};
+}
+
+function onFiles(input){
+  var i;
+  if(input && input.files){
+    for(i = 0; i < input.files.length; i++){ upFiles.push(input.files[i].name); }
+  }
+  paintUpList();
+}
+
+function paintUpList(){
+  var el = $('upList');
+  if(!el){ return; }
+  if(!upFiles.length){ el.innerHTML = ''; return; }
+  var html = '<div class="up-head">Uploaded Notes <b>' + upFiles.length + ' file' + (upFiles.length === 1 ? '' : 's') + '</b></div><div class="up-list">', j, f;
+  for(j = 0; j < upFiles.length; j++){
+    f = fileKind(upFiles[j]);
+    html += '<div class="file-row"><span class="ft ' + f.k + '">' + f.l + '</span>' +
+      '<span><b>' + upFiles[j] + '</b><small>Ready to upload</small></span>' +
+      '<span style="margin-left:auto;display:flex;gap:7px;">' +
+        '<button class="mini ghost" type="button" onclick="openNotes(\'' + esc(upFiles[j]) + '\')">Preview</button>' +
+        '<button class="mini ghost" type="button" onclick="dropFile(' + j + ')">Remove</button></span></div>';
+  }
+  el.innerHTML = html + '</div>';
+}
+
+function dropFile(i){ upFiles.splice(i, 1); paintUpList(); }
+
+function confirmUpload(){
+  if(!upFiles.length){ toast('Nothing selected', 'Choose at least one file to upload.'); return; }
+  if(upTarget.kind === 'session'){
+    var s = findSession(upTarget.id);
+    s.status = 'completed'; s.notes = upFiles.slice(); s.rec = true;
+    renderSessions();
+  } else {
+    var d = findDoubt(upTarget.id);
+    d.status = 'completed'; d.notes = upFiles.slice(); d.rec = true;
+    renderDoubts();
+  }
+  closeMdl();
+  toast('Notes uploaded', upFiles.length + ' file(s) attached. The session is now complete.');
+}
+
+/* ---- shared full-view player (class recordings + doubt recordings) ---- */
+var pTimer = null, pAt = 0, pLen = 3504, pRate = 1, pPlaying = false;
+
+function playerHtml(len){
+  pLen = len || 3504; pAt = 0; pRate = 1; pPlaying = false;
+  return '<div class="player full"><button class="pbtn" type="button" id="pBig" onclick="pToggle()">' +
+      '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>' +
+    '<div class="pctrl">' +
+      '<button class="play" type="button" id="pPlay" aria-label="Play" onclick="pToggle()">' +
+        '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>' +
+      '<button type="button" aria-label="Back 10 seconds" onclick="pSeekBy(-10)">' +
+        '<svg viewBox="0 0 24 24"><path d="M11 5L5 11l6 6"/><path d="M5 11h9a5 5 0 010 10h-3"/></svg></button>' +
+      '<button type="button" aria-label="Forward 10 seconds" onclick="pSeekBy(10)">' +
+        '<svg viewBox="0 0 24 24"><path d="M13 5l6 6-6 6"/><path d="M19 11h-9a5 5 0 000 10h3"/></svg></button>' +
+      '<span class="time" id="pNow">00:00</span>' +
+      '<span class="seek" id="pSeek" onclick="pSeekTo(event)"><i id="pFill" style="width:0%"></i></span>' +
+      '<span class="time" id="pEnd">' + clock(pLen) + '</span>' +
+      '<button class="rate" type="button" id="pRate" aria-label="Playback speed" onclick="pCycleRate()">1x</button>' +
+      '<button type="button" aria-label="Mute" onclick="toast(\'Audio\',\'Volume toggled.\')">' +
+        '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M16 9a4 4 0 010 6M19 6a8 8 0 010 12"/></svg></button>' +
+      '<button type="button" aria-label="Full screen" onclick="pFull()">' +
+        '<svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>' +
+    '</div>';
+}
+
+function clock(s){
+  var m = Math.floor(s / 60), r = Math.floor(s % 60);
+  return (m < 10 ? '0' + m : m) + ':' + (r < 10 ? '0' + r : r);
+}
+
+function pToggle(){
+  pPlaying = !pPlaying;
+  var icon = pPlaying
+    ? '<svg viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>'
+    : '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+  if($('pPlay')){ $('pPlay').innerHTML = icon; }
+  if($('pBig')){ $('pBig').style.opacity = pPlaying ? '0' : '1'; }
+  clearInterval(pTimer);
+  if(pPlaying){ pTimer = setInterval(pTick, 1000); }
+}
+
+function pTick(){
+  pAt += pRate;
+  if(pAt >= pLen){ pAt = pLen; pToggle(); }
+  pPaint();
+}
+function pPaint(){
+  if($('pNow')){ $('pNow').textContent = clock(pAt); }
+  if($('pFill')){ $('pFill').style.width = (pAt / pLen * 100) + '%'; }
+}
+function pSeekBy(n){ pAt = Math.max(0, Math.min(pLen, pAt + n)); pPaint(); }
+function pSeekTo(e){
+  var r = $('pSeek').getBoundingClientRect();
+  pAt = Math.round(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * pLen);
+  pPaint();
+}
+function pCycleRate(){
+  var order = [1, 1.25, 1.5, 2, 0.75];
+  pRate = order[(order.indexOf(pRate) + 1) % order.length];
+  $('pRate').textContent = pRate + 'x';
+}
+function pFull(){
+  var el = $('mdlBox').querySelector('.player');
+  if(el && el.requestFullscreen){ el.requestFullscreen(); }
+  else { toast('Full screen', 'Your browser blocked full screen for this element.'); }
+}
+function pStop(){ clearInterval(pTimer); pPlaying = false; }
+
+function openRecording(name){
+  var html = mHead('Class Recording', name);
+  html += '<div class="mdl-bd">' + playerHtml(3504) +
+    '<p class="hint">DEV: point the player at the Zoom cloud recording URL for this session.</p></div>';
+  openMdl(html, 'xl');
+  pPaint();
+}
+
+function openNotes(file){
+  var k = fileKind(file);
+  var media = (k.k === 'vid' || k.k === 'aud');
+  var html = mHead('Session Notes', file);
+  html += '<div class="mdl-bd">';
+  html += media ? playerHtml(k.k === 'aud' ? 760 : 1120)
+    : '<div class="pdfview"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>' +
+      '<b>' + file + '</b><span>3 pages · 620 KB</span><div class="pdfpage"></div></div>';
+  html += '<div style="display:flex;justify-content:flex-end;margin-top:14px;">' +
+    '<button class="btn btn-primary btn-sm" type="button" onclick="toast(\'Download started\',\'' + esc(file) + '\')">Download</button></div>';
+  html += '</div>';
+  openMdl(html, 'xl');
+  if(media){ pPaint(); }
+}
+
+/* a session can carry several note files — list them, then open one */
+function openNoteSet(kind, id){
+  var item = kind === 'session' ? findSession(id) : findDoubt(id);
+  var files = item.notes || [];
+  if(files.length === 1){ return openNotes(files[0]); }
+  var html = mHead('Session Notes', (kind === 'session' ? item.session : item.topic) + ' · ' + files.length + ' files');
+  html += '<div class="mdl-bd"><div class="up-list">';
+  var i, f;
+  for(i = 0; i < files.length; i++){
+    f = fileKind(files[i]);
+    html += '<div class="file-row" style="border-color:var(--line);background:var(--cream);">' +
+      '<span class="ft ' + f.k + '">' + f.l + '</span>' +
+      '<span><b>' + files[i] + '</b><small>Uploaded note</small></span>' +
+      '<button class="mini solid" type="button" style="margin-left:auto;" onclick="openNotes(\'' + esc(files[i]) + '\')">Open</button></div>';
+  }
+  html += '</div></div>';
+  openMdl(html, 'wide');
+}
+
+/* =================================================================
+   5. DOUBT SESSIONS
+   ================================================================= */
+var D_LABEL = {assigned:'Assigned', scheduled:'Scheduled', live:'Live', pending:'Pending Notes', completed:'Completed'};
+
+function renderDoubtFilter(){
+  $('dFilter').innerHTML =
+    searchHtml('dQ', 'renderDoubts()') +
+    selectHtml('dCourse', 'Category + Course', COURSES, 'renderDoubts()') +
+    selectHtml('dBatch', 'Batch', BATCHES, 'renderDoubts()') +
+    '<div class="fb"><label>Status</label><select id="dStatus" onchange="renderDoubts()">' +
+      '<option value="all">All statuses</option><option value="assigned">Assigned</option><option value="scheduled">Scheduled</option>' +
+      '<option value="live">Live</option><option value="pending">Pending Notes</option><option value="completed">Completed</option></select></div>' +
+    '<div class="fb"><label>&nbsp;</label><button class="btn btn-outline btn-sm" type="button" onclick="resetF([\'dQ\',\'dCourse\',\'dBatch\',\'dStatus\'],renderDoubts)">Reset</button></div>';
+  renderDoubts();
+}
+
+function renderDoubts(){
+  var q = val('dQ', ''), co = val('dCourse'), ba = val('dBatch'), st = val('dStatus');
+  var html = '', i, d, shown = 0;
+  for(i = 0; i < DOUBTS.length; i++){
+    d = DOUBTS[i];
+    var full = d.cat + ' – ' + d.course;
+    if(co !== 'all' && full !== co){ continue; }
+    if(ba !== 'all' && d.batch !== ba){ continue; }
+    if(st !== 'all' && d.status !== st){ continue; }
+    if(!hit(d.topic + ' ' + full + ' ' + d.batch, q)){ continue; }
+    shown++;
+    html += '<tr>' +
+      '<td style="max-width:280px;"><b>' + d.topic + '</b></td>' +
+      '<td class="nowrap"><span class="count-link" onclick="showStudents(\'' + d.batch + '\')">' + d.count + ' Students</span></td>' +
+      '<td class="nowrap">' + d.batch + '</td>' +
+      '<td><b>' + d.cat + '</b><small>' + d.course + '</small></td>' +
+      '<td class="nowrap">' + (d.when || '<span style="color:var(--ink-soft)">Not scheduled</span>') + countdownHtml(d) + '</td>' +
+      '<td><span class="tag ' + d.status + '">' + D_LABEL[d.status] + '</span></td>' +
+      '<td><div class="acts">' + doubtAction(d) + '</div></td>' +
+    '</tr>';
+  }
+  $('dBody').innerHTML = shown ? html : '<tr><td colspan="7" class="empty-row">No doubt sessions match these filters.</td></tr>';
+}
+
+/* Timing rule for a Scheduled doubt session, relative to its start time T:
+     more than 60 min before T  -> Reschedule + Cancel, Start disabled
+     60 to 5 min before T       -> Cancel only (reschedule locked), Start disabled
+     5 min before T to T        -> Start enabled + Cancel
+     at T                       -> session flips to Live                        */
+var LOCK_MIN = 60, START_MIN = 5;
+
+function doubtWindow(d){
+  if(!d.whenMs){ return {canResch:true, canStart:false, mins:null}; }
+  var mins = Math.round((d.whenMs - Date.now()) / 60000);
+  return {canResch:mins > LOCK_MIN, canStart:mins <= START_MIN, mins:mins};
+}
+
+function countdownHtml(d){
+  if(d.status !== 'scheduled' || !d.whenMs){ return ''; }
+  var w = doubtWindow(d);
+  if(w.mins <= 0){ return '<span class="countdown soon">Starting now</span>'; }
+  var txt = w.mins >= 60 ? 'Starts in ' + Math.floor(w.mins / 60) + 'h ' + (w.mins % 60) + 'm'
+                         : 'Starts in ' + w.mins + ' min';
+  return '<span class="countdown' + (w.canStart ? ' soon' : '') + '">' + txt + '</span>';
+}
+
+/* flip a scheduled session to Live once its start time passes */
+function tickDoubts(){
+  var changed = false, i, d;
+  for(i = 0; i < DOUBTS.length; i++){
+    d = DOUBTS[i];
+    if(d.status === 'scheduled' && d.whenMs && Date.now() >= d.whenMs){ d.status = 'live'; changed = true; }
+  }
+  if($('pDoubts') && $('pDoubts').classList.contains('on')){ renderDoubts(); }
+  if(changed){ toast('Doubt session is live', 'A scheduled session has just started.'); }
+}
+
+function doubtAction(d){
+  if(d.status === 'assigned'){
+    return '<button class="mini solid" type="button" onclick="openSchedule(\'' + d.id + '\')">' +
+      '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>Assign Date &amp; Time</button>';
+  }
+  if(d.status === 'scheduled'){
+    var w = doubtWindow(d);
+    var out = '<button class="mini solid" type="button"' + (w.canStart ? '' : ' disabled title="Start opens 5 minutes before the session"') +
+      ' onclick="startDoubt(\'' + d.id + '\')">Start</button>';
+    out += '<button class="mini ghost" type="button"' +
+      (w.canResch ? '' : ' disabled title="Rescheduling closes 1 hour before the session"') +
+      ' onclick="openSchedule(\'' + d.id + '\')">Reschedule</button>';
+    out += '<button class="mini ghost" type="button" onclick="cancelDoubt(\'' + d.id + '\')">Cancel</button>';
+    return out;
+  }
+  if(d.status === 'live'){
+    return '<button class="mini live" type="button" onclick="joinZoom(\'' + esc(d.topic) + '\')">Join / Continue</button>' +
+      '<button class="mini ghost" type="button" onclick="endDoubt(\'' + d.id + '\')">End</button>';
+  }
+  if(d.status === 'pending'){
+    return '<button class="mini solid" type="button" onclick="openUpload(\'doubt\',\'' + d.id + '\')">' +
+      '<svg viewBox="0 0 24 24"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>Upload Notes</button>';
+  }
+  var out = '<button class="icon-btn" type="button" title="Recording" onclick="openRecording(\'' + esc(d.topic) + '\')">' +
+    '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l6 3-6 3z"/></svg></button>';
+  if(d.notes && d.notes.length){
+    out += '<button class="icon-btn" type="button" title="View Notes" onclick="openNoteSet(\'doubt\',\'' + d.id + '\')">' +
+      '<svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg></button>';
+  }
+  return out;
+}
+
+function openSchedule(id){
+  var d = findDoubt(id);
+  var html = mHead('Assign Date &amp; Time', d.topic);
+  html += '<div class="mdl-bd">' +
+    '<div class="field-row">' +
+      '<div class="field"><label>Date</label><input type="date" id="schD" value="2026-08-05"></div>' +
+      '<div class="field"><label>Time</label><input type="time" id="schT" value="17:00"></div>' +
+    '</div>' +
+    '<p class="hint">' + d.count + ' students from ' + d.batch + ' will be notified once you schedule this.</p>' +
+  '</div><div class="mdl-ft">' +
+    '<button class="btn btn-outline btn-sm" type="button" onclick="closeMdl()">Cancel</button>' +
+    '<button class="btn btn-primary btn-sm" type="button" onclick="saveSchedule(\'' + id + '\')">Schedule Session</button></div>';
+  openMdl(html, '');
+}
+
+var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function prettyDT(dateStr, timeStr){
+  var p = dateStr.split('-');
+  var hh = parseInt(timeStr.split(':')[0], 10), mm = timeStr.split(':')[1];
+  var ap = hh >= 12 ? 'PM' : 'AM', h12 = hh % 12; if(h12 === 0){ h12 = 12; }
+  return p[2] + ' ' + MON[parseInt(p[1], 10) - 1] + ' ' + p[0] + ', ' + h12 + ':' + mm + ' ' + ap;
+}
+
+function saveSchedule(id){
+  var d = findDoubt(id);
+  if(d.status === 'scheduled' && !doubtWindow(d).canResch){
+    toast('Rescheduling closed', 'This session starts within the hour and can no longer be moved.');
+    return;
+  }
+  d.when = prettyDT($('schD').value, $('schT').value);
+  d.whenMs = new Date($('schD').value + 'T' + $('schT').value).getTime();
+  d.status = 'scheduled';
+  closeMdl(); renderDoubts();
+  toast('Doubt session scheduled', d.when + ' · ' + d.count + ' students notified.');
+}
+function startDoubt(id){
+  var d = findDoubt(id);
+  if(!doubtWindow(d).canStart){
+    toast('Too early', 'Start opens 5 minutes before the scheduled time.');
+    return;
+  }
+  d.status = 'live'; renderDoubts(); joinZoom(d.topic);
+}
+
+function cancelDoubt(id){
+  var d = findDoubt(id);
+  var html = mHead('Cancel Doubt Session', d.topic);
+  html += '<div class="mdl-bd"><p style="font-size:14px;">' + d.count +
+    ' students from ' + d.batch + ' will be told this session is cancelled. You can reschedule it later from Assigned.</p></div>' +
+    '<div class="mdl-ft"><button class="btn btn-outline btn-sm" type="button" onclick="closeMdl()">Keep it</button>' +
+    '<button class="btn btn-danger btn-sm" type="button" onclick="confirmCancel(\'' + id + '\')">Cancel Session</button></div>';
+  openMdl(html, '');
+}
+
+function confirmCancel(id){
+  var d = findDoubt(id);
+  d.status = 'assigned'; d.when = ''; d.whenMs = 0;
+  closeMdl(); renderDoubts();
+  toast('Session cancelled', 'It is back in Assigned — set a new date and time when you are ready.');
+}
+function endDoubt(id){ var d = findDoubt(id); d.status = 'pending'; renderDoubts(); toast('Session ended','Upload your notes to complete it.'); }
+
+/* =================================================================
+   6-8. ATTENDANCE
+   ================================================================= */
+var attTab = 'session';
+function setAttTab(t){
+  attTab = t;
+  var bs = $('attSeg').querySelectorAll('button'), i;
+  for(i = 0; i < bs.length; i++){ bs[i].classList.toggle('active', (i === 0) === (t === 'session')); }
+  $('attSession').style.display = t === 'session' ? 'block' : 'none';
+  $('attOverall').style.display = t === 'overall' ? 'block' : 'none';
+  if(t === 'overall'){ renderOverall(); }
+}
+
+function markedSessions(){
+  var out = [], i;
+  for(i = 0; i < SESSIONS.length; i++){
+    if(SESSIONS[i].status === 'pending' || SESSIONS[i].status === 'completed'){ out.push(SESSIONS[i]); }
+  }
+  return out;
+}
+
+function renderAttFilter(){
+  var list = markedSessions(), opts = '', i;
+  for(i = 0; i < list.length; i++){
+    opts += '<option value="' + list[i].id + '">' + list[i].session + ' · ' + list[i].date + '</option>';
+  }
+  $('asFilter').innerHTML =
+    selectHtml('asBatch', 'Batch', BATCHES, 'syncSessionList()') +
+    selectHtml('asCourse', 'Category + Course', COURSES, 'syncSessionList()') +
+    '<div class="fb grow"><label>Session</label><select id="asSession" onchange="renderAttSession()">' + opts + '</select></div>' +
+    searchHtml('asQ', 'renderAttSession()');
+  syncSessionList();
+}
+
+function syncSessionList(){
+  var ba = val('asBatch'), co = val('asCourse');
+  var list = markedSessions(), opts = '', i, s;
+  for(i = 0; i < list.length; i++){
+    s = list[i];
+    if(ba !== 'all' && s.batch !== ba){ continue; }
+    if(co !== 'all' && (s.cat + ' – ' + s.course) !== co){ continue; }
+    opts += '<option value="' + s.id + '">' + s.session + ' · ' + s.date + '</option>';
+  }
+  $('asSession').innerHTML = opts || '<option value="">No completed sessions</option>';
+  renderAttSession();
+}
+
+function renderAttSession(){
+  var sid = val('asSession', '');
+  var q = val('asQ', '');
+  if(!sid){
+    $('asInfo').innerHTML = '';
+    $('asBody').innerHTML = '<tr><td colspan="3" class="empty-row">No completed session matches these filters.</td></tr>';
+    return;
+  }
+  var s = findSession(sid), reg = registerFor(sid);
+  var pr = 0, ab = 0, la = 0, i;
+  for(i = 0; i < reg.length; i++){
+    if(reg[i].status === 'present'){ pr++; } else if(reg[i].status === 'absent'){ ab++; } else { la++; }
+  }
+  $('asInfo').innerHTML =
+    '<div class="info"><div class="info-hd"><div><h3>' + s.session + '</h3>' +
+    '<p>' + s.cat + ' – ' + s.course + ' · ' + s.batch + '</p></div>' +
+    '<span class="tag ' + s.status + '">' + S_LABEL[s.status] + '</span></div>' +
+    '<div class="info-grid">' +
+      '<div><small>Date</small><b>' + s.date + '</b></div>' +
+      '<div><small>Time</small><b>' + s.st + ' – ' + s.en + '</b></div>' +
+      '<div><small>Present</small><b>' + pr + '</b></div>' +
+      '<div><small>Late</small><b>' + la + '</b></div>' +
+      '<div><small>Absent</small><b>' + ab + '</b></div>' +
+    '</div></div>';
+
+  var html = '', shown = 0, ini;
+  for(i = 0; i < reg.length; i++){
+    if(!hit(reg[i].n + ' ' + reg[i].e, q)){ continue; }
+    shown++;
+    ini = reg[i].n.split(' ').map(function(p){ return p.charAt(0); }).join('');
+    html += '<tr>' +
+      '<td><div style="display:flex;align-items:center;gap:11px;"><span class="av" style="width:32px;height:32px;font-size:12px;">' + ini + '</span><b>' + reg[i].n + '</b></div></td>' +
+      '<td class="nowrap">' + reg[i].e + '</td>' +
+      '<td><div class="seg att" data-i="' + i + '">' +
+        attBtn(i, 'present', reg[i].status) + attBtn(i, 'absent', reg[i].status) + attBtn(i, 'late', reg[i].status) +
+      '</div></td></tr>';
+  }
+  $('asBody').innerHTML = shown ? html : '<tr><td colspan="3" class="empty-row">No students match that search.</td></tr>';
+}
+
+function attBtn(i, v, cur){
+  var label = v.charAt(0).toUpperCase() + v.slice(1);
+  return '<button type="button" data-v="' + v + '" class="' + (cur === v ? 'active' : '') +
+    '" onclick="setAtt(' + i + ',\'' + v + '\')">' + label + '</button>';
+}
+
+function setAtt(i, v){
+  var sid = val('asSession', '');
+  registerFor(sid)[i].status = v;
+  renderAttSession();
+}
+
+function saveAttendance(){
+  var sid = val('asSession', '');
+  if(!sid){ return; }
+  var s = findSession(sid), reg = registerFor(sid), pr = 0, i;
+  for(i = 0; i < reg.length; i++){ if(reg[i].status !== 'absent'){ pr++; } }
+  s.att = Math.round(pr / reg.length * 100);
+  renderSessions(); renderAttSession();
+  toast('Attendance saved', s.session + ' — ' + s.att + '% attendance recorded.');
+}
+
+/* overall course attendance */
+function standingOf(p){ return p >= 90 ? 'good' : (p >= 70 ? 'average' : 'below'); }
+function standingLabel(k){ return k === 'good' ? 'Good' : (k === 'average' ? 'Average' : 'Below Average'); }
+
+function overallRows(){
+  var out = [], seen = {}, list = markedSessions(), i, j, reg, r;
+  for(i = 0; i < list.length; i++){
+    reg = registerFor(list[i].id);
+    for(j = 0; j < reg.length; j++){
+      r = reg[j];
+      var key = r.n + '|' + list[i].batch;
+      if(!seen[key]){
+        seen[key] = {n:r.n, e:r.e, batch:list[i].batch, course:list[i].cat + ' – ' + list[i].course,
+          present:0, absent:0, late:0};
+        out.push(seen[key]);
+      }
+      if(r.status === 'present'){ seen[key].present++; }
+      else if(r.status === 'absent'){ seen[key].absent++; }
+      else { seen[key].late++; }
+    }
+  }
+  for(i = 0; i < out.length; i++){
+    var tot = out[i].present + out[i].absent + out[i].late;
+    out[i].total = tot;
+    out[i].pct = tot ? Math.round((out[i].present + out[i].late) / tot * 100) : 0;
+  }
+  return out;
+}
+
+function renderOverallFilter(){
+  var list = markedSessions(), opts = '', i;
+  for(i = 0; i < list.length; i++){ opts += '<option>' + list[i].session + '</option>'; }
+  $('aoFilter').innerHTML =
+    selectHtml('aoBatch', 'Batch', BATCHES, 'renderOverall()') +
+    selectHtml('aoCourse', 'Category + Course', COURSES, 'renderOverall()') +
+    '<div class="fb"><label>Session</label><select id="aoSession" onchange="renderOverall()"><option value="all">All sessions</option>' + opts + '</select></div>' +
+    '<div class="fb"><label>Date</label><input type="date" id="aoDate" onchange="renderOverall()"></div>' +
+    '<div class="fb"><label>Overall Standing</label><select id="aoStand" onchange="renderOverall()">' +
+      '<option value="all">All standings</option><option value="good">Good — ≥ 90%</option>' +
+      '<option value="average">Average — ≥ 70%</option><option value="below">Below Average — &lt; 70%</option></select></div>' +
+    searchHtml('aoQ', 'renderOverall()') +
+    '<div class="fb"><label>&nbsp;</label><button class="btn btn-outline btn-sm" type="button" onclick="resetF([\'aoBatch\',\'aoCourse\',\'aoSession\',\'aoDate\',\'aoStand\',\'aoQ\'],renderOverall)">Reset</button></div>';
+}
+
+function renderOverall(){
+  var rows = overallRows();
+  var ba = val('aoBatch'), co = val('aoCourse'), sd = val('aoStand'), q = val('aoQ', '');
+  var html = '', i, r, shown = 0, g = 0, a = 0, b = 0, sum = 0;
+  for(i = 0; i < rows.length; i++){
+    r = rows[i];
+    var stand = standingOf(r.pct);
+    if(ba !== 'all' && r.batch !== ba){ continue; }
+    if(co !== 'all' && r.course !== co){ continue; }
+    if(sd !== 'all' && stand !== sd){ continue; }
+    if(!hit(r.n + ' ' + r.e, q)){ continue; }
+    shown++; sum += r.pct;
+    if(stand === 'good'){ g++; } else if(stand === 'average'){ a++; } else { b++; }
+    html += '<tr>' +
+      '<td><b>' + r.n + '</b><small>' + r.batch + ' · ' + r.course + '</small></td>' +
+      '<td>' + r.present + '</td><td>' + r.absent + '</td><td>' + r.late + '</td>' +
+      '<td><b>' + r.pct + '%</b></td>' +
+      '<td><span class="tag ' + stand + '">' + standingLabel(stand) + '</span></td></tr>';
+  }
+  $('aoKpi').innerHTML =
+    '<div class="kpi"><small>Students</small><b>' + shown + '</b></div>' +
+    '<div class="kpi good"><small>Good — ≥ 90%</small><b>' + g + '</b></div>' +
+    '<div class="kpi warn"><small>Average — ≥ 70%</small><b>' + a + '</b></div>' +
+    '<div class="kpi bad"><small>Below Average</small><b>' + b + '</b></div>';
+  $('aoBody').innerHTML = shown ? html : '<tr><td colspan="6" class="empty-row">No students match these filters.</td></tr>';
+}
+
+/* =================================================================
+   9 & 13. EXAM LIST
+   ================================================================= */
+function renderExamFilter(){
+  $('eFilter').innerHTML =
+    searchHtml('eQ', 'renderExams()') +
+    selectHtml('eCat', 'Category', TUTOR.categories, 'renderExams()') +
+    selectHtml('eBatch', 'Batch', BATCHES, 'renderExams()') +
+    '<div class="fb"><label>Status</label><select id="eStatus" onchange="renderExams()">' +
+      '<option value="all">All statuses</option><option>Assigned</option><option>Review Pending</option><option>Completed</option></select></div>' +
+    '<div class="fb"><label>&nbsp;</label><button class="btn btn-outline btn-sm" type="button" onclick="resetF([\'eQ\',\'eCat\',\'eBatch\',\'eStatus\'],renderExams)">Reset</button></div>';
+  renderExams();
+}
+
+function subStatus(x){
+  if(!x.subs.length){ return '<span style="color:var(--ink-soft)">Not opened yet</span>'; }
+  var done = 0, i;
+  for(i = 0; i < x.subs.length; i++){ if(x.subs[i].status === 'Submitted'){ done++; } }
+  return '<b>' + done + ' / ' + x.subs.length + '</b><small>submitted</small>';
+}
+
+function renderExams(){
+  var q = val('eQ', ''), ca = val('eCat'), ba = val('eBatch'), st = val('eStatus');
+  var html = '', i, x, shown = 0;
+  for(i = 0; i < EXAMS.length; i++){
+    x = EXAMS[i];
+    if(ca !== 'all' && x.cat !== ca){ continue; }
+    if(ba !== 'all' && x.batch !== ba){ continue; }
+    if(st !== 'all' && x.status !== st){ continue; }
+    if(!hit(x.title + ' ' + x.cat + ' ' + x.batch, q)){ continue; }
+    shown++;
+    html += '<tr>' +
+      '<td><b>' + x.title + '</b><small>' + x.qs.length + ' questions · ' + x.marks + ' marks</small></td>' +
+      '<td class="nowrap"><span class="tag ' + x.type.toLowerCase() + '">' + x.type + '</span></td>' +
+      '<td class="nowrap">' + x.batch + '</td>' +
+      '<td><b>' + x.cat + '</b><small>' + x.course + '</small></td>' +
+      '<td><span class="tag ' + (x.status === 'Completed' ? 'completed' : (x.status === 'Review Pending' ? 'review' : 'assigned')) + '">' + x.status + '</span></td>' +
+      '<td class="nowrap">' + subStatus(x) + '</td>' +
+      '<td><div class="acts">' +
+        '<button class="mini ghost" type="button" onclick="openExam(\'' + x.id + '\')">View</button>' +
+        '<button class="icon-btn" type="button" title="Edit" onclick="openCreate(\'' + x.id + '\')"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button>' +
+        '<button class="icon-btn" type="button" title="Delete" onclick="askDelete(\'' + x.id + '\')"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button>' +
+      '</div></td></tr>';
+  }
+  $('eBody').innerHTML = shown ? html : '<tr><td colspan="7" class="empty-row">No exams match these filters.</td></tr>';
+}
+
+function askDelete(id){
+  var x = findExam(id);
+  var html = mHead('Delete Exam', x.title);
+  html += '<div class="mdl-bd"><p style="font-size:14px;">This removes the exam and every submission against it. This cannot be undone.</p></div>' +
+    '<div class="mdl-ft"><button class="btn btn-outline btn-sm" type="button" onclick="closeMdl()">Cancel</button>' +
+    '<button class="btn btn-danger btn-sm" type="button" onclick="doDelete(\'' + id + '\')">Delete Exam</button></div>';
+  openMdl(html, '');
+}
+function doDelete(id){
+  var i;
+  for(i = 0; i < EXAMS.length; i++){ if(EXAMS[i].id === id){ EXAMS.splice(i, 1); break; } }
+  closeMdl(); renderExams(); toast('Exam deleted', 'The exam and its submissions have been removed.');
+}
+
+/* =================================================================
+   10-12. CREATE / EDIT EXAM
+   ================================================================= */
+var build = null;
+
+function openCreate(id){
+  if(id){
+    var x = findExam(id);
+    build = JSON.parse(JSON.stringify(x));
+    build.editing = id;
+    $('buildTitle').textContent = 'Edit Exam';
+    $('buildSub').textContent = x.title;
+    renderBuild();
+  } else {
+    build = null;
+    $('buildTitle').textContent = 'Create Exam';
+    $('buildSub').textContent = 'Choose the exam type, then add your questions.';
+    $('buildBody').innerHTML =
+      '<div class="card" style="max-width:520px;"><h4>Exam Type</h4>' +
+      '<p style="font-size:13.8px;margin-bottom:18px;">A quiz is marked automatically. A written exam comes back to you for manual review.</p>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
+        '<button class="btn btn-outline" type="button" onclick="startBuild(\'Quiz\')" style="flex-direction:column;padding:22px;height:auto;border-radius:16px;">' +
+          '<svg viewBox="0 0 24 24" style="width:24px;height:24px;"><path d="M9 11l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>Quiz</button>' +
+        '<button class="btn btn-outline" type="button" onclick="startBuild(\'Written\')" style="flex-direction:column;padding:22px;height:auto;border-radius:16px;">' +
+          '<svg viewBox="0 0 24 24" style="width:24px;height:24px;"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Written</button>' +
+      '</div></div>';
+  }
+  goPanel('pBuild');
+}
+
+function startBuild(type){
+  build = {id:'', title:'', type:type, cat:TUTOR.categories[0], course:'Level 1 Beginner', subject:'',
+    duration:'15 min', end:'', batch:BATCHES[0], marks:0, status:'Assigned', qs:[], subs:[]};
+  renderBuild();
+}
+
+function totalMarks(){
+  var t = 0, i;
+  for(i = 0; i < build.qs.length; i++){ t += Number(build.qs[i].m) || 0; }
+  return t;
+}
+
+function renderBuild(){
+  var quiz = build.type === 'Quiz';
+  var html = '<div class="card" style="margin-bottom:18px;"><h4>' + build.type + ' Details</h4>' +
+    '<div class="field"><label>Exam Title</label><input type="text" id="bTitle" value="' + build.title + '" oninput="build.title=this.value" placeholder="Sarali Varisai — Theory Quiz"></div>' +
+    '<div class="field-row three">' +
+      '<div class="field"><label>Category</label><select id="bCat" onchange="build.cat=this.value">' + optList(TUTOR.categories, build.cat) + '</select></div>' +
+      '<div class="field"><label>Course</label><select id="bCourse" onchange="build.course=this.value">' + optList(['Level 1 Beginner','Level 2 Intermediate','Level 3 Advanced'], build.course) + '</select></div>' +
+      '<div class="field"><label>Subject</label><input type="text" id="bSub" value="' + build.subject + '" oninput="build.subject=this.value" placeholder="Carnatic Theory"></div>' +
+    '</div>' +
+    '<div class="field-row three">' +
+      (quiz ? '<div class="field"><label>Duration</label><input type="text" id="bDur" value="' + build.duration + '" oninput="build.duration=this.value" placeholder="15 min"></div>' : '') +
+      '<div class="field"><label>' + (quiz ? 'Expiry Date' : 'End Date') + '</label><input type="date" id="bEnd" value="' + build.end + '" onchange="build.end=this.value"></div>' +
+      '<div class="field"><label>Batch</label><select id="bBatch" onchange="build.batch=this.value">' + optList(BATCHES, build.batch) + '</select></div>' +
+    '</div></div>' +
+
+    '<div class="tot-bar"><span>Total Marks — calculated from your questions</span><b id="totMarks">' + totalMarks() + '</b></div>';
+
+  var i, j;
+  for(i = 0; i < build.qs.length; i++){
+    html += quiz ? quizBlock(build.qs[i], i) : writtenBlock(build.qs[i], i);
+  }
+
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;">';
+  if(quiz){
+    html += '<button class="btn btn-outline btn-sm" type="button" onclick="addQ(\'mcq\')"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add Multiple Choice</button>' +
+            '<button class="btn btn-outline btn-sm" type="button" onclick="addQ(\'tf\')"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add True / False</button>';
+  } else {
+    html += '<button class="btn btn-outline btn-sm" type="button" onclick="addQ(\'w\')"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add Question</button>';
+  }
+  html += '</div>' +
+    '<div style="display:flex;justify-content:flex-end;gap:10px;">' +
+      '<button class="btn btn-outline btn-sm" type="button" onclick="goPanel(\'pExams\')">Cancel</button>' +
+      '<button class="btn btn-primary btn-sm" type="button" onclick="saveExam()">Save Exam</button></div>';
+
+  $('buildBody').innerHTML = html;
+}
+
+function optList(arr, sel){
+  var o = '', i;
+  for(i = 0; i < arr.length; i++){ o += '<option' + (arr[i] === sel ? ' selected' : '') + '>' + arr[i] + '</option>'; }
+  return o;
+}
+
+function quizBlock(q, i){
+  var html = '<div class="qblock"><div class="qblock-hd"><span class="qno">' + (i + 1) + '</span>' +
+    '<b>' + (q.t === 'tf' ? 'True / False' : 'Multiple Choice') + '</b>' +
+    '<button class="icon-btn" type="button" title="Remove" onclick="delQ(' + i + ')"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button></div>' +
+    '<div class="field"><label>Question</label><input type="text" value="' + q.q.replace(/"/g, '&quot;') + '" oninput="build.qs[' + i + '].q=this.value" placeholder="Type the question"></div>' +
+    '<label style="display:block;font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;">Options — tick the correct answer</label>';
+  var j;
+  for(j = 0; j < q.o.length; j++){
+    html += '<div class="opt-row">' +
+      '<span class="pick' + (q.a === j ? ' on' : '') + '" onclick="setCorrect(' + i + ',' + j + ')" title="Mark correct"></span>' +
+      '<input type="text" value="' + q.o[j].replace(/"/g, '&quot;') + '" oninput="build.qs[' + i + '].o[' + j + ']=this.value"' + (q.t === 'tf' ? ' disabled' : '') + '>' +
+      (q.t === 'mcq' && q.o.length > 2 ? '<button class="icon-btn" type="button" onclick="delOpt(' + i + ',' + j + ')"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>' : '') +
+    '</div>';
+  }
+  if(q.t === 'mcq'){
+    html += '<button class="mini ghost" type="button" onclick="addOpt(' + i + ')" style="margin-bottom:12px;">+ Add option</button>';
+  }
+  html += '<div class="markbox"><label>Marks</label>' +
+    '<input type="number" min="1" value="' + q.m + '" oninput="build.qs[' + i + '].m=Number(this.value)||0;syncMarks()"></div></div>';
+  return html;
+}
+
+function writtenBlock(q, i){
+  return '<div class="qblock"><div class="qblock-hd"><span class="qno">' + (i + 1) + '</span>' +
+    '<b>Written question</b>' +
+    '<button class="icon-btn" type="button" title="Remove" onclick="delQ(' + i + ')"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button></div>' +
+    '<div class="field"><label>Question</label><textarea oninput="build.qs[' + i + '].q=this.value" placeholder="e.g. Sing from Sarali Varisai 1 to 7">' + q.q + '</textarea></div>' +
+    '<div class="field-row">' +
+      '<div class="field"><label>Answer Format</label><select onchange="build.qs[' + i + '].f=this.value">' +
+        optList(['Video','Audio','PDF','Image','Document'], q.f) + '</select>' +
+        '<div class="hint">This is what the student will be asked to upload.</div></div>' +
+      '<div class="field"><label>Marks</label><input type="number" min="1" value="' + q.m + '" oninput="build.qs[' + i + '].m=Number(this.value)||0;syncMarks()"></div>' +
+    '</div></div>';
+}
+
+function addQ(kind){
+  if(kind === 'mcq'){ build.qs.push({q:'', t:'mcq', o:['','',''], a:0, m:5}); }
+  else if(kind === 'tf'){ build.qs.push({q:'', t:'tf', o:['True','False'], a:0, m:5}); }
+  else { build.qs.push({q:'', t:'w', f:'Video', m:10}); }
+  renderBuild();
+}
+function delQ(i){ build.qs.splice(i, 1); renderBuild(); }
+function addOpt(i){ build.qs[i].o.push(''); renderBuild(); }
+function delOpt(i, j){
+  build.qs[i].o.splice(j, 1);
+  if(build.qs[i].a >= build.qs[i].o.length){ build.qs[i].a = 0; }
+  renderBuild();
+}
+function setCorrect(i, j){ build.qs[i].a = j; renderBuild(); }
+function syncMarks(){ var el = $('totMarks'); if(el){ el.textContent = totalMarks(); } }
+
+function saveExam(){
+  if(!build.title){ toast('Title needed', 'Give the exam a title before saving.'); return; }
+  if(!build.qs.length){ toast('No questions', 'Add at least one question.'); return; }
+  build.marks = totalMarks();
+  if(build.editing){
+    var i;
+    for(i = 0; i < EXAMS.length; i++){
+      if(EXAMS[i].id === build.editing){
+        build.id = build.editing; delete build.editing;
+        EXAMS[i] = build; break;
+      }
+    }
+    toast('Exam updated', build.title + ' — ' + build.marks + ' marks.');
+  } else {
+    build.id = 'x' + (EXAMS.length + 1) + Date.now().toString().slice(-4);
+    EXAMS.push(build);
+    toast('Exam created', build.title + ' — ' + build.marks + ' marks, assigned to ' + build.batch + '.');
+  }
+  build = null;
+  renderExams();
+  goPanel('pExams');
+}
+
+/* =================================================================
+   14-15. EXAM VIEW + SUBMISSIONS
+   ================================================================= */
+var viewExam = null, viewStudent = 0, viewTab = 'subs';
+
+function openExam(id){
+  viewExam = findExam(id);
+  viewStudent = 0;
+  viewTab = 'subs';
+  var x = viewExam;
+  $('vInfo').innerHTML =
+    '<div class="info"><div class="info-hd"><div><h3>' + x.title + '</h3>' +
+    '<p>' + x.cat + ' – ' + x.course + ' · ' + x.subject + '</p></div>' +
+    '<span class="tag ' + (x.status === 'Completed' ? 'completed' : (x.status === 'Review Pending' ? 'review' : 'assigned')) + '">' + x.status + '</span></div>' +
+    '<div class="info-grid">' +
+      '<div><small>Type</small><b>' + x.type + '</b></div>' +
+      '<div><small>Batch</small><b>' + x.batch + '</b></div>' +
+      (x.type === 'Quiz' ? '<div><small>Duration</small><b>' + x.duration + '</b></div>' : '') +
+      '<div><small>' + (x.type === 'Quiz' ? 'Expiry Date' : 'End Date') + '</small><b>' + (x.end || '—') + '</b></div>' +
+      '<div><small>Questions</small><b>' + x.qs.length + '</b></div>' +
+      '<div><small>Total Marks</small><b>' + x.marks + '</b></div>' +
+    '</div></div>';
+  setViewTab('subs');
+  renderSubs();
+  goPanel('pView');
+}
+
+function setViewTab(t){
+  viewTab = t;
+  var bs = $('vSeg').querySelectorAll('button'), i;
+  for(i = 0; i < bs.length; i++){ bs[i].classList.toggle('active', (i === 0) === (t === 'subs')); }
+  $('vSubs').style.display = t === 'subs' ? 'grid' : 'none';
+  $('vQs').style.display = t === 'qs' ? 'block' : 'none';
+  if(t === 'qs'){ renderQuestions(); }
+}
+
+function studentTotal(s, x){
+  var t = 0, i;
+  if(x.type === 'Quiz'){
+    for(i = 0; i < x.qs.length; i++){ if(s.ans && s.ans[i] === x.qs[i].a){ t += x.qs[i].m; } }
+    return t;
+  }
+  for(i = 0; i < x.qs.length; i++){
+    if(s.marks && s.marks[i] !== null && s.marks[i] !== undefined){ t += Number(s.marks[i]); }
+  }
+  return t;
+}
+
+function subMarks(s, x){
+  if(s.status !== 'Submitted'){ return '—'; }
+  if(x.type === 'Quiz'){
+    var got = 0, i;
+    for(i = 0; i < x.qs.length; i++){ if(s.ans && s.ans[i] === x.qs[i].a){ got += x.qs[i].m; } }
+    return got + ' / ' + x.marks;
+  }
+  var t = 0, any = false, j;
+  for(j = 0; j < x.qs.length; j++){
+    if(s.marks && s.marks[j] !== null && s.marks[j] !== undefined){ t += Number(s.marks[j]); any = true; }
+  }
+  return any ? t + ' / ' + x.marks : '<span class="tag review">Review pending</span>';
+}
+
+function renderSubs(){
+  var x = viewExam;
+  if(!x.subs.length){
+    $('vSubBody').innerHTML = '<tr><td colspan="3" class="empty-row">No submissions yet.</td></tr>';
+    $('vAnswers').innerHTML = '<div class="empty"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6"/></svg>' +
+      '<h3>Nothing to review</h3><p>Answers appear here once students start submitting this exam.</p></div>';
+    return;
+  }
+  var html = '', i, s;
+  for(i = 0; i < x.subs.length; i++){
+    s = x.subs[i];
+    html += '<tr class="clickable' + (i === viewStudent ? ' sel' : '') + '" onclick="pickStudent(' + i + ')">' +
+      '<td><b>' + s.n + '</b></td>' +
+      '<td><span class="tag ' + (s.status === 'Submitted' ? 'completed' : 'cancelled') + '">' + s.status + '</span></td>' +
+      '<td class="nowrap">' + subMarks(s, x) + '</td></tr>';
+  }
+  $('vSubBody').innerHTML = html;
+  renderAnswers();
+}
+
+function pickStudent(i){ viewStudent = i; renderSubs(); }
+
+function renderAnswers(){
+  var x = viewExam, s = x.subs[viewStudent];
+  if(!s){ return; }
+  if(s.status !== 'Submitted'){
+    $('vAnswers').innerHTML = '<div class="empty"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>' +
+      '<h3>' + s.n + ' has not attempted this exam</h3><p>Nothing has been submitted yet, so there is nothing to mark.</p></div>';
+    return;
+  }
+  var i, j, q;
+  var html = '<div class="ans-head"><div><h3>' + s.n + '</h3>' +
+    '<p>' + x.type + ' · ' + x.qs.length + ' questions</p></div>' +
+    '<div class="ans-total"><small>Total Marks</small><b>' + studentTotal(s, x) + ' / ' + x.marks + '</b></div></div>';
+
+  if(x.type === 'Quiz'){
+    for(i = 0; i < x.qs.length; i++){
+      q = x.qs[i];
+      var picked = s.ans[i];
+      var blank = (picked === null || picked === undefined || picked === -1);
+      var right = (!blank && picked === q.a);
+      var cls = blank ? '' : (right ? ' ok' : ' no');
+      var vcls = blank ? 'skip' : (right ? 'ok' : 'no');
+      var vtxt = blank ? 'Not answered' : (right ? 'Correct' : 'Incorrect');
+      html += '<div class="ansq"><div class="q"><span class="qno">' + (i + 1) + '</span><span>' + q.q + '</span></div>' +
+        '<div class="ansrow' + cls + '">' +
+          '<div><small>Student\u2019s answer</small><b>' + (blank ? '\u2014' : q.o[picked]) + '</b>' +
+            (right || blank ? '' : '<small style="margin-top:7px;">Correct answer</small><b>' + q.o[q.a] + '</b>') +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:10px;">' +
+            '<span class="verdict ' + vcls + '">' + vtxt + '</span>' +
+            '<span class="qmark">' + (right ? q.m : 0) + '/' + q.m + '</span>' +
+          '</div>' +
+        '</div></div>';
+    }
+  } else {
+    for(i = 0; i < x.qs.length; i++){
+      q = x.qs[i];
+      html += '<div class="ansq"><div class="q"><span class="qno">' + (i + 1) + '</span><span>' + q.q + '</span></div>' +
+        '<div class="file-row" style="border-color:var(--line);background:var(--cream);">' +
+          '<span class="fi" style="background:var(--plum-2);"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg></span>' +
+          '<span><b>' + s.files[i] + '</b><small>Answer format: ' + q.f + '</small></span>' +
+          '<button class="mini ghost" type="button" onclick="openNotes(\'' + esc(s.files[i]) + '\')">Open</button></div>' +
+        '<div class="markbox"><label>Marks</label>' +
+          '<input type="number" min="0" max="' + q.m + '" value="' + (s.marks[i] === null || s.marks[i] === undefined ? '' : s.marks[i]) + '" ' +
+          'oninput="setMark(' + i + ',this.value)" placeholder="—">' +
+          '<span class="of">of ' + q.m + '</span></div></div>';
+    }
+    html += '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:6px;">' +
+      '<button class="btn btn-primary btn-sm" type="button" onclick="publishMarks()">Save Marks</button></div>';
+  }
+  $('vAnswers').innerHTML = html;
+}
+
+function setMark(i, v){
+  var s = viewExam.subs[viewStudent];
+  s.marks[i] = v === '' ? null : Number(v);
+}
+
+function publishMarks(){
+  var x = viewExam, s = x.subs[viewStudent], i, all = true;
+  for(i = 0; i < x.qs.length; i++){
+    if(s.marks[i] === null || s.marks[i] === undefined){ all = false; }
+  }
+  if(!all){ toast('Marks incomplete', 'Enter a mark for every question before saving.'); return; }
+  var pending = false;
+  for(i = 0; i < x.subs.length; i++){
+    var sub = x.subs[i], j;
+    if(sub.status !== 'Submitted'){ continue; }
+    for(j = 0; j < x.qs.length; j++){
+      if(sub.marks[j] === null || sub.marks[j] === undefined){ pending = true; }
+    }
+  }
+  x.status = pending ? 'Review Pending' : 'Completed';
+  renderSubs(); renderExams();
+  toast('Marks saved', s.n + '\u2019s answers have been marked.' + (pending ? ' Other students still need review.' : ' This exam is now complete.'));
+}
+
+function renderQuestions(){
+  var x = viewExam, html = '', i, j, q;
+  for(i = 0; i < x.qs.length; i++){
+    q = x.qs[i];
+    html += '<div class="ansq"><div class="q"><span class="qno">' + (i + 1) + '</span><span>' + q.q + '</span></div>';
+    if(x.type === 'Quiz'){
+      for(j = 0; j < q.o.length; j++){
+        html += '<div class="ansopt' + (j === q.a ? ' correct' : '') + '">' + q.o[j] +
+          (j === q.a ? '<span class="flag">Correct answer</span>' : '') + '</div>';
+      }
+    } else {
+      html += '<div class="ansopt"><b style="font-weight:800;">Answer format</b><span class="flag" style="color:var(--plum-2)">Upload ' + q.f + '</span></div>';
+    }
+    html += '<div class="markbox"><label>Marks</label><b style="font-size:15px;">' + q.m + '</b></div></div>';
+  }
+  $('vQs').innerHTML = html;
+}
+
+/* =================================================================
+   16. WEEKLY PLANNER
+   ================================================================= */
+var weekStart = null;
+var DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+function iso(d){
+  var m = d.getMonth() + 1, day = d.getDate();
+  return d.getFullYear() + '-' + (m < 10 ? '0' + m : m) + '-' + (day < 10 ? '0' + day : day);
+}
+function mondayOf(d){
+  var x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  var wd = (x.getDay() + 6) % 7;
+  x.setDate(x.getDate() - wd);
+  return x;
+}
+function shiftWeek(n){ weekStart.setDate(weekStart.getDate() + n * 7); renderPlan(); }
+
+function renderPlan(){
+  if(!weekStart){ weekStart = mondayOf(new Date(2026, 6, 28)); }
+  var end = new Date(weekStart.getTime() + 6 * 86400000);
+  $('weekLabel').textContent = weekStart.getDate() + ' ' + MON[weekStart.getMonth()] + ' – ' +
+    end.getDate() + ' ' + MON[end.getMonth()] + ' ' + end.getFullYear();
+
+  var today = iso(new Date(2026, 6, 28));
+  var html = '', i, j, d, key, list, t;
+  for(i = 0; i < 7; i++){
+    d = new Date(weekStart.getTime() + i * 86400000);
+    key = iso(d);
+    list = [];
+    for(j = 0; j < PLANS.length; j++){ if(PLANS[j].date === key){ list.push(PLANS[j]); } }
+    list.sort(function(a, b){ return (a.time || '99').localeCompare(b.time || '99'); });
+
+    html += '<div class="day' + (key === today ? ' today' : '') + '">' +
+      '<div class="day-hd"><b>' + DAYS[i] + '</b><span>' + d.getDate() + ' ' + MON[d.getMonth()] + '</span></div>';
+    for(j = 0; j < list.length; j++){
+      t = list[j];
+      html += '<div class="task' + (t.done ? ' done' : '') + '">' +
+        '<div class="t-top"><span class="chk' + (t.done ? ' on' : '') + '" onclick="toggleTask(\'' + t.id + '\')">' +
+          '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>' +
+          '<span class="t-title">' + t.title + '</span></div>' +
+        (t.time ? '<div class="t-time">' + t.time + '</div>' : '') +
+        (t.desc ? '<div class="t-desc">' + t.desc + '</div>' : '') +
+        ((t.batch || t.cat || t.course) ? '<div class="t-meta">' +
+          (t.batch ? '<span>Batch: <b>' + t.batch + '</b></span>' : '') +
+          (t.cat ? '<span>Category: <b>' + t.cat + '</b></span>' : '') +
+          (t.course ? '<span>Course: <b>' + t.course + '</b></span>' : '') + '</div>' : '') +
+        '<div class="t-acts"><button type="button" onclick="openTask(\'' + t.id + '\')">Edit</button>' +
+        '<button type="button" onclick="delTask(\'' + t.id + '\')">Delete</button></div></div>';
+    }
+    html += '<button class="day-add" type="button" onclick="openTask(null,\'' + key + '\')">+ Add plan</button></div>';
+  }
+  $('planGrid').innerHTML = html;
+}
+
+function toggleTask(id){
+  var i;
+  for(i = 0; i < PLANS.length; i++){ if(PLANS[i].id === id){ PLANS[i].done = !PLANS[i].done; } }
+  renderPlan();
+}
+function delTask(id){
+  var i;
+  for(i = 0; i < PLANS.length; i++){ if(PLANS[i].id === id){ PLANS.splice(i, 1); break; } }
+  renderPlan(); toast('Plan deleted', 'Removed from your weekly planner.');
+}
+
+function openTask(id, dateKey){
+  var t = null, i;
+  if(id){ for(i = 0; i < PLANS.length; i++){ if(PLANS[i].id === id){ t = PLANS[i]; } } }
+  var html = mHead(t ? 'Edit Plan' : 'Add Plan', 'Only you can see your weekly planner');
+  html += '<div class="mdl-bd">' +
+    '<div class="field"><label>Title</label><input type="text" id="tkTitle" value="' + (t ? t.title.replace(/"/g, '&quot;') : '') + '" placeholder="What needs doing?"></div>' +
+    '<div class="field-row">' +
+      '<div class="field"><label>Date</label><input type="date" id="tkDate" value="' + (t ? t.date : (dateKey || iso(new Date(2026, 6, 28)))) + '"></div>' +
+      '<div class="field"><label>Time (optional)</label><input type="time" id="tkTime" value="' + (t ? t.time : '') + '"></div>' +
+    '</div>' +
+    '<div class="field-row">' +
+      '<div class="field"><label>Batch</label><select id="tkBatch">' + optList(['—'].concat(BATCHES), t ? (t.batch || '—') : '—') + '</select></div>' +
+      '<div class="field"><label>Category</label><select id="tkCat">' + optList(['—'].concat(TUTOR.categories), t ? (t.cat || '—') : '—') + '</select></div>' +
+    '</div>' +
+    '<div class="field"><label>Course</label><select id="tkCourse">' + optList(['—','Level 1 Beginner','Level 2 Intermediate','Level 3 Advanced'], t ? (t.course || '—') : '—') + '</select></div>' +
+    '<div class="field"><label>Description (optional)</label><textarea id="tkDesc" placeholder="Any detail you want to remember">' + (t ? t.desc : '') + '</textarea></div>' +
+  '</div><div class="mdl-ft">' +
+    '<button class="btn btn-outline btn-sm" type="button" onclick="closeMdl()">Cancel</button>' +
+    '<button class="btn btn-primary btn-sm" type="button" onclick="saveTask(' + (id ? '\'' + id + '\'' : 'null') + ')">' + (t ? 'Save Changes' : 'Add Plan') + '</button></div>';
+  openMdl(html, '');
+}
+
+function saveTask(id){
+  var title = $('tkTitle').value.trim();
+  if(!title){ toast('Title needed', 'Give the plan a short title.'); return; }
+  function pick(id){ var v = $(id).value; return v === '\u2014' ? '' : v; }
+  var data = {title:title, date:$('tkDate').value, time:$('tkTime').value, desc:$('tkDesc').value.trim(),
+    batch:pick('tkBatch'), cat:pick('tkCat'), course:pick('tkCourse')};
+  if(id){
+    var i;
+    for(i = 0; i < PLANS.length; i++){
+      if(PLANS[i].id === id){
+        PLANS[i].title = data.title; PLANS[i].date = data.date;
+        PLANS[i].time = data.time; PLANS[i].desc = data.desc;
+        PLANS[i].batch = data.batch; PLANS[i].cat = data.cat; PLANS[i].course = data.course;
+      }
+    }
+    toast('Plan updated', data.title);
+  } else {
+    PLANS.push({id:'p' + Date.now(), date:data.date, time:data.time, title:data.title, desc:data.desc,
+      batch:data.batch, cat:data.cat, course:data.course, done:false});
+    toast('Plan added', data.title);
+  }
+  closeMdl(); renderPlan();
+}
+
+/* =================================================================
+   17. WHITEBOARD
+   ================================================================= */
+var wb, wbx, strokes = [], cur = null, tool = 'pen', color = '#16324A', size = 3;
+var COLORS = ['#16324A','#0D8778','#A66B18','#12A594','#2E6FE0','#1E9A6C','#D6455A','#FFFFFF'];
+
+function wbInit(){
+  wb = $('wb'); if(!wb){ return; }
+  wbx = wb.getContext('2d');
+  var sw = '', i;
+  for(i = 0; i < COLORS.length; i++){
+    sw += '<span class="sw' + (i === 0 ? ' on' : '') + '" style="background:' + COLORS[i] + '" onclick="setColor(\'' + COLORS[i] + '\',this)"></span>';
+  }
+  $('swatches').innerHTML = sw;
+
+  wb.addEventListener('pointerdown', wbDown);
+  wb.addEventListener('pointermove', wbMove);
+  window.addEventListener('pointerup', wbUp);
+  window.addEventListener('resize', wbFit);
+  wbFit();
+}
+
+function wbFit(){
+  if(!wb){ return; }
+  var r = wb.getBoundingClientRect();
+  if(!r.width){ return; }
+  var dpr = window.devicePixelRatio || 1;
+  wb.width = Math.round(r.width * dpr);
+  wb.height = Math.round(r.height * dpr);
+  wbx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  wbRedraw();
+}
+
+function setTool(t){
+  tool = t;
+  var bs = document.querySelectorAll('.wb-tool'), i;
+  for(i = 0; i < bs.length; i++){ bs[i].classList.toggle('on', bs[i].getAttribute('data-tool') === t); }
+  wb.style.cursor = t === 'text' ? 'text' : 'crosshair';
+}
+function setColor(c, el){
+  color = c;
+  var sws = document.querySelectorAll('.sw'), i;
+  for(i = 0; i < sws.length; i++){ sws[i].classList.remove('on'); }
+  el.classList.add('on');
+}
+function setSize(v){ size = Number(v); $('wbSizeLbl').textContent = v + 'px'; }
+
+function wbPos(e){
+  var r = wb.getBoundingClientRect();
+  return {x:e.clientX - r.left, y:e.clientY - r.top};
+}
+
+function wbDown(e){
+  var p = wbPos(e);
+  if(tool === 'text'){
+    var txt = window.prompt('Text to place on the board:');
+    if(txt){ strokes.push({tool:'text', x:p.x, y:p.y, text:txt, color:color, size:Math.max(14, size * 5)}); wbRedraw(); }
+    return;
+  }
+  wb.setPointerCapture(e.pointerId);
+  if(tool === 'pen' || tool === 'eraser'){
+    cur = {tool:'pen', color:(tool === 'eraser' ? '#FFFFFF' : color), size:(tool === 'eraser' ? size * 4 : size), pts:[p]};
+  } else {
+    cur = {tool:tool, color:color, size:size, x0:p.x, y0:p.y, x1:p.x, y1:p.y};
+  }
+}
+
+function wbMove(e){
+  if(!cur){ return; }
+  var p = wbPos(e);
+  if(cur.tool === 'pen'){ cur.pts.push(p); } else { cur.x1 = p.x; cur.y1 = p.y; }
+  wbRedraw(cur);
+}
+
+function wbUp(){
+  if(!cur){ return; }
+  strokes.push(cur); cur = null; wbRedraw();
+}
+
+function drawOne(s){
+  wbx.strokeStyle = s.color; wbx.fillStyle = s.color;
+  wbx.lineWidth = s.size; wbx.lineCap = 'round'; wbx.lineJoin = 'round';
+  if(s.tool === 'pen'){
+    wbx.beginPath();
+    var i;
+    for(i = 0; i < s.pts.length; i++){
+      if(i === 0){ wbx.moveTo(s.pts[i].x, s.pts[i].y); } else { wbx.lineTo(s.pts[i].x, s.pts[i].y); }
+    }
+    if(s.pts.length === 1){ wbx.lineTo(s.pts[0].x + .1, s.pts[0].y); }
+    wbx.stroke();
+  } else if(s.tool === 'line'){
+    wbx.beginPath(); wbx.moveTo(s.x0, s.y0); wbx.lineTo(s.x1, s.y1); wbx.stroke();
+  } else if(s.tool === 'rect'){
+    wbx.beginPath(); wbx.rect(s.x0, s.y0, s.x1 - s.x0, s.y1 - s.y0); wbx.stroke();
+  } else if(s.tool === 'circle'){
+    wbx.beginPath();
+    wbx.ellipse((s.x0 + s.x1) / 2, (s.y0 + s.y1) / 2, Math.abs(s.x1 - s.x0) / 2, Math.abs(s.y1 - s.y0) / 2, 0, 0, Math.PI * 2);
+    wbx.stroke();
+  } else if(s.tool === 'text'){
+    wbx.font = '800 ' + s.size + 'px Nunito, sans-serif';
+    wbx.textBaseline = 'top';
+    wbx.fillText(s.text, s.x, s.y);
+  }
+}
+
+function wbRedraw(preview){
+  if(!wbx){ return; }
+  var r = wb.getBoundingClientRect();
+  wbx.clearRect(0, 0, r.width, r.height);
+  wbx.fillStyle = '#fff'; wbx.fillRect(0, 0, r.width, r.height);
+  var i;
+  for(i = 0; i < strokes.length; i++){ drawOne(strokes[i]); }
+  if(preview){ drawOne(preview); }
+}
+
+function wbUndo(){ strokes.pop(); wbRedraw(); }
+function wbClear(){ strokes = []; wbRedraw(); toast('Board cleared', 'Everything has been wiped.'); }
+function wbSave(){
+  var a = document.createElement('a');
+  a.download = 'chaarulaya-whiteboard.png';
+  a.href = wb.toDataURL('image/png');
+  a.click();
+  toast('Saved', 'Board exported as a PNG.');
+}
+
+/* =================================================================
+   PROFILE
+   ================================================================= */
+function saveProfile(){
+  var n = $('pfName').value.trim() || TUTOR.name;
+  TUTOR.name = n;
+  var ini = n.split(' ').map(function(p){ return p.charAt(0); }).join('').slice(0, 2).toUpperCase();
+  $('profName').textContent = n;
+  $('profAv').textContent = ini;
+  $('tbName').textContent = n;
+  $('tbAv').textContent = ini;
+  toast('Profile saved', 'Your details have been updated.');
+}
+
+function renderProfileChips(){
+  var html = '', i;
+  for(i = 0; i < TUTOR.courses.length; i++){ html += '<span class="chip">' + TUTOR.courses[i] + '</span>'; }
+  $('profChips').innerHTML = html;
+}
+
+/* =================================================================
+   BOOT
+   ================================================================= */
+renderSessionFilter();
+renderDoubtFilter();
+renderAttFilter();
+renderOverallFilter();
+renderExamFilter();
+renderPlan();
+renderProfileChips();
+wbInit();
+
+setInterval(tickDoubts, 20000);
+
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ closeMdl(); } });
+</script>
+</body>
+</html>
