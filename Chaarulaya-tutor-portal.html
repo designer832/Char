@@ -384,34 +384,91 @@ body.locked{overflow:hidden;}
 .markbox .of{font-size:13px;color:var(--ink-soft);font-weight:700;}
 
 /* ============================= PLANNER ============================= */
-.plan-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;}
-@media(max-width:1200px){.plan-grid{grid-template-columns:repeat(3,1fr);}}
-@media(max-width:700px){.plan-grid{grid-template-columns:1fr;}}
-.day{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:14px;min-height:150px;display:flex;flex-direction:column;}
-.day.today{border-color:var(--rose-2);box-shadow:0 0 0 3px var(--blush);}
-.day-hd{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:11px;}
-.day-hd b{font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;}
-.day-hd span{font-size:11px;color:var(--ink-soft);font-weight:700;}
-.task{background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:9px 10px;margin-bottom:7px;}
-.task.done{opacity:.55;}
-.task.done .t-title{text-decoration:line-through;}
-.t-top{display:flex;align-items:flex-start;gap:7px;}
-.chk{width:16px;height:16px;border-radius:5px;border:1.8px solid var(--line);flex-shrink:0;margin-top:1px;
-  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.18s;}
-.chk.on{background:#1E9A6C;border-color:#1E9A6C;}
-.chk svg{width:10px;height:10px;stroke:#fff;stroke-width:3.2;fill:none;opacity:0;}
-.chk.on svg{opacity:1;}
-.t-title{font-size:12.5px;font-weight:800;line-height:1.35;flex-grow:1;}
-.t-time{font-size:11px;color:var(--rose-2);font-weight:800;margin:4px 0 0 23px;}
-.t-desc{font-size:11.5px;color:var(--ink-soft);margin:3px 0 0 23px;line-height:1.4;}
-.t-meta{margin:6px 0 0 23px;display:grid;gap:2px;}
-.t-meta span{font-size:10.8px;color:var(--ink-soft);line-height:1.35;}
-.t-meta span b{color:var(--ink-2);font-weight:800;}
-.t-acts{display:flex;gap:5px;margin:7px 0 0 23px;}
-.t-acts button{font-size:11px;font-weight:800;color:var(--ink-soft);}
-.t-acts button:hover{color:var(--rose-2);}
-.day-add{margin-top:auto;font-size:11.5px;font-weight:800;color:var(--ink-soft);padding-top:6px;}
-.day-add:hover{color:var(--rose-2);}
+.wk-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.wk-nav{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.wk-nav b{font-size:14px;min-width:190px;text-align:center;}
+.kpis.five{grid-template-columns:repeat(5,1fr);}
+@media(max-width:1000px){.kpis.five{grid-template-columns:repeat(2,1fr);}}
+
+.wk-admin{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--lilac);border:1px solid var(--line);
+  border-radius:14px;padding:12px 16px;margin-bottom:16px;}
+.wk-admin .fb{display:flex;flex-direction:column;gap:6px;min-width:220px;}
+.wk-admin label{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+.wk-admin select{border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13.5px;background:var(--white);color:var(--ink);}
+.wk-admin select:focus{outline:none;border-color:var(--rose-2);}
+.wk-admin p{flex:1;min-width:220px;font-size:13px;color:var(--ink-2);font-weight:700;}
+
+.wk-legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-bottom:12px;font-size:11.5px;font-weight:800;color:var(--ink-soft);}
+.wk-legend span{display:inline-flex;align-items:center;gap:6px;}
+.wk-legend i{width:13px;height:13px;border-radius:4px;border:2px solid;display:inline-block;}
+
+.wk-cal{background:var(--white);border:1px solid var(--line);border-radius:16px;overflow:hidden;}
+.wk-scroll{overflow-x:auto;}
+.wk-grid{display:grid;grid-template-columns:56px repeat(7,minmax(128px,1fr));min-width:940px;}
+
+.wk-corner{border-bottom:1px solid var(--line);}
+.wk-dh{padding:10px 36px 9px 10px;border-bottom:1px solid var(--line);border-left:1px solid var(--line);position:relative;}
+.wk-dh.today{background:var(--blush);}
+.wk-dh b{display:block;font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;}
+.wk-dh span{font-size:11px;color:var(--ink-soft);font-weight:700;}
+.wk-dh small{display:block;font-size:10.5px;color:var(--ink-2);font-weight:800;margin-top:3px;}
+.wk-plus{position:absolute;top:9px;right:8px;width:22px;height:22px;border-radius:7px;border:1.5px solid var(--line);
+  font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center;color:var(--ink-soft);background:var(--white);}
+.wk-plus:hover{border-color:var(--rose-2);color:var(--rose-2);}
+
+.wk-any-l{border-bottom:1px solid var(--line);font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-soft);padding:8px 6px 0 0;text-align:right;}
+.wk-any{border-left:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px;min-height:34px;display:flex;flex-direction:column;gap:4px;}
+.wk-any.today{background:var(--blush);}
+.wk-chip{display:flex;align-items:flex-start;gap:6px;border:1px solid;border-left-width:4px;border-radius:8px;padding:4px 7px;
+  font-size:11.3px;font-weight:800;line-height:1.3;cursor:pointer;}
+.wk-chip:hover{box-shadow:var(--shadow-sm);}
+
+.wk-gut{position:relative;height:720px;}
+.wk-gut span{position:absolute;right:8px;font-size:10.5px;color:var(--ink-soft);font-weight:700;transform:translateY(-50%);}
+.wk-col{position:relative;height:720px;border-left:1px solid var(--line);
+  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 47px,var(--line) 47px,var(--line) 48px);}
+.wk-col.today{background-color:rgba(225,245,241,.4);}
+
+.wk-ev{position:absolute;border-radius:9px;border:1px solid;border-left-width:4px;padding:4px 7px;overflow:hidden;cursor:pointer;
+  font-size:11.5px;line-height:1.3;transition:box-shadow .2s;}
+.wk-ev:hover{box-shadow:var(--shadow-sm);z-index:5;}
+.wk-ev .ttl{display:flex;gap:6px;align-items:flex-start;font-weight:800;font-size:11.8px;}
+.wk-ev .tm{display:block;font-size:10.5px;font-weight:800;opacity:.8;}
+.wk-ev .mt{display:block;font-size:10.5px;opacity:.75;}
+.wk-ev .tg{display:block;font-size:10px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;margin-top:2px;}
+
+.wk-ev.cls,.wk-chip.cls{background:#E1F5F1;border-color:#12A594;}
+.wk-ev.tsk,.wk-chip.tsk{background:#FBF0D9;border-color:#C5841D;}
+.wk-ev.act,.wk-chip.act{background:#EEE8FB;border-color:#7C5CD6;}
+.wk-ev.evt,.wk-chip.evt{background:#FCE6EF;border-color:#C2457A;}
+.wk-ev.nte,.wk-chip.nte{background:var(--white);border-color:var(--ink-soft);border-style:dashed;border-left-style:solid;}
+.wk-ev.mv{background:#E6EEFD;border-color:#2E6FE0;border-style:dashed;border-left-style:solid;}
+.wk-ev.gh{background:#E6EEFD;border-color:#2E6FE0;}
+.wk-ev.cx{background:repeating-linear-gradient(135deg,#EEF3F8 0,#EEF3F8 6px,#DCE9F2 6px,#DCE9F2 12px);border-color:#6C8299;color:var(--ink-soft);}
+.wk-ev.cx .ttl span:last-child,.wk-ev.mv .ttl span:last-child{text-decoration:line-through;}
+.wk-ev.done,.wk-chip.done{opacity:.55;}
+.wk-ev.done .ttl span:last-child,.wk-chip.done .t{text-decoration:line-through;}
+.wk-ev.cx .tg{color:#6C8299;} .wk-ev.mv .tg,.wk-ev.gh .tg{color:#2E6FE0;} .wk-ev.cls .tg.rc{color:var(--teal-2);}
+
+.wk-chk{width:15px;height:15px;border-radius:5px;border:1.8px solid var(--ink-soft);flex-shrink:0;margin-top:1px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--white);transition:.18s;}
+.wk-chk.on{background:#1E9A6C;border-color:#1E9A6C;}
+.wk-chk svg{width:9px;height:9px;stroke:#fff;stroke-width:3.4;fill:none;opacity:0;}
+.wk-chk.on svg{opacity:1;}
+.wk-bell{width:13px;height:13px;stroke:var(--ink-2);stroke-width:2;fill:none;flex-shrink:0;margin-top:1px;}
+
+.wk-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 18px;margin-bottom:16px;}
+.wk-facts small{display:block;font-size:9.8px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:3px;}
+.wk-facts b{font-size:13.6px;font-weight:800;}
+@media(max-width:640px){.wk-facts{grid-template-columns:repeat(2,1fr);}}
+.wk-note{border-radius:12px;padding:11px 14px;font-size:13px;font-weight:700;margin-bottom:16px;background:var(--cream);border:1px solid var(--line);}
+.wk-note.cx{background:#FCE6E9;border-color:#F3C3CB;color:#B3364A;}
+.wk-note.mv{background:#E6EEFD;border-color:#BFD0F5;color:#2457B8;}
+.wk-sub{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;}
+.wk-roster{max-height:260px;overflow-y:auto;border:1px solid var(--line);border-radius:12px;padding:4px 14px;}
+.wk-done{display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:800;cursor:pointer;}
+.wk-done input{width:17px;height:17px;accent-color:var(--rose-2);}
 
 /* ============================= WHITEBOARD ============================= */
 .wb-wrap{background:var(--white);border:1px solid var(--line);border-radius:16px;overflow:hidden;}
@@ -457,6 +514,36 @@ body.locked{overflow:hidden;}
 .empty h3{font-size:19px;margin-bottom:6px;}
 .empty p{font-size:13.8px;max-width:340px;margin:0 auto;}
 :focus-visible{outline:2px solid var(--rose-2);outline-offset:2px;border-radius:6px;}
+
+/* ============================= EXAM BUILDER — start date, question format, answer formats ============================= */
+.field-row.four{grid-template-columns:repeat(4,1fr);}
+@media(max-width:900px){.field-row.four{grid-template-columns:1fr 1fr;}}
+@media(max-width:640px){.field-row.four{grid-template-columns:1fr;}}
+.qf-seg{flex-wrap:wrap;}
+.qf-seg button{padding:8px 16px;}
+.qprev{width:100%;max-height:260px;border-radius:12px;background:#0C1E30;display:block;margin-bottom:10px;}
+.qaud{width:100%;display:block;margin-bottom:10px;}
+.af-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.af-chip{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:100px;border:1.5px solid var(--line);
+  background:var(--white);font-size:13px;font-weight:800;color:var(--ink-soft);transition:.2s;}
+.af-chip:hover{border-color:var(--rose-2);}
+.af-chip .bx{width:16px;height:16px;border-radius:5px;border:1.8px solid var(--line);display:flex;align-items:center;justify-content:center;}
+.af-chip .bx svg{width:10px;height:10px;stroke:#fff;stroke-width:3.2;fill:none;opacity:0;}
+.af-chip.on{border-color:var(--rose-2);background:var(--teal-soft);color:var(--ink);}
+.af-chip.on .bx{background:var(--rose-2);border-color:var(--rose-2);}
+.af-chip.on .bx svg{opacity:1;}
+.opt-l{width:22px;height:22px;border-radius:50%;background:var(--cream-2);font-size:11px;font-weight:800;display:flex;
+  align-items:center;justify-content:center;flex-shrink:0;}
+.sv-box{border:1.5px dashed var(--line);border-radius:14px;padding:14px 16px;margin-top:6px;background:var(--cream);}
+.sv-box > small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;}
+.sv-opts{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px;}
+.sv-or{align-self:center;font-size:11px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;}
+.sv-tile{flex:1;min-width:160px;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:12px 14px;
+  display:flex;align-items:center;gap:10px;font-size:13px;font-weight:800;}
+.sv-tile svg{width:18px;height:18px;stroke:var(--rose-2);stroke-width:2;fill:none;flex-shrink:0;}
+.sv-tile.mc{align-items:flex-start;flex-basis:100%;}
+.sv-tile.mc label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-top:7px;color:var(--ink-2);}
+.sv-tile.mc input{accent-color:var(--rose-2);}
 </style>
 </head>
 <body>
@@ -644,18 +731,28 @@ body.locked{overflow:hidden;}
     <!-- ============================= 16. WEEKLY PLANNER ============================= -->
     <div class="panel" id="pPlan">
       <div class="head">
-        <div><h2>Weekly Planner</h2><p>Your own plan for the week. Only you can see this.</p></div>
-        <div style="display:flex;gap:10px;align-items:center;">
-          <button class="icon-btn" type="button" onclick="shiftWeek(-1)" aria-label="Previous week">
-            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
-          <b id="weekLabel" style="font-size:13.5px;min-width:180px;text-align:center;"></b>
-          <button class="icon-btn" type="button" onclick="shiftWeek(1)" aria-label="Next week">
-            <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
-          <button class="btn btn-primary btn-sm" type="button" onclick="openTask()">
-            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add Plan</button>
+        <div><h2>Weekly Planner</h2><p id="planSub"></p></div>
+        <div class="wk-tools">
+          <div class="seg" id="planMode">
+            <button type="button" class="active" onclick="setPlanMode('mine')">My Planner</button>
+            <button type="button" onclick="setPlanMode('admin')">Admin View</button>
+          </div>
+          <button class="btn btn-primary btn-sm" type="button" onclick="openPlanItem()">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add to Planner</button>
         </div>
       </div>
-      <div class="plan-grid" id="planGrid"></div>
+      <div id="planAdmin"></div>
+      <div class="wk-nav">
+        <button class="icon-btn" type="button" onclick="shiftWeek(-1)" aria-label="Previous week">
+          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <b id="weekLabel"></b>
+        <button class="icon-btn" type="button" onclick="shiftWeek(1)" aria-label="Next week">
+          <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        <button class="mini ghost" type="button" onclick="gotoToday()">Today</button>
+      </div>
+      <div class="kpis five" id="wkKpi"></div>
+      <div class="wk-legend" id="wkLegend"></div>
+      <div class="wk-cal"><div class="wk-scroll"><div class="wk-grid" id="wkGrid"></div></div></div>
     </div>
 
     <!-- ============================= 17. WHITEBOARD ============================= -->
@@ -865,19 +962,6 @@ var EXAMS = [
      {n:'Harini Mohan',  status:'Submitted', files:['harini-geetham.mp4','harini-sahityam.pdf'], marks:[21,13]},
      {n:'Sandeep Kumar', status:'Submitted', files:['sandeep-geetham.mp4','sandeep-sahityam.pdf'], marks:[18,11]}
    ]}
-];
-
-var PLANS = [
-  {id:'p1', date:'2026-07-27', time:'09:00', title:'Prepare Janta Varisai sheets', desc:'Print for both batches',
-   batch:'Vocal B1', cat:'Vocal', course:'Level 1 Beginner', done:true},
-  {id:'p2', date:'2026-07-28', time:'17:30', title:'Review Zoom link for B2', desc:'',
-   batch:'Vocal B2', cat:'Vocal', course:'Level 1 Beginner', done:false},
-  {id:'p3', date:'2026-07-29', time:'', title:'Evaluate Sarali written submissions', desc:'3 students pending',
-   batch:'Vocal B2', cat:'Vocal', course:'Level 1 Beginner', done:false},
-  {id:'p4', date:'2026-07-30', time:'11:00', title:'Call parent — Meera Rajan', desc:'Attendance has slipped below 70%',
-   batch:'Vocal B2', cat:'Vocal', course:'Level 1 Beginner', done:false},
-  {id:'p5', date:'2026-08-01', time:'', title:'Plan Navaratri recital order', desc:'Shortlist 6 students',
-   batch:'Veena A1', cat:'Veena', course:'Level 1 Beginner', done:false}
 ];
 
 /* Demo seeding: place the scheduled sessions at fixed offsets from now so
@@ -1693,7 +1777,7 @@ function openCreate(id){
 
 function startBuild(type){
   build = {id:'', title:'', type:type, cat:TUTOR.categories[0], course:'Level 1 Beginner', subject:'',
-    duration:'15 min', end:'', batch:BATCHES[0], marks:0, status:'Assigned', qs:[], subs:[]};
+    duration:'15 min', start:'', end:'', batch:BATCHES[0], marks:0, status:'Assigned', qs:[], subs:[]};
   renderBuild();
 }
 
@@ -1712,8 +1796,9 @@ function renderBuild(){
       '<div class="field"><label>Course</label><select id="bCourse" onchange="build.course=this.value">' + optList(['Level 1 Beginner','Level 2 Intermediate','Level 3 Advanced'], build.course) + '</select></div>' +
       '<div class="field"><label>Subject</label><input type="text" id="bSub" value="' + build.subject + '" oninput="build.subject=this.value" placeholder="Carnatic Theory"></div>' +
     '</div>' +
-    '<div class="field-row three">' +
+    '<div class="field-row ' + (quiz ? 'four' : 'three') + '">' +
       (quiz ? '<div class="field"><label>Duration</label><input type="text" id="bDur" value="' + build.duration + '" oninput="build.duration=this.value" placeholder="15 min"></div>' : '') +
+      '<div class="field"><label>Start Date</label><input type="date" id="bStart" value="' + (build.start || '') + '" onchange="build.start=this.value"></div>' +
       '<div class="field"><label>' + (quiz ? 'Expiry Date' : 'End Date') + '</label><input type="date" id="bEnd" value="' + build.end + '" onchange="build.end=this.value"></div>' +
       '<div class="field"><label>Batch</label><select id="bBatch" onchange="build.batch=this.value">' + optList(BATCHES, build.batch) + '</select></div>' +
     '</div></div>' +
@@ -1750,7 +1835,7 @@ function quizBlock(q, i){
   var html = '<div class="qblock"><div class="qblock-hd"><span class="qno">' + (i + 1) + '</span>' +
     '<b>' + (q.t === 'tf' ? 'True / False' : 'Multiple Choice') + '</b>' +
     '<button class="icon-btn" type="button" title="Remove" onclick="delQ(' + i + ')"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button></div>' +
-    '<div class="field"><label>Question</label><input type="text" value="' + q.q.replace(/"/g, '&quot;') + '" oninput="build.qs[' + i + '].q=this.value" placeholder="Type the question"></div>' +
+    qContent(q, i, false) +
     '<label style="display:block;font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;">Options — tick the correct answer</label>';
   var j;
   for(j = 0; j < q.o.length; j++){
@@ -1768,23 +1853,157 @@ function quizBlock(q, i){
   return html;
 }
 
+/* ---- Question format (Text / Video / Audio / PDF) ---- */
+var Q_FORMATS = ['Text', 'Video', 'Audio', 'PDF'];
+/* ---- Answer formats: the admin can tick one or more ---- */
+var A_FORMATS = ['Video', 'Audio', 'PDF', 'Multiple Choice', 'Image', 'Document'];
+var AF_ICON = {
+  'Video':'<svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>',
+  'Audio':'<svg viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1014 17V7h4V3h-6z"/></svg>',
+  'PDF':'<svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg>',
+  'Image':'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>',
+  'Document':'<svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>',
+  'Multiple Choice':'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 11l2 2 4-4"/></svg>'
+};
+var AF_UPLOAD = {'Video':'Upload a video', 'Audio':'Upload an audio file', 'PDF':'Upload a PDF',
+  'Image':'Upload an image', 'Document':'Upload a document'};
+
+function qFormatOf(q){ return q.qf || 'Text'; }
+function fsOf(q){
+  if(q.fs && q.fs.length){ return q.fs; }
+  if(q.fs){ return []; }
+  if(q.f){ return String(q.f).split(' + '); }
+  return ['Video'];
+}
+function fmtSize(b){ return b < 1048576 ? Math.max(1, Math.round(b / 1024)) + ' KB' : (b / 1048576).toFixed(1) + ' MB'; }
+
+/* The question itself: pick a format, then type it or upload it. */
+function qContent(q, i, multi){
+  var f = qFormatOf(q), k;
+  var html = '<div class="field"><label>Question Format</label><div class="seg qf-seg">';
+  for(k = 0; k < Q_FORMATS.length; k++){
+    html += '<button type="button" class="' + (Q_FORMATS[k] === f ? 'active' : '') + '" onclick="setQF(' + i + ',\'' + Q_FORMATS[k] + '\')">' + Q_FORMATS[k] + '</button>';
+  }
+  html += '</div></div>';
+  if(f === 'Text'){
+    if(multi){
+      html += '<div class="field"><label>Question</label><textarea oninput="build.qs[' + i + '].q=this.value" placeholder="e.g. Sing from Sarali Varisai 1 to 7">' + q.q + '</textarea></div>';
+    } else {
+      html += '<div class="field"><label>Question</label><input type="text" value="' + q.q.replace(/"/g, '&quot;') + '" oninput="build.qs[' + i + '].q=this.value" placeholder="Type the question"></div>';
+    }
+  } else {
+    html += qUpload(q, i, f) +
+      '<div class="field"><label>Instructions (optional)</label><input type="text" value="' + q.q.replace(/"/g, '&quot;') +
+      '" oninput="build.qs[' + i + '].q=this.value" placeholder="Add a short instruction for the student"></div>';
+  }
+  return html;
+}
+
+function qUpload(q, i, f){
+  var acc = f === 'Video' ? 'video/*' : (f === 'Audio' ? 'audio/*' : 'application/pdf,.pdf');
+  var file = q.qfile && q.qfile.fmt === f ? q.qfile : null;
+  var html = '<div class="field"><label>' + f + ' Question</label>' +
+    '<input type="file" id="qf' + i + '" accept="' + acc + '" style="display:none" onchange="onQFile(' + i + ',this)">';
+  if(file){
+    if(f === 'Video'){ html += '<video class="qprev" controls preload="metadata" src="' + file.url + '"></video>'; }
+    if(f === 'Audio'){ html += '<audio class="qaud" controls src="' + file.url + '"></audio>'; }
+    html += '<div class="file-row"><span class="ft ' + (f === 'Video' ? 'vid' : (f === 'Audio' ? 'aud' : 'pdf')) + '">' +
+      (f === 'Video' ? 'VID' : (f === 'Audio' ? 'AUD' : 'PDF')) + '</span>' +
+      '<span><b>' + file.name.replace(/</g, '&lt;') + '</b><small>' + fmtSize(file.size) + '</small></span>' +
+      '<button class="mini ghost" type="button" onclick="document.getElementById(\'qf' + i + '\').click()">Replace</button>' +
+      '<button class="mini ghost" type="button" onclick="rmQFile(' + i + ')">Remove</button></div>';
+  } else {
+    html += '<div class="drop" onclick="document.getElementById(\'qf' + i + '\').click()">' +
+      AF_ICON[f].replace('<svg', '<svg style="margin-bottom:9px"') +
+      '<b>Upload ' + f + '</b><span>Click to choose a ' + (f === 'PDF' ? 'PDF' : f.toLowerCase()) + ' file from your device</span></div>';
+  }
+  return html + '</div>';
+}
+
+function setQF(i, f){ build.qs[i].qf = f; renderBuild(); }
+function rmQFile(i){ build.qs[i].qfile = null; renderBuild(); }
+function onQFile(i, inp){
+  var file = inp.files && inp.files[0], q = build.qs[i], f = qFormatOf(q), ok;
+  if(!file){ return; }
+  if(f === 'Video'){ ok = file.type.indexOf('video/') === 0; }
+  else if(f === 'Audio'){ ok = file.type.indexOf('audio/') === 0; }
+  else { ok = file.type === 'application/pdf' || /\.pdf$/i.test(file.name); }
+  if(!ok){ toast('Wrong file type', 'Please choose a ' + (f === 'PDF' ? 'PDF' : f.toLowerCase()) + ' file for this question.'); inp.value = ''; return; }
+  q.qfile = {name:file.name, size:file.size, url:URL.createObjectURL(file), fmt:f};
+  renderBuild();
+}
+
+/* Multiple Choice answer format: the choices a student picks from. */
+function mcEditor(q, i){
+  var o = q.o || (q.o = ['', '', '']), j;
+  var html = '<div class="field"><label>Multiple Choice Options</label>';
+  for(j = 0; j < o.length; j++){
+    html += '<div class="opt-row"><span class="opt-l">' + String.fromCharCode(65 + j) + '</span>' +
+      '<input type="text" value="' + String(o[j]).replace(/"/g, '&quot;') + '" placeholder="Option ' + (j + 1) + '" oninput="build.qs[' + i + '].o[' + j + ']=this.value;refreshSV(' + i + ')">' +
+      (o.length > 2 ? '<button class="icon-btn" type="button" onclick="delWOpt(' + i + ',' + j + ')"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>' : '') +
+    '</div>';
+  }
+  html += '<button class="mini ghost" type="button" onclick="addWOpt(' + i + ')">+ Add option</button></div>';
+  return html;
+}
+function addWOpt(i){ build.qs[i].o.push(''); renderBuild(); }
+function delWOpt(i, j){ build.qs[i].o.splice(j, 1); renderBuild(); }
+
+function toggleAF(i, f){
+  var q = build.qs[i], fs = fsOf(q).slice(), at = fs.indexOf(f), k, out = [];
+  if(at > -1){ fs.splice(at, 1); } else { fs.push(f); }
+  for(k = 0; k < A_FORMATS.length; k++){ if(fs.indexOf(A_FORMATS[k]) > -1){ out.push(A_FORMATS[k]); } }
+  q.fs = out;
+  q.f = out.join(' + ');
+  if(out.indexOf('Multiple Choice') > -1 && !q.o){ q.o = ['', '', '']; }
+  renderBuild();
+}
+
+/* What the student will be offered, based on the formats ticked. */
+function svInner(q){
+  var fs = fsOf(q), k, f, tiles = [], j, o;
+  if(!fs.length){ return '<small>Student view</small><div class="hint" style="margin:0;">Tick at least one answer format.</div>'; }
+  for(k = 0; k < fs.length; k++){
+    f = fs[k];
+    if(f === 'Multiple Choice'){
+      o = q.o || [];
+      var t = '<div class="sv-tile mc">' + AF_ICON[f] + '<div><b>Choose an answer</b>';
+      for(j = 0; j < o.length; j++){
+        t += '<label><input type="radio" disabled> ' + (String(o[j]).trim() ? String(o[j]).replace(/</g, '&lt;') : '<i style="color:var(--ink-soft)">Option ' + (j + 1) + '</i>') + '</label>';
+      }
+      tiles.push(t + '</div></div>');
+    } else {
+      tiles.push('<div class="sv-tile">' + AF_ICON[f] + AF_UPLOAD[f] + '</div>');
+    }
+  }
+  return '<small>Student view · ' + (fs.length > 1 ? 'answers using any one of these' : 'answers using') + '</small>' +
+    '<div class="sv-opts">' + tiles.join('<span class="sv-or">or</span>') + '</div>';
+}
+function refreshSV(i){ var e = $('sv' + i); if(e){ e.innerHTML = svInner(build.qs[i]); } }
+
 function writtenBlock(q, i){
+  var fs = fsOf(q), chips = '', k, f;
+  for(k = 0; k < A_FORMATS.length; k++){
+    f = A_FORMATS[k];
+    chips += '<button type="button" class="af-chip' + (fs.indexOf(f) > -1 ? ' on' : '') + '" onclick="toggleAF(' + i + ',\'' + f + '\')">' +
+      '<span class="bx"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>' + f + '</button>';
+  }
   return '<div class="qblock"><div class="qblock-hd"><span class="qno">' + (i + 1) + '</span>' +
     '<b>Written question</b>' +
     '<button class="icon-btn" type="button" title="Remove" onclick="delQ(' + i + ')"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button></div>' +
-    '<div class="field"><label>Question</label><textarea oninput="build.qs[' + i + '].q=this.value" placeholder="e.g. Sing from Sarali Varisai 1 to 7">' + q.q + '</textarea></div>' +
-    '<div class="field-row">' +
-      '<div class="field"><label>Answer Format</label><select onchange="build.qs[' + i + '].f=this.value">' +
-        optList(['Video','Audio','PDF','Image','Document'], q.f) + '</select>' +
-        '<div class="hint">This is what the student will be asked to upload.</div></div>' +
-      '<div class="field"><label>Marks</label><input type="number" min="1" value="' + q.m + '" oninput="build.qs[' + i + '].m=Number(this.value)||0;syncMarks()"></div>' +
-    '</div></div>';
+    qContent(q, i, true) +
+    '<div class="field"><label>Answer Format</label><div class="af-chips">' + chips + '</div>' +
+      '<div class="hint">Select one or more. The student can answer in any one of the formats you allow.</div></div>' +
+    (fs.indexOf('Multiple Choice') > -1 ? mcEditor(q, i) : '') +
+    '<div class="sv-box" id="sv' + i + '">' + svInner(q) + '</div>' +
+    '<div class="field" style="max-width:200px;margin:16px 0 0;"><label>Marks</label><input type="number" min="1" value="' + q.m + '" oninput="build.qs[' + i + '].m=Number(this.value)||0;syncMarks()"></div>' +
+  '</div>';
 }
 
 function addQ(kind){
-  if(kind === 'mcq'){ build.qs.push({q:'', t:'mcq', o:['','',''], a:0, m:5}); }
-  else if(kind === 'tf'){ build.qs.push({q:'', t:'tf', o:['True','False'], a:0, m:5}); }
-  else { build.qs.push({q:'', t:'w', f:'Video', m:10}); }
+  if(kind === 'mcq'){ build.qs.push({q:'', qf:'Text', t:'mcq', o:['','',''], a:0, m:5}); }
+  else if(kind === 'tf'){ build.qs.push({q:'', qf:'Text', t:'tf', o:['True','False'], a:0, m:5}); }
+  else { build.qs.push({q:'', qf:'Text', t:'w', f:'Video', fs:['Video'], m:10}); }
   renderBuild();
 }
 function delQ(i){ build.qs.splice(i, 1); renderBuild(); }
@@ -1800,6 +2019,39 @@ function syncMarks(){ var el = $('totMarks'); if(el){ el.textContent = totalMark
 function saveExam(){
   if(!build.title){ toast('Title needed', 'Give the exam a title before saving.'); return; }
   if(!build.qs.length){ toast('No questions', 'Add at least one question.'); return; }
+  var ISO_RE = /^\d{4}-\d{2}-\d{2}$/;
+  if(ISO_RE.test(build.start || '') && ISO_RE.test(build.end || '') && build.end < build.start){
+    toast('Check the dates', (build.type === 'Quiz' ? 'The expiry date' : 'The end date') + ' must be on or after the start date.'); return;
+  }
+  var n, qq, qfmt, fsel, filled, z;
+  for(n = 0; n < build.qs.length; n++){
+    qq = build.qs[n]; qfmt = qq.qf || 'Text';
+    if(qfmt !== 'Text' && (!qq.qfile || qq.qfile.fmt !== qfmt)){
+      toast('Question ' + (n + 1) + ' needs a file', 'Upload the ' + (qfmt === 'PDF' ? 'PDF' : qfmt.toLowerCase()) + ' for this question, or switch it to Text.'); return;
+    }
+    if(qq.t === 'w'){
+      fsel = fsOf(qq);
+      if(!fsel.length){ toast('Question ' + (n + 1) + ' needs an answer format', 'Select at least one answer format.'); return; }
+      if(fsel.indexOf('Multiple Choice') > -1){
+        filled = 0;
+        for(z = 0; z < (qq.o || []).length; z++){ if(String(qq.o[z]).trim()){ filled++; } }
+        if(filled < 2){ toast('Question ' + (n + 1) + ' needs choices', 'Add at least two options for the Multiple Choice answer.'); return; }
+      }
+    }
+  }
+  for(n = 0; n < build.qs.length; n++){
+    qq = build.qs[n]; qfmt = qq.qf || 'Text'; qq.qf = qfmt;
+    if(qfmt === 'Text'){ delete qq.qfile; }
+    else if(!String(qq.q).trim()){ qq.q = qfmt + ' question \u2014 ' + qq.qfile.name; }
+    if(qq.t === 'w'){
+      qq.fs = fsOf(qq).slice(); qq.f = qq.fs.join(' + ');
+      if(qq.fs.indexOf('Multiple Choice') > -1){
+        var keep = [];
+        for(z = 0; z < qq.o.length; z++){ if(String(qq.o[z]).trim()){ keep.push(qq.o[z]); } }
+        qq.o = keep;
+      } else { delete qq.o; }
+    }
+  }
   build.marks = totalMarks();
   if(build.editing){
     var i;
@@ -2000,114 +2252,407 @@ function renderQuestions(){
 
 /* =================================================================
    16. WEEKLY PLANNER
+   Built from the client's Staff Weekly Planner requirements:
+   week calendar, classes / batches / timings, student + course details,
+   tasks and activities, special events / workshops, completion ticks,
+   notes / reminders, recurring classes, cancelled / rescheduled classes,
+   weekly workload, and admin view + manage of any staff planner.
    ================================================================= */
-var weekStart = null;
+var STAFF = [
+  {id:'t1', name:'Kavitha Ramesh',   role:'Carnatic Vocal & Veena'},
+  {id:'t2', name:'Suresh Narayanan', role:'Mridangam & Violin'},
+  {id:'t3', name:'Divya Raghavan',   role:'Bharatanatyam'}
+];
+var PL_TODAY = '2026-07-28';
+var planMode = 'mine', planStaff = 't1', weekStart = null, EVMAP = {}, piType = 'task';
 var DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+var PX = 48, HS = 7, HE = 22;   /* pixels per hour, first and last hour on the calendar */
+var PL_TYPES = {task:'Task', activity:'Activity', event:'Event / Workshop', note:'Note / Reminder'};
+var PL_CLS = {task:'tsk', activity:'act', event:'evt', note:'nte'};
 
-function iso(d){
-  var m = d.getMonth() + 1, day = d.getDate();
-  return d.getFullYear() + '-' + (m < 10 ? '0' + m : m) + '-' + (day < 10 ? '0' + day : day);
-}
+/* One-off class sessions for the other staff (Kavitha's come from SESSIONS) */
+var PL_SESSIONS = {
+  t2:[
+    {id:'e1', cat:'Mridangam', course:'Level 1 Beginner', session:'Tisra &amp; Chatusra Nadai', date:'28 Jul 2026', st:'4:00 PM', en:'5:00 PM', batch:'Mridangam M1', students:6, status:'assigned'},
+    {id:'e2', cat:'Violin',    course:'Level 1 Beginner', session:'Sarali Varisai on Violin',    date:'30 Jul 2026', st:'6:00 PM', en:'7:00 PM', batch:'Violin V1',    students:5, status:'rescheduled', note:'Moved to 31 Jul, 6:00 PM'}
+  ],
+  t3:[
+    {id:'f1', cat:'Bharatanatyam', course:'Level 1 Beginner', session:'Adavu — Tatta &amp; Nattu', date:'29 Jul 2026', st:'5:30 PM', en:'6:30 PM', batch:'Natya N1', students:7, status:'assigned'},
+    {id:'f2', cat:'Bharatanatyam', course:'Level 1 Beginner', session:'Alarippu Practice',         date:'31 Jul 2026', st:'5:30 PM', en:'6:30 PM', batch:'Natya N1', students:7, status:'cancelled', note:'Studio maintenance'}
+  ]
+};
+var PL_ROSTER = {
+  'Mridangam M1':[{n:'Rohit Subramanian', e:'rohit.s@email.com'},{n:'Akash Narayan', e:'akash.n@email.com'},{n:'Varun Iyer', e:'varun.i@email.com'},
+    {n:'Sai Ganesh', e:'sai.g@email.com'},{n:'Mithun Raj', e:'mithun.r@email.com'},{n:'Ashwin Kumar', e:'ashwin.k@email.com'}],
+  'Violin V1':[{n:'Janani Krishnan', e:'janani.k@email.com'},{n:'Pooja Anand', e:'pooja.a@email.com'},{n:'Sruthi Menon', e:'sruthi.m@email.com'},
+    {n:'Keerthana Rao', e:'keerthana.r@email.com'},{n:'Anjali Das', e:'anjali.d@email.com'}],
+  'Natya N1':[{n:'Madhavi Iyer', e:'madhavi.i@email.com'},{n:'Sneha Pillai', e:'sneha.p@email.com'},{n:'Riya Nair', e:'riya.n@email.com'},
+    {n:'Aarthi Balan', e:'aarthi.b@email.com'},{n:'Kriti Sharma', e:'kriti.s@email.com'},{n:'Lavanya Raj', e:'lavanya.r@email.com'},
+    {n:'Nandini Das', e:'nandini.d@email.com'}]
+};
+/* A one-off session that has been moved: where it lands */
+var MOVED = {
+  s7:{date:'31 Jul 2026', st:'6:00 PM', en:'7:00 PM'},
+  e2:{date:'31 Jul 2026', st:'6:00 PM', en:'7:00 PM'}
+};
+/* Recurring weekly classes (dow: 0 = Monday … 6 = Sunday) */
+var RECUR = [
+  {id:'r1', staff:'t1', title:'Weekly Voice Culture',     cat:'Vocal',         course:'Level 1 Beginner',     batch:'Vocal B2',      students:12, dow:5, st:'10:00 AM', en:'11:00 AM', from:'2026-07-04'},
+  {id:'r2', staff:'t1', title:'Veena Technique Lab',      cat:'Veena',         course:'Level 1 Beginner',     batch:'Veena A1',      students:8,  dow:4, st:'5:00 PM',  en:'6:00 PM',  from:'2026-07-03'},
+  {id:'r3', staff:'t1', title:'Geetham Practice',         cat:'Vocal',         course:'Level 2 Intermediate', batch:'Vocal B1',      students:10, dow:0, st:'6:00 PM',  en:'7:00 PM',  from:'2026-07-06'},
+  {id:'r4', staff:'t2', title:'Mridangam Practice Circle',cat:'Mridangam',     course:'Level 1 Beginner',     batch:'Mridangam M1',  students:6,  dow:3, st:'4:00 PM',  en:'5:00 PM',  from:'2026-07-02'},
+  {id:'r5', staff:'t3', title:'Foundation Adavus',        cat:'Bharatanatyam', course:'Level 1 Beginner',     batch:'Natya N1',      students:7,  dow:1, st:'5:30 PM',  en:'6:30 PM',  from:'2026-07-07'}
+];
+/* Exceptions to a recurring class on one date: cancelled, or rescheduled to another slot */
+var EXC = {
+  'r2|2026-07-31':{status:'cancelled', note:'Academy holiday'},
+  'r1|2026-08-01':{status:'rescheduled', note:'Moved to Sun, 2 Aug, 10:00 AM', to:{date:'2026-08-02', st:'10:00 AM', en:'11:00 AM'}}
+};
+/* Tasks, activities, special events / workshops and notes / reminders */
+var PL_ITEMS = [
+  {id:'i1', staff:'t1', type:'task',     title:'Print Janta Varisai practice sheets', date:'2026-07-27', st:'09:00', en:'',      desc:'Copies for both batches', done:true},
+  {id:'i2', staff:'t1', type:'activity', title:'Shruti practice with Vocal B2',       date:'2026-07-28', st:'17:15', en:'17:45', desc:'Warm-up before class',    done:false},
+  {id:'i3', staff:'t1', type:'task',     title:'Evaluate Sarali written submissions', date:'2026-07-29', st:'',      en:'',      desc:'3 students pending',      done:false},
+  {id:'i4', staff:'t1', type:'event',    title:'Navaratri Recital Workshop',          date:'2026-07-30', st:'10:00', en:'13:00', desc:'Open to all batches',     done:false},
+  {id:'i5', staff:'t1', type:'note',     title:'Collect tambura from service centre', date:'2026-07-31', st:'11:00', en:'',      desc:'Reminder at 11:00 AM',    done:false},
+  {id:'i6', staff:'t1', type:'note',     title:'Share revision notes with Vocal B1',  date:'2026-08-01', st:'',      en:'',      desc:'',                        done:false},
+  {id:'i7', staff:'t2', type:'task',     title:'Tune practice mridangams',            date:'2026-07-28', st:'15:00', en:'15:45', desc:'',                        done:false},
+  {id:'i8', staff:'t2', type:'event',    title:'Laya Workshop for Senior Batches',    date:'2026-08-01', st:'14:00', en:'17:00', desc:'',                        done:false},
+  {id:'i9', staff:'t3', type:'activity', title:'Costume fitting for recital',         date:'2026-07-30', st:'16:00', en:'17:00', desc:'',                        done:false},
+  {id:'i10',staff:'t3', type:'note',     title:'Confirm studio booking for Friday',   date:'2026-07-29', st:'',      en:'',      desc:'',                        done:false}
+];
+
+/* ---------- small helpers ---------- */
+function pad(n){ return n < 10 ? '0' + n : '' + n; }
+function hx(s){ return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function iso(d){ return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function isoDate(s){ var p = s.split('-'); return new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2])); }
 function mondayOf(d){
   var x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-  var wd = (x.getDay() + 6) % 7;
-  x.setDate(x.getDate() - wd);
+  x.setDate(x.getDate() - ((x.getDay() + 6) % 7));
   return x;
 }
-function shiftWeek(n){ weekStart.setDate(weekStart.getDate() + n * 7); renderPlan(); }
+function pDate(s){ var p = s.split(' '); return p[2] + '-' + pad(MON.indexOf(p[1]) + 1) + '-' + pad(Number(p[0])); }
+function pTime(s){
+  var m = /^(\d+):(\d+)\s*(AM|PM)$/i.exec(s), h = Number(m[1]) % 12;
+  if(m[3].toUpperCase() === 'PM'){ h += 12; }
+  return h * 60 + Number(m[2]);
+}
+function hm(s){ var p = s.split(':'); return Number(p[0]) * 60 + Number(p[1]); }
+function fmtT(min){ var h = Math.floor(min / 60), ap = h >= 12 ? 'PM' : 'AM'; return (h % 12 || 12) + ':' + pad(min % 60) + ' ' + ap; }
+function fmtRange(a, b){
+  var A = fmtT(a), B = fmtT(b);
+  return A.slice(-2) === B.slice(-2) ? A.slice(0, -3) + '–' + B : A + ' – ' + B;
+}
+function dowOf(key){ return (isoDate(key).getDay() + 6) % 7; }
+function longDate(key){ var d = isoDate(key); return DAYS[dowOf(key)] + ', ' + d.getDate() + ' ' + MON[d.getMonth()] + ' ' + d.getFullYear(); }
+function hrs(min){ return (Math.round(min / 6) / 10) + ' h'; }
+function staffById(id){ var i; for(i = 0; i < STAFF.length; i++){ if(STAFF[i].id === id){ return STAFF[i]; } } return STAFF[0]; }
+function findItem(id){ var i; for(i = 0; i < PL_ITEMS.length; i++){ if(PL_ITEMS[i].id === id){ return PL_ITEMS[i]; } } return null; }
+function findRecur(id){ var i; for(i = 0; i < RECUR.length; i++){ if(RECUR[i].id === id){ return RECUR[i]; } } return null; }
+function rosterFor(batch){ return STUDENTS[batch] || PL_ROSTER[batch] || []; }
+function isCounted(ev){ return ev.status !== 'cancelled' && ev.status !== 'rescheduled'; }
 
-function renderPlan(){
-  if(!weekStart){ weekStart = mondayOf(new Date(2026, 6, 28)); }
-  var end = new Date(weekStart.getTime() + 6 * 86400000);
-  $('weekLabel').textContent = weekStart.getDate() + ' ' + MON[weekStart.getMonth()] + ' – ' +
-    end.getDate() + ' ' + MON[end.getMonth()] + ' ' + end.getFullYear();
-
-  var today = iso(new Date(2026, 6, 28));
-  var html = '', i, j, d, key, list, t;
-  for(i = 0; i < 7; i++){
-    d = new Date(weekStart.getTime() + i * 86400000);
-    key = iso(d);
-    list = [];
-    for(j = 0; j < PLANS.length; j++){ if(PLANS[j].date === key){ list.push(PLANS[j]); } }
-    list.sort(function(a, b){ return (a.time || '99').localeCompare(b.time || '99'); });
-
-    html += '<div class="day' + (key === today ? ' today' : '') + '">' +
-      '<div class="day-hd"><b>' + DAYS[i] + '</b><span>' + d.getDate() + ' ' + MON[d.getMonth()] + '</span></div>';
-    for(j = 0; j < list.length; j++){
-      t = list[j];
-      html += '<div class="task' + (t.done ? ' done' : '') + '">' +
-        '<div class="t-top"><span class="chk' + (t.done ? ' on' : '') + '" onclick="toggleTask(\'' + t.id + '\')">' +
-          '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>' +
-          '<span class="t-title">' + t.title + '</span></div>' +
-        (t.time ? '<div class="t-time">' + t.time + '</div>' : '') +
-        (t.desc ? '<div class="t-desc">' + t.desc + '</div>' : '') +
-        ((t.batch || t.cat || t.course) ? '<div class="t-meta">' +
-          (t.batch ? '<span>Batch: <b>' + t.batch + '</b></span>' : '') +
-          (t.cat ? '<span>Category: <b>' + t.cat + '</b></span>' : '') +
-          (t.course ? '<span>Course: <b>' + t.course + '</b></span>' : '') + '</div>' : '') +
-        '<div class="t-acts"><button type="button" onclick="openTask(\'' + t.id + '\')">Edit</button>' +
-        '<button type="button" onclick="delTask(\'' + t.id + '\')">Delete</button></div></div>';
+/* ---------- build one day ---------- */
+function dayClasses(staff, key){
+  var out = [], list = staff === 't1' ? SESSIONS : (PL_SESSIONS[staff] || []), i, s, mv, k, r, x, to, orig;
+  for(i = 0; i < list.length; i++){
+    s = list[i];
+    if(pDate(s.date) === key){
+      out.push({kind:'cls', key:'c|' + s.id + '|' + key, title:s.session, cat:s.cat, course:s.course, batch:s.batch,
+        students:s.students, s:pTime(s.st), e:pTime(s.en), status:s.status, note:s.note || '', rec:false, date:key, att:s.att});
     }
-    html += '<button class="day-add" type="button" onclick="openTask(null,\'' + key + '\')">+ Add plan</button></div>';
+    mv = MOVED[s.id];
+    if(mv && s.status === 'rescheduled' && pDate(mv.date) === key){
+      out.push({kind:'cls', key:'m|' + s.id + '|' + key, title:s.session, cat:s.cat, course:s.course, batch:s.batch,
+        students:s.students, s:pTime(mv.st), e:pTime(mv.en), status:'moved', rec:false, date:key,
+        note:'Rescheduled from ' + s.date + ', ' + s.st});
+    }
   }
-  $('planGrid').innerHTML = html;
+  for(i = 0; i < RECUR.length; i++){
+    r = RECUR[i];
+    if(r.staff !== staff){ continue; }
+    if(dowOf(key) === r.dow && key >= r.from){
+      x = EXC[r.id + '|' + key];
+      out.push({kind:'cls', key:'c|' + r.id + '|' + key, title:r.title, cat:r.cat, course:r.course, batch:r.batch,
+        students:r.students, s:pTime(r.st), e:pTime(r.en), status:x ? x.status : 'scheduled', note:x ? x.note : '', rec:true, date:key});
+    }
+  }
+  for(k in EXC){
+    if(!EXC.hasOwnProperty(k) || !EXC[k].to || EXC[k].to.date !== key){ continue; }
+    r = findRecur(k.split('|')[0]);
+    if(!r || r.staff !== staff){ continue; }
+    to = EXC[k].to; orig = k.split('|')[1];
+    out.push({kind:'cls', key:'m|' + k, title:r.title, cat:r.cat, course:r.course, batch:r.batch, students:r.students,
+      s:pTime(to.st), e:pTime(to.en), status:'moved', rec:true, date:key,
+      note:'Rescheduled from ' + longDate(orig) + ', ' + r.st});
+  }
+  return out;
 }
 
-function toggleTask(id){
-  var i;
-  for(i = 0; i < PLANS.length; i++){ if(PLANS[i].id === id){ PLANS[i].done = !PLANS[i].done; } }
-  renderPlan();
-}
-function delTask(id){
-  var i;
-  for(i = 0; i < PLANS.length; i++){ if(PLANS[i].id === id){ PLANS.splice(i, 1); break; } }
-  renderPlan(); toast('Plan deleted', 'Removed from your weekly planner.');
+function dayItems(staff, key){
+  var out = [], i;
+  for(i = 0; i < PL_ITEMS.length; i++){
+    if(PL_ITEMS[i].staff === staff && PL_ITEMS[i].date === key){ out.push(PL_ITEMS[i]); }
+  }
+  return out;
 }
 
-function openTask(id, dateKey){
-  var t = null, i;
-  if(id){ for(i = 0; i < PLANS.length; i++){ if(PLANS[i].id === id){ t = PLANS[i]; } } }
-  var html = mHead(t ? 'Edit Plan' : 'Add Plan', 'Only you can see your weekly planner');
-  html += '<div class="mdl-bd">' +
-    '<div class="field"><label>Title</label><input type="text" id="tkTitle" value="' + (t ? t.title.replace(/"/g, '&quot;') : '') + '" placeholder="What needs doing?"></div>' +
-    '<div class="field-row">' +
-      '<div class="field"><label>Date</label><input type="date" id="tkDate" value="' + (t ? t.date : (dateKey || iso(new Date(2026, 6, 28)))) + '"></div>' +
-      '<div class="field"><label>Time (optional)</label><input type="time" id="tkTime" value="' + (t ? t.time : '') + '"></div>' +
-    '</div>' +
-    '<div class="field-row">' +
-      '<div class="field"><label>Batch</label><select id="tkBatch">' + optList(['—'].concat(BATCHES), t ? (t.batch || '—') : '—') + '</select></div>' +
-      '<div class="field"><label>Category</label><select id="tkCat">' + optList(['—'].concat(TUTOR.categories), t ? (t.cat || '—') : '—') + '</select></div>' +
-    '</div>' +
-    '<div class="field"><label>Course</label><select id="tkCourse">' + optList(['—','Level 1 Beginner','Level 2 Intermediate','Level 3 Advanced'], t ? (t.course || '—') : '—') + '</select></div>' +
-    '<div class="field"><label>Description (optional)</label><textarea id="tkDesc" placeholder="Any detail you want to remember">' + (t ? t.desc : '') + '</textarea></div>' +
-  '</div><div class="mdl-ft">' +
-    '<button class="btn btn-outline btn-sm" type="button" onclick="closeMdl()">Cancel</button>' +
-    '<button class="btn btn-primary btn-sm" type="button" onclick="saveTask(' + (id ? '\'' + id + '\'' : 'null') + ')">' + (t ? 'Save Changes' : 'Add Plan') + '</button></div>';
-  openMdl(html, '');
+/* side-by-side lanes for entries that overlap in time */
+function layoutDay(evs){
+  evs.sort(function(a, b){ return a.s - b.s || a.e - b.e; });
+  var i, j, e, group = [], groupEnd = -1, lanes;
+  function flush(){
+    var n = lanes.length, g;
+    for(g = 0; g < group.length; g++){ group[g].n = n; }
+    group = []; lanes = [];
+  }
+  lanes = [];
+  for(i = 0; i < evs.length; i++){
+    e = evs[i];
+    if(group.length && e.s >= groupEnd){ flush(); groupEnd = -1; }
+    for(j = 0; j < lanes.length; j++){ if(lanes[j] <= e.s){ break; } }
+    lanes[j] = e.e; e.lane = j;
+    group.push(e);
+    groupEnd = Math.max(groupEnd, e.e);
+  }
+  if(group.length){ flush(); }
 }
 
-function saveTask(id){
-  var title = $('tkTitle').value.trim();
-  if(!title){ toast('Title needed', 'Give the plan a short title.'); return; }
-  function pick(id){ var v = $(id).value; return v === '\u2014' ? '' : v; }
-  var data = {title:title, date:$('tkDate').value, time:$('tkTime').value, desc:$('tkDesc').value.trim(),
-    batch:pick('tkBatch'), cat:pick('tkCat'), course:pick('tkCourse')};
-  if(id){
-    var i;
-    for(i = 0; i < PLANS.length; i++){
-      if(PLANS[i].id === id){
-        PLANS[i].title = data.title; PLANS[i].date = data.date;
-        PLANS[i].time = data.time; PLANS[i].desc = data.desc;
-        PLANS[i].batch = data.batch; PLANS[i].cat = data.cat; PLANS[i].course = data.course;
+function checkSvg(){ return '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>'; }
+function bellSvg(){ return '<svg class="wk-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg>'; }
+
+function evHtml(ev){
+  var from = HS * 60, to = HE * 60, s = Math.min(Math.max(ev.s, from), to - 20);
+  var top = (s - from) * PX / 60;
+  var height = (Math.min(Math.max(ev.e, ev.s + 20), to) - s) * PX / 60;
+  if(height < 22){ height = 22; }
+  var w = 100 / ev.n, left = ev.lane * w;
+  var cls, inner, tm = fmtRange(ev.s, ev.e), done = '';
+  EVMAP[ev.key] = ev;
+  if(ev.kind === 'cls'){
+    cls = ev.status === 'cancelled' ? 'cx' : (ev.status === 'rescheduled' ? 'mv' : (ev.status === 'moved' ? 'gh' : 'cls'));
+    inner = '<div class="ttl"><span>' + ev.title + '</span></div>' +
+      '<span class="tm">' + tm + '</span>' +
+      '<span class="mt">' + ev.batch + ' · ' + ev.students + ' students</span>' +
+      (ev.status === 'cancelled' ? '<span class="tg">Cancelled</span>' :
+       ev.status === 'rescheduled' ? '<span class="tg">Rescheduled</span>' :
+       ev.status === 'moved' ? '<span class="tg">Moved here</span>' :
+       ev.rec ? '<span class="tg rc">↻ Recurring</span>' : '');
+  } else {
+    var it = ev.it, check = '';
+    cls = PL_CLS[it.type];
+    if(it.type === 'task' || it.type === 'activity'){
+      check = '<span class="wk-chk' + (it.done ? ' on' : '') + '" onclick="event.stopPropagation();togglePlan(\'' + it.id + '\')">' + checkSvg() + '</span>';
+      if(it.done){ done = ' done'; }
+    } else if(it.type === 'note'){
+      check = bellSvg();
+    }
+    inner = '<div class="ttl">' + check + '<span>' + hx(it.title) + '</span></div>' +
+      '<span class="tm">' + (it.type === 'note' ? 'Reminder · ' + fmtT(ev.s) : tm) + '</span>' +
+      (it.type === 'event' ? '<span class="tg" style="color:#C2457A">Event / Workshop</span>' : '');
+  }
+  return '<div class="wk-ev ' + cls + done + '" style="top:' + top + 'px;height:' + height + 'px;left:calc(' + left + '% + 2px);width:calc(' + w + '% - 4px);" ' +
+    'onclick="openEv(\'' + ev.key + '\')" title="' + hx(ev.kind === 'cls' ? ev.title.replace(/&amp;/g, '&') : ev.it.title) + '">' + inner + '</div>';
+}
+
+function chipHtml(it){
+  var check = '';
+  EVMAP['i|' + it.id] = {kind:'item', it:it, key:'i|' + it.id};
+  if(it.type === 'task' || it.type === 'activity'){
+    check = '<span class="wk-chk' + (it.done ? ' on' : '') + '" onclick="event.stopPropagation();togglePlan(\'' + it.id + '\')">' + checkSvg() + '</span>';
+  } else if(it.type === 'note'){
+    check = bellSvg();
+  }
+  return '<div class="wk-chip ' + PL_CLS[it.type] + ((it.done && (it.type === 'task' || it.type === 'activity')) ? ' done' : '') +
+    '" onclick="openEv(\'i|' + it.id + '\')">' + check + '<span class="t">' + hx(it.title) + '</span></div>';
+}
+
+/* ---------- the week ---------- */
+function renderPlan(){
+  if(!weekStart){ weekStart = mondayOf(isoDate(PL_TODAY)); }
+  var wy = weekStart.getFullYear(), wm = weekStart.getMonth(), wd = weekStart.getDate();
+  var end = new Date(wy, wm, wd + 6), st = staffById(planStaff);
+  $('weekLabel').textContent = wd + ' ' + MON[wm] + ' – ' + end.getDate() + ' ' + MON[end.getMonth()] + ' ' + end.getFullYear();
+  $('planSub').textContent = planMode === 'admin'
+    ? 'Viewing and managing ' + st.name + '\u2019s planner.'
+    : 'Your classes, tasks, events and reminders for the week.';
+  var segs = $('planMode').querySelectorAll('button');
+  segs[0].classList.toggle('active', planMode === 'mine');
+  segs[1].classList.toggle('active', planMode === 'admin');
+  renderPlanAdmin();
+
+  EVMAP = {};
+  var head = '<div class="wk-corner"></div>', any = '<div class="wk-any-l">Anytime</div>', body = '', gut = '';
+  var nCls = 0, mins = 0, batches = {}, nBatch = 0, tDone = 0, tAll = 0, nEvt = 0;
+  var i, j, d, key, today, cls, its, timed, untimed, dayN, dayMin, ev, it, s, e, h;
+
+  for(h = HS; h <= HE; h++){ gut += '<span style="top:' + ((h - HS) * PX) + 'px">' + (h === HS ? '' : fmtT(h * 60).replace(':00', '')) + '</span>'; }
+  body = '<div class="wk-gut">' + gut + '</div>';
+
+  for(i = 0; i < 7; i++){
+    d = new Date(wy, wm, wd + i); key = iso(d); today = key === PL_TODAY;
+    cls = dayClasses(planStaff, key); its = dayItems(planStaff, key);
+    timed = []; untimed = []; dayN = 0; dayMin = 0;
+    for(j = 0; j < cls.length; j++){
+      ev = cls[j]; timed.push(ev);
+      if(isCounted(ev)){
+        dayN++; dayMin += ev.e - ev.s;
+        if(!batches[ev.batch]){ batches[ev.batch] = 1; nBatch++; }
       }
     }
-    toast('Plan updated', data.title);
-  } else {
-    PLANS.push({id:'p' + Date.now(), date:data.date, time:data.time, title:data.title, desc:data.desc,
-      batch:data.batch, cat:data.cat, course:data.course, done:false});
-    toast('Plan added', data.title);
+    for(j = 0; j < its.length; j++){
+      it = its[j];
+      if(it.type === 'task' || it.type === 'activity'){ tAll++; if(it.done){ tDone++; } }
+      if(it.type === 'event'){ nEvt++; }
+      if(it.st){
+        s = hm(it.st); e = it.en ? Math.max(hm(it.en), s + 20) : s + 30;
+        timed.push({kind:'item', it:it, s:s, e:e, key:'i|' + it.id});
+      } else { untimed.push(it); }
+    }
+    nCls += dayN; mins += dayMin;
+    layoutDay(timed);
+
+    head += '<div class="wk-dh' + (today ? ' today' : '') + '"><b>' + DAYS[i] + '</b><span>' + d.getDate() + ' ' + MON[d.getMonth()] + '</span>' +
+      '<small>' + (dayN ? dayN + (dayN === 1 ? ' class · ' : ' classes · ') + hrs(dayMin) : 'No classes') + '</small>' +
+      '<button class="wk-plus" type="button" title="Add to ' + DAYS[i] + '" onclick="openPlanItem(null,\'' + key + '\')">+</button></div>';
+    any += '<div class="wk-any' + (today ? ' today' : '') + '">' + untimed.map(chipHtml).join('') + '</div>';
+    body += '<div class="wk-col' + (today ? ' today' : '') + '">' + timed.map(evHtml).join('') + '</div>';
   }
+  $('wkGrid').innerHTML = head + any + body;
+
+  $('wkKpi').innerHTML =
+    '<div class="kpi"><small>Classes</small><b>' + nCls + '</b></div>' +
+    '<div class="kpi"><small>Teaching Hours</small><b>' + hrs(mins) + '</b></div>' +
+    '<div class="kpi"><small>Batches</small><b>' + nBatch + '</b></div>' +
+    '<div class="kpi good"><small>Tasks &amp; Activities Done</small><b>' + tDone + ' / ' + tAll + '</b></div>' +
+    '<div class="kpi"><small>Events &amp; Workshops</small><b>' + nEvt + '</b></div>';
+
+  $('wkLegend').innerHTML =
+    '<span><i style="background:#E1F5F1;border-color:#12A594"></i>Class</span>' +
+    '<span style="color:var(--teal-2)">↻ Recurring class</span>' +
+    '<span><i style="background:#E6EEFD;border-color:#2E6FE0;border-style:dashed"></i>Rescheduled</span>' +
+    '<span><i style="background:#DCE9F2;border-color:#6C8299"></i>Cancelled</span>' +
+    '<span><i style="background:#FBF0D9;border-color:#C5841D"></i>Task</span>' +
+    '<span><i style="background:#EEE8FB;border-color:#7C5CD6"></i>Activity</span>' +
+    '<span><i style="background:#FCE6EF;border-color:#C2457A"></i>Event / Workshop</span>' +
+    '<span><i style="background:#fff;border-color:#6C8299;border-style:dashed"></i>Note / Reminder</span>';
+}
+
+function renderPlanAdmin(){
+  if(planMode !== 'admin'){ $('planAdmin').innerHTML = ''; return; }
+  var o = '', i;
+  for(i = 0; i < STAFF.length; i++){
+    o += '<option value="' + STAFF[i].id + '"' + (STAFF[i].id === planStaff ? ' selected' : '') + '>' + STAFF[i].name + ' — ' + STAFF[i].role.replace(/&/g, '&amp;') + '</option>';
+  }
+  $('planAdmin').innerHTML = '<div class="wk-admin"><div class="fb"><label>Staff member</label>' +
+    '<select onchange="setPlanStaff(this.value)">' + o + '</select></div>' +
+    '<p>Admin view — you can add, edit, tick off and delete entries in this staff member\u2019s planner. Class sessions are assigned elsewhere and are shown read-only.</p></div>';
+}
+
+function setPlanMode(m){ planMode = m; if(m === 'mine'){ planStaff = 't1'; } renderPlan(); }
+function setPlanStaff(id){ planStaff = id; renderPlan(); }
+function shiftWeek(n){ weekStart = new Date(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate() + n * 7); renderPlan(); }
+function gotoToday(){ weekStart = mondayOf(isoDate(PL_TODAY)); renderPlan(); }
+
+function togglePlan(id){ var it = findItem(id); if(it){ it.done = !it.done; renderPlan(); } }
+
+function openEv(key){
+  if(key.charAt(0) === 'i'){ openPlanItem(key.slice(2)); } else { openClass(key); }
+}
+
+/* ---------- class details: course, batch, students ---------- */
+function openClass(key){
+  var ev = EVMAP[key];
+  if(!ev){ return; }
+  var tagCls = ev.status === 'cancelled' ? 'cancelled' : (ev.status === 'rescheduled' || ev.status === 'moved' ? 'rescheduled' : (S_LABEL[ev.status] ? ev.status : 'assigned'));
+  var tagTxt = ev.status === 'moved' ? 'Rescheduled' : (S_LABEL[ev.status] || 'Scheduled');
+  var roster = rosterFor(ev.batch), i, list = '';
+  for(i = 0; i < roster.length; i++){
+    list += '<li><span class="av">' + initials(roster[i].n) + '</span><div><b>' + roster[i].n + '</b><em>' + roster[i].e + '</em></div></li>';
+  }
+  var html = mHead(ev.title, ev.cat + ' – ' + ev.course) +
+    '<div class="mdl-bd">' +
+    '<div class="wk-facts">' +
+      '<div><small>Date</small><b>' + longDate(ev.date) + '</b></div>' +
+      '<div><small>Time</small><b>' + fmtRange(ev.s, ev.e) + '</b></div>' +
+      '<div><small>Status</small><b><span class="tag ' + tagCls + '">' + tagTxt + '</span></b></div>' +
+      '<div><small>Batch</small><b>' + ev.batch + '</b></div>' +
+      '<div><small>Students</small><b>' + ev.students + '</b></div>' +
+      '<div><small>Class Type</small><b>' + (ev.rec ? '↻ Recurring weekly' : 'One-off session') + '</b></div>' +
+    '</div>' +
+    (ev.note ? '<div class="wk-note ' + (ev.status === 'cancelled' ? 'cx' : (ev.status === 'rescheduled' || ev.status === 'moved' ? 'mv' : '')) + '">' + ev.note + '</div>' : '') +
+    '<div class="wk-sub">Students in ' + ev.batch + '</div>' +
+    (list ? '<div class="wk-roster"><ul class="plist">' + list + '</ul></div>' : '<p style="font-size:13.5px;">No student list is available for this batch.</p>') +
+    '</div><div class="mdl-ft"><button class="btn btn-outline btn-sm" type="button" onclick="closeMdl()">Close</button></div>';
+  openMdl(html, 'wide');
+}
+
+/* ---------- add / edit a task, activity, event or note ---------- */
+function openPlanItem(id, dateKey){
+  var t = id ? findItem(id) : null, st = staffById(planStaff), k, segs = '';
+  if(id && !t){ return; }
+  piType = t ? t.type : 'task';
+  for(k in PL_TYPES){
+    if(PL_TYPES.hasOwnProperty(k)){ segs += '<button type="button" data-t="' + k + '" class="' + (k === piType ? 'active' : '') + '" onclick="pickPiType(\'' + k + '\')">' + PL_TYPES[k] + '</button>'; }
+  }
+  var html = mHead(t ? 'Edit Planner Entry' : 'Add to Planner', planMode === 'admin' ? 'In ' + st.name + '\u2019s planner' : 'In your weekly planner');
+  html += '<div class="mdl-bd">' +
+    '<div class="field"><label>Type</label><div class="seg" id="piSeg" style="flex-wrap:wrap;">' + segs + '</div></div>' +
+    '<div class="field"><label>Title</label><input type="text" id="piTitle" value="' + (t ? hx(t.title) : '') + '" placeholder="What is it?"></div>' +
+    '<div class="field-row three">' +
+      '<div class="field"><label>Date</label><input type="date" id="piDate" value="' + (t ? t.date : (dateKey || PL_TODAY)) + '"></div>' +
+      '<div class="field"><label id="piTimeL">Start time (optional)</label><input type="time" id="piSt" value="' + (t ? t.st : '') + '"></div>' +
+      '<div class="field" id="piEndW"><label>End time (optional)</label><input type="time" id="piEn" value="' + (t ? t.en : '') + '"></div>' +
+    '</div>' +
+    '<div class="field"><label id="piDescL">Description (optional)</label><textarea id="piDesc" placeholder="Add any detail">' + (t ? hx(t.desc) : '') + '</textarea></div>' +
+    '<label class="wk-done" id="piDoneW"><input type="checkbox" id="piDone"' + (t && t.done ? ' checked' : '') + '> Mark as completed</label>' +
+  '</div><div class="mdl-ft">' +
+    (t ? '<button class="btn btn-danger btn-sm" type="button" style="margin-right:auto;" onclick="deletePlanItem(\'' + id + '\')">Delete</button>' : '') +
+    '<button class="btn btn-outline btn-sm" type="button" onclick="closeMdl()">Cancel</button>' +
+    '<button class="btn btn-primary btn-sm" type="button" onclick="savePlanItem(' + (id ? '\'' + id + '\'' : 'null') + ')">' + (t ? 'Save Changes' : 'Add to Planner') + '</button></div>';
+  openMdl(html, 'wide');
+  syncPi(!!t);
+}
+function pickPiType(k){
+  piType = k;
+  var bs = $('piSeg').querySelectorAll('button'), i;
+  for(i = 0; i < bs.length; i++){ bs[i].classList.toggle('active', bs[i].getAttribute('data-t') === k); }
+  syncPi(!!$('piDoneW').getAttribute('data-edit'));
+}
+function syncPi(editing){
+  var note = piType === 'note', todo = piType === 'task' || piType === 'activity';
+  $('piTimeL').textContent = note ? 'Reminder time (optional)' : 'Start time (optional)';
+  $('piEndW').style.display = note ? 'none' : '';
+  $('piDescL').textContent = note ? 'Note' : 'Description (optional)';
+  $('piDoneW').style.display = (todo && editing) ? 'flex' : 'none';
+  $('piDoneW').setAttribute('data-edit', editing ? '1' : '');
+}
+function savePlanItem(id){
+  var title = $('piTitle').value.trim(), date = $('piDate').value, st = $('piSt').value;
+  var en = piType === 'note' ? '' : $('piEn').value;
+  if(!title){ toast('Title needed', 'Give the entry a short title.'); return; }
+  if(!date){ toast('Date needed', 'Choose the date for this entry.'); return; }
+  if(en && !st){ toast('Start time needed', 'Add a start time, or clear the end time.'); return; }
+  if(en && st && hm(en) <= hm(st)){ toast('Check the times', 'The end time must be after the start time.'); return; }
+  var todo = piType === 'task' || piType === 'activity', it;
+  if(id){
+    it = findItem(id);
+    it.type = piType; it.title = title; it.date = date; it.st = st; it.en = en; it.desc = $('piDesc').value.trim();
+    it.done = todo ? $('piDone').checked : false;
+    toast('Entry updated', title);
+  } else {
+    PL_ITEMS.push({id:'i' + Date.now(), staff:planStaff, type:piType, title:title, date:date, st:st, en:en,
+      desc:$('piDesc').value.trim(), done:false});
+    toast('Added to planner', title);
+  }
+  weekStart = mondayOf(isoDate(date));
   closeMdl(); renderPlan();
+}
+function deletePlanItem(id){
+  var i;
+  for(i = 0; i < PL_ITEMS.length; i++){ if(PL_ITEMS[i].id === id){ PL_ITEMS.splice(i, 1); break; } }
+  closeMdl(); renderPlan(); toast('Entry deleted', 'Removed from the planner.');
 }
 
 /* =================================================================
