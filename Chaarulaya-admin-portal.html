@@ -23,6 +23,7 @@
   --good:#1E9A6C; --good-bg:#DFF5EC;
   --bad:#D6455A; --bad-bg:#FCE6E9;
   --warn:#C5841D; --warn-bg:#FBF0D9;
+  --late:#E8740C; --late-bg:#FDE6D2;
   --info:#2E6FE0; --info-bg:#E6EEFD;
   --violet:#7C5CD6; --violet-bg:#EEE8FB;
   --shadow:0 20px 48px -26px rgba(14,42,66,.24);
@@ -327,6 +328,15 @@ body.locked{overflow:hidden;}
 @media(max-width:960px){.info-grid{grid-template-columns:repeat(2,1fr);}}
 .banner-thumb{width:100%;aspect-ratio:16/6;border-radius:13px;overflow:hidden;background:var(--bg-2);margin-bottom:14px;}
 .banner-thumb img{width:100%;height:100%;object-fit:cover;}
+.banner-thumb.sm{max-width:420px;aspect-ratio:16/5;}
+.banner-thumb.empty-banner{display:flex;align-items:center;justify-content:center;font-size:12.6px;color:var(--ink-soft);border:1.5px dashed var(--line);}
+.banner-in{display:flex;gap:8px;align-items:center;}
+.banner-in input[type=text]{flex:1;min-width:0;}
+.banner-prev{display:flex;align-items:center;gap:12px;margin-top:10px;padding:8px;border:1px solid var(--line);border-radius:11px;background:var(--bg);flex-wrap:wrap;}
+.banner-prev img{width:150px;aspect-ratio:16/6;object-fit:cover;border-radius:8px;background:var(--bg-2);}
+.banner-prev span{font-size:12.6px;font-weight:600;color:var(--ink-2);flex:1;min-width:0;overflow-wrap:anywhere;}
+.banner-prev.bad img{visibility:hidden;}
+.banner-prev.bad span::after{content:" �4 could not load this image";color:var(--bad);}
 
 .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 19px;box-shadow:var(--shadow-sm);}
 .card + .card{margin-top:14px;}
@@ -362,11 +372,45 @@ body.locked{overflow:hidden;}
   font-size:12px;font-weight:700;background:var(--bg);color:var(--ink-soft);}
 .cal-cell.p{background:var(--good-bg);color:var(--good);}
 .cal-cell.a{background:var(--bad-bg);color:var(--bad);}
-.cal-cell.l{background:var(--warn-bg);color:var(--warn);}
+.cal-cell.l{background:var(--late-bg);color:var(--late);}
 .cal-cell.blank{background:transparent;}
 .cal-legend{display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;}
 .cal-legend span{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--ink-2);}
 .cal-legend i{width:11px;height:11px;border-radius:4px;display:block;}
+.seg-row{display:flex;justify-content:space-between;align-items:center;gap:12px 20px;flex-wrap:wrap;margin-bottom:16px;}
+.cal-legend.top{margin-top:0;background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:9px 14px;gap:18px;}
+.cal-legend.top i{width:14px;height:14px;border-radius:4px;}
+.brand-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;}
+.brand-card + .brand-card{margin-top:0;}
+.brand-prev{height:170px;border:1.5px dashed var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;padding:12px;text-align:center;
+  background:repeating-conic-gradient(#F4F7FA 0% 25%, #fff 0% 50%) 50% / 18px 18px;}
+.brand-prev.sig{height:120px;}
+.brand-prev img{max-width:100%;max-height:100%;object-fit:contain;}
+.brand-prev span{font-size:12.6px;color:var(--ink-soft);max-width:220px;background:var(--surface);padding:4px 8px;border-radius:8px;}
+.yt-thumb{position:relative;display:block;width:120px;aspect-ratio:16/9;border-radius:9px;overflow:hidden;background:var(--navy);}
+.yt-thumb img{width:100%;height:100%;object-fit:cover;}
+.yt-thumb span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;background:rgba(0,0,0,.25);}
+.cred-gen{border:1px solid var(--line);border-radius:13px;padding:13px 14px 12px;background:var(--bg);margin-bottom:6px;}
+.cred-gen-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.cred-gen-hd b{font-family:var(--head);font-size:14px;font-weight:800;}
+.cred-gen .field{margin-bottom:10px;}
+.cred-gen-ft{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+.pw-wrap{display:flex;gap:8px;align-items:center;}
+.pw-wrap input{flex:1;min-width:0;}
+@media(max-width:860px){.brand-grid{grid-template-columns:1fr;}}
+.cred-box{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);}
+.cred-box.flat{margin-top:0;padding-top:0;border-top:none;}
+.cred-hd{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+.cred-hd b{display:flex;align-items:center;gap:8px;font-family:var(--head);font-size:14.5px;font-weight:800;}
+.cred-hd svg{width:16px;height:16px;stroke:var(--teal-2);stroke-width:2;fill:none;}
+.cred-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 18px;}
+.cred-box.flat .cred-grid{grid-template-columns:1fr;}
+.cred-grid small{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px;}
+.cred-grid b{font-size:13.4px;font-weight:700;}
+.cred-val{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.cred-val .masked{letter-spacing:.12em;}
+.cred-note{font-size:12px;color:var(--ink-soft);}
+@media(max-width:760px){.cred-grid{grid-template-columns:1fr;}}
 
 /* full-year attendance view: compact per-month blocks */
 .year-cal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
@@ -376,9 +420,9 @@ body.locked{overflow:hidden;}
 .mini-cal-dow{font-size:12px;font-weight:700;text-align:center;color:var(--ink-soft);letter-spacing:.02em;}
 .mini-cal-cell{aspect-ratio:1/1;border-radius:4px;display:flex;align-items:center;justify-content:center;
   font-size:12px;font-weight:700;background:transparent;color:var(--ink-soft);}
-.mini-cal-cell.p{background:var(--good-bg);color:var(--good);}
-.mini-cal-cell.a{background:var(--bad-bg);color:var(--bad);}
-.mini-cal-cell.l{background:var(--warn-bg);color:var(--warn);}
+.mini-cal-cell.p{background:#CDEFDD;color:#157A53;}
+.mini-cal-cell.a{background:#F9D3D9;color:#C2334A;}
+.mini-cal-cell.l{background:#FDDCC0;color:#C25E06;}
 .mini-cal-cell.blank{background:transparent;}
 @media(max-width:1200px){.year-cal-grid{grid-template-columns:repeat(3,1fr);}}
 @media(max-width:760px){.year-cal-grid{grid-template-columns:repeat(2,1fr);}}
@@ -718,13 +762,19 @@ body.locked{overflow:hidden;}
 .rc-sum .paid b{font-size:16px;}
 .rc-sum .bal b{color:#B3361E;}
 .rc-sum .clear b{color:#1D7A4E;}
-.rc-auth{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;gap:8mm;padding-top:6mm;}
-.rc-note{font-size:12px;color:var(--rc-soft);max-width:82mm;line-height:1.55;}
+.rc-auth{margin-top:auto;padding-top:5mm;}
+.rc-note{font-size:12px;color:var(--rc-soft);line-height:1.55;margin-bottom:4mm;}
 .rc-note b{color:var(--rc-ink);font-weight:700;}
-.rc-sign{display:flex;align-items:flex-end;gap:5mm;}
-.rc-seal{width:34mm;height:34mm;transform:rotate(-8deg);}
-.rc-sig{text-align:center;min-width:52mm;}
-.rc-sig .ln{height:12mm;border-bottom:1px solid var(--rc-ink);}
+.rc-sign{display:grid;grid-template-columns:1fr 36mm 1fr;align-items:end;gap:8mm;border-top:1px dashed var(--rc-line);padding-top:4mm;}
+.rc-place{display:grid;grid-template-columns:auto 1fr;gap:1.2mm 4mm;font-size:12.5px;align-self:end;}
+.rc-place span{color:var(--rc-soft);}
+.rc-place b{font-weight:700;color:var(--rc-ink);}
+.rc-seal-box{width:36mm;height:36mm;display:flex;align-items:center;justify-content:center;}
+.rc-seal{max-width:100%;max-height:100%;object-fit:contain;}
+.rc-sig{text-align:center;justify-self:end;min-width:56mm;}
+.rc-sig .ln{height:16mm;border-bottom:1px solid var(--rc-ink);display:flex;align-items:flex-end;justify-content:center;padding-bottom:1mm;}
+.rc-sig .ln img{max-height:15mm;max-width:52mm;object-fit:contain;}
+.rc-sig .lbl{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--rc-soft);margin-top:1.4mm;}
 .rc-sig b{display:block;font-size:13px;font-weight:700;margin-top:1.6mm;}
 .rc-sig span{display:block;font-size:12px;color:var(--rc-soft);line-height:1.5;}
 .rc-foot{margin-top:5mm;padding-top:3mm;border-top:1px solid var(--rc-line);display:flex;justify-content:space-between;gap:6mm;font-size:12px;color:var(--rc-soft);}
@@ -798,7 +848,7 @@ body.locked{overflow:hidden;}
       <a href="#" data-p="pDoubts" onclick="return go(this)">
         <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M9.6 9a2.5 2.5 0 114.9.6c0 1.4-2.5 1.5-2.5 2.9"/><circle cx="12" cy="15.4" r=".9"/></svg>Doubts</a>
       <a href="#" data-p="pRetention" onclick="return go(this)">
-        <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-2.64-6.36"/><path d="M21 4v5h-5"/><path d="M9 12l2 2 4-4"/></svg>Retention</a>
+        <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-2.64-6.36"/><path d="M21 4v5h-5"/><path d="M9 12l2 2 4-4"/></svg>Attendance</a>
       <a href="#" data-p="pExams" onclick="return go(this)">
         <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>Exam</a>
       <a href="#" data-p="pPrograms" onclick="return go(this)">
@@ -855,7 +905,7 @@ body.locked{overflow:hidden;}
 
       <!-- ============================= DASHBOARD ============================= -->
       <div class="panel on" id="pDash">
-        <div class="kpis" id="dashKpi"></div>
+        <div class="kpis four" id="dashKpi"></div>
         <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:18px;align-items:start" id="dashCols"></div>
       </div>
 
@@ -902,7 +952,6 @@ body.locked{overflow:hidden;}
           </table></div></div>
         </div>
         <div id="progReq" style="display:none">
-          <details class="policy" id="policyCard"></details>
           <div class="kpis four" id="reqKpi"></div>
           <div class="fbar" id="reqFilter"></div>
           <div class="tbl"><div class="tbl-scroll"><table>
@@ -1009,10 +1058,13 @@ body.locked{overflow:hidden;}
       <div class="panel" id="pStudentView">
         <a href="#" class="back" onclick="goPanel('pStudents');return false;"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Back to Students</a>
         <div id="sdInfo"></div>
-        <div class="seg" id="sdSeg" style="margin-bottom:16px">
+        <div class="seg-row">
+        <div class="seg" id="sdSeg">
           <button class="active" onclick="setStudTab('att')">Attendance</button>
           <button onclick="setStudTab('exam')">Exams</button>
           <button onclick="setStudTab('pay')">Payments</button>
+        </div>
+        <div class="cal-legend top" id="sdLegend" aria-label="Attendance colour key"><span><i style="background:var(--good)"></i>Present</span><span><i style="background:var(--bad)"></i>Absent</span><span><i style="background:var(--late)"></i>Late</span></div>
         </div>
         <div id="sdBody"></div>
       </div>
@@ -1041,7 +1093,7 @@ body.locked{overflow:hidden;}
         <div class="kpis four" id="enqKpi"></div>
         <div class="fbar" id="enqFilter"></div>
         <div class="tbl"><div class="tbl-scroll"><table>
-          <thead><tr><th>Student Name</th><th>WhatsApp</th><th>Enquiry</th><th>Status</th><th>Action</th></tr></thead>
+          <thead><tr><th>Student Name</th><th>WhatsApp</th><th>Date &amp; Time</th><th>Enquiry</th><th>Status</th><th>Action</th></tr></thead>
           <tbody id="enqBody"></tbody>
         </table></div></div>
       </div>
@@ -1061,13 +1113,13 @@ body.locked{overflow:hidden;}
 
       <!-- ============================= RETENTION (academy-wide attendance + retention signals) ============================= -->
       <div class="panel" id="pRetention">
-        <div class="head"><div><h2>Retention</h2><p>Attendance and fee standing for every student, so at-risk students are easy to spot.</p></div>
+        <div class="head"><div><h2>Attendance</h2><p>Academy-wide attendance, student by student, with at-risk students flagged.</p></div>
           <button class="btn btn-out" onclick="toast('Export started','Attendance report is downloading as CSV.')">
             <svg viewBox="0 0 24 24"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>Export Report</button></div>
         <div class="kpis four" id="attKpi"></div>
         <div class="fbar" id="attFilter"></div>
         <div class="tbl"><div class="tbl-scroll"><table>
-          <thead><tr><th>Student</th><th>Batch</th><th>Present</th><th>Absent</th><th>Late</th><th>Overall %</th><th>Fee Balance</th><th>Retention Risk</th></tr></thead>
+          <thead><tr><th>Student</th><th>Batch</th><th>Present</th><th>Absent</th><th>Late</th><th>Overall %</th><th>Retention Risk</th></tr></thead>
           <tbody id="attBody"></tbody>
         </table></div></div>
       </div>
@@ -1098,6 +1150,8 @@ body.locked{overflow:hidden;}
           <button class="active" onclick="setMasterTab('cat')">Categories</button>
           <button onclick="setMasterTab('method')">Payment Methods</button>
           <button onclick="setMasterTab('tz')">Time Zones</button>
+          <button onclick="setMasterTab('seal')">Seal &amp; Signature</button>
+          <button onclick="setMasterTab('yt')">YouTube Links</button>
         </div>
         <div id="masterBody"></div>
       </div>
@@ -1206,15 +1260,61 @@ function copyAllCreds(){
   copyToClipboard($('lcUser').value + '\n' + $('lcPass').value);
   toast('Copied', 'Username and password copied together.');
 }
+/* Passwords are only ever held as a one-way hash, so no screen can show a
+   stored password. Admins see the username, a masked password and when it
+   was last set; issuing a new password shows it once, for handing over. */
+function genStrongPassword(len){
+  len = len || 14;
+  var sets = ['ABCDEFGHJKLMNPQRSTUVWXYZ', 'abcdefghijkmnopqrstuvwxyz', '23456789', '@#$%&*!?'];
+  var all = sets.join(''), out = [], r = new Uint32Array(len + sets.length), i;
+  crypto.getRandomValues(r);
+  for(i=0;i<sets.length;i++){ out.push(sets[i].charAt(r[i] % sets[i].length)); }      /* one of each kind */
+  for(i=sets.length;i<len;i++){ out.push(all.charAt(r[i] % all.length)); }
+  for(i=out.length-1;i>0;i--){ var j = r[i] % (i+1), t = out[i]; out[i] = out[j]; out[j] = t; } /* shuffle */
+  return out.join('');
+}
+async function hashPassword(pw){
+  try{
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
+    return Array.prototype.map.call(new Uint8Array(buf), function(b){ return ('0'+b.toString(16)).slice(-2); }).join('');
+  }catch(e){ return 'hashed'; }
+}
+function loginEntity(kind, id){ return kind==='staff' ? findStaff(id) : findStudent(id); }
+function loginUser(kind, e){ return kind==='staff' ? e.username : e.email; }
+function credSection(kind, e){
+  return '<div class="cred-box"><div class="cred-hd"><b><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Login Credentials</b>' +
+    '<button class="btn btn-out sm" type="button" onclick="resetPassword(\'' + kind + '\',\'' + e.id + '\')">Reset Password</button></div>' +
+    '<div class="cred-grid">' +
+      '<div><small>Username</small><div class="cred-val"><b>' + loginUser(kind, e) + '</b><button class="mini ghost" type="button" onclick="copyToClipboard(\'' + esc(loginUser(kind, e)) + '\');toast(\'Copied\',\'Username copied.\')">Copy</button></div></div>' +
+      '<div><small>Password</small><div class="cred-val"><b class="masked">••••••••••</b><span class="cred-note">Stored encrypted — cannot be viewed</span></div></div>' +
+      '<div><small>Password Last Set</small><b>' + (e.pwSet ? fmtDate(e.pwSet) + ', ' + fmtTime(e.pwSet) : 'At account creation') + '</b></div>' +
+    '</div></div>';
+}
 function openLoginPopup(kind, id){
-  var entity = kind==='staff' ? findStaff(id) : findStudent(id);
-  var username = kind==='staff' ? entity.username : entity.email;
-  var password = genPassword(entity.phone);
-  var html = mHead('Login Credentials', entity.name) + '<div class="mdl-bd">' +
-    credRow('Username', username, 'lcUser') + credRow('Password', password, 'lcPass') +
-    '</div><div class="mdl-ft"><button class="btn btn-out sm" type="button" onclick="closeMdl()">Close</button>' +
-    '<button class="btn btn-pri sm" type="button" onclick="copyAllCreds()">Copy All</button></div>';
-  openMdl(html, '');
+  var e = loginEntity(kind, id);
+  openMdl(mHead('Login Credentials', e.name) + '<div class="mdl-bd">' + credSection(kind, e).replace('class="cred-box"', 'class="cred-box flat"') +
+    '<p class="hint" style="margin-top:10px">For security, existing passwords are never shown. Use Reset Password to issue a new one.</p></div>' +
+    '<div class="mdl-ft"><button class="btn btn-out sm" type="button" onclick="closeMdl()">Close</button></div>', '');
+}
+function resetPassword(kind, id){
+  var e = loginEntity(kind, id);
+  openMdl(mHead('Reset Password', e.name) + '<div class="mdl-bd"><p style="font-size:13.5px">This creates a new strong password for <b>' + loginUser(kind, e) +
+    '</b>. The current password stops working immediately. The new password is shown only once, so copy it before closing.</p></div>' +
+    '<div class="mdl-ft"><button class="btn btn-out sm" type="button" onclick="closeMdl()">Cancel</button>' +
+    '<button class="btn btn-pri sm" type="button" onclick="confirmResetPassword(\'' + kind + '\',\'' + id + '\')">Generate New Password</button></div>', '');
+}
+async function confirmResetPassword(kind, id){
+  var e = loginEntity(kind, id), pw = genStrongPassword();
+  e.pwHash = await hashPassword(pw); e.pwSet = new Date(); e.mustChange = true;
+  openMdl(mHead('New Password Issued', e.name) + '<div class="mdl-bd">' +
+    credRow('Username', loginUser(kind, e), 'lcUser') + credRow('Temporary Password', pw, 'lcPass') +
+    '<div class="hint">Shown once. The user will be asked to change it at their next login.</div></div>' +
+    '<div class="mdl-ft"><button class="btn btn-out sm" type="button" onclick="closeMdl();refreshCredViews()">Done</button>' +
+    '<button class="btn btn-pri sm" type="button" onclick="copyAllCreds()">Copy Both</button></div>', '');
+  pw = null;
+}
+function refreshCredViews(){
+  if($('pStudentView').classList.contains('on')){ paintStudentView(); }
 }
 var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 var DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -1607,6 +1707,9 @@ var ENQUIRIES = [
   {id:'e5', name:'Meena Krishnamurthy', whatsapp:'+91 95001 22334', text:'Following up on my keyboard enquiry from last week.',
    status:'Pending', reply:'Sent the Keyboard C1 batch schedule, awaiting confirmation.'}
 ];
+/* when each enquiry came in */
+(function(){ var at = {e1:-60, e2:-26*60-15, e3:-10*24*60-200, e4:-12, e5:-3*24*60+95};
+  ENQUIRIES.forEach(function(e){ e.at = addMin(NOW, at[e.id] || 0); }); })();
 function findEnquiry(id){ var i; for(i=0;i<ENQUIRIES.length;i++){ if(ENQUIRIES[i].id===id){ return ENQUIRIES[i]; } } return null; }
 
 /* -----------------------------------------------------------------
@@ -1854,7 +1957,6 @@ function renderDashboard(){
   $('dashKpi').innerHTML =
     kpiTile('Total Students', STUDENTS.length, '', '<circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/>') +
     kpiTile('Active Courses', activeCourses, 'good', '<path d="M4 19V5a2 2 0 012-2h12a2 2 0 012 2v13l-4-2-4 2-4-2-4 2z"/>') +
-    kpiTile('Active Batches', activeBatches, '', '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/>') +
     kpiTile('Upcoming Sessions', upcomingSessions, 'info', '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>') +
     kpiTile('Upcoming Programs', upcomingWs, 'info', '<circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/>') +
     kpiTile('Pending Doubts', pendingDoubts, 'warn', '<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>') +
@@ -1874,18 +1976,16 @@ function renderDashboard(){
         '<span style="flex-grow:1"><b>' + a.t + '</b><span>' + a.s + '</span></span><small>' + a.w + '</small></li>';
     }).join('') + '</ul></div>';
 
-  var attRows = ATT_SUMMARY.slice().sort(function(a,b){ return attPct(a)-attPct(b); }).slice(0,4);
-  var right = '<div class="card"><h4>Attendance Overview</h4>' +
-    '<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px">' +
-    '<b style="font-size:30px;font-weight:700;color:var(--teal-2)">' + avgAtt + '%</b>' +
-    '<span style="font-size:12.5px;color:var(--ink-soft);font-weight:700">average across all batches</span></div>' +
-    '<div style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px">Lowest attendance</div>' +
-    attRows.map(function(a){
-      var p=attPct(a);
-      return '<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:12.4px;font-weight:700;margin-bottom:4px">' +
-        '<span>' + studentName(a.student) + '</span><span>' + p + '%</span></div>' +
-        '<div class="progress-track"><div class="progress-fill" style="width:' + p + '%;background:' + (p<75?'linear-gradient(90deg,var(--bad),#EF6B7D)':'linear-gradient(90deg,var(--teal),#1FC4AE)') + '"></div></div></div>';
-    }).join('') + '</div>' +
+  var nextSess = SESSIONS.filter(function(s){ return s.status==='upcoming' || s.status==='live'; }).sort(function(a,b){ return a.start-b.start; }).slice(0,5);
+  var right = '<div class="card"><h4>Upcoming Sessions</h4>' +
+    (nextSess.length ? nextSess.map(function(s){
+      return '<div class="lrow clickable" onclick="openSessionView(\'' + s.id + '\')" style="display:flex;gap:11px;align-items:center;padding:9px 0;border-top:1px solid var(--line-2)">' +
+        '<span style="width:44px;flex-shrink:0;text-align:center;background:var(--bg);border-radius:9px;padding:6px 2px">' +
+        '<b style="display:block;font-size:14px;line-height:1">' + s.start.getDate() + '</b><span style="font-size:12px;font-weight:700;color:var(--ink-soft)">' + MON[s.start.getMonth()] + '</span></span>' +
+        '<span style="flex-grow:1;min-width:0"><b style="font-size:12.8px;font-weight:700;display:block">' + s.lesson + '</b><span style="font-size:12px;color:var(--ink-soft)">' +
+        catName(s.category) + ' · ' + batchLabel(s.course,s.batch) + ' · ' + staffName(s.staff) + ' · ' + fmtTime(s.start) + '</span></span>' +
+        '<span class="tag ' + SESS_TONE[s.status] + '">' + SESS_LABEL[s.status] + '</span></div>';
+    }).join('') : '<p style="font-size:12.8px">No sessions scheduled yet.</p>') + '</div>' +
     '<div class="card"><h4>Upcoming</h4>' +
     (upcoming.length ? upcoming.map(function(u){
       return '<div class="lrow" style="display:flex;gap:11px;padding:9px 0;border-top:1px solid var(--line-2)">' +
@@ -1949,6 +2049,54 @@ function deleteCourse(id){
 }
 
 var courseLessonsDraft = [];
+/* banner image: paste a URL, or upload a file with the button beside it */
+var BANNER_UP = {};
+function bannerField(id, val, label){
+  val = val || '';
+  var up = /^data:image\//.test(val);
+  if(up){ BANNER_UP[id] = {src:val, name:'Uploaded image'}; } else { delete BANNER_UP[id]; }
+  return '<div class="field"><label for="' + id + '">' + label + '</label>' +
+    '<div class="banner-in"><input type="text" id="' + id + '" value="' + (up ? '' : val.replace(/"/g,'&quot;')) + '" placeholder="' + (up ? 'Using the uploaded image' : 'Paste an image URL (https://…)') + '" oninput="bannerUrlInput(\'' + id + '\')">' +
+    '<input type="file" id="' + id + 'File" accept="image/*" style="display:none" onchange="onBannerFile(\'' + id + '\',this)">' +
+    '<button class="btn btn-out sm" type="button" onclick="$(\'' + id + 'File\').click()"><svg viewBox="0 0 24 24"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>Upload Image</button></div>' +
+    '<div class="hint">Use either option — an uploaded image replaces the URL.</div>' +
+    '<div id="' + id + 'Prev">' + bannerPrevHtml(id, val) + '</div></div>';
+}
+function bannerPrevHtml(id, src){
+  if(!src){ return ''; }
+  var up = BANNER_UP[id];
+  return '<div class="banner-prev"><img src="' + src + '" alt="Banner preview" onerror="this.parentNode.classList.add(\'bad\')">' +
+    '<span>' + (up ? up.name : 'Image from URL') + '</span>' +
+    (up ? '<button class="mini ghost" type="button" onclick="clearBannerUpload(\'' + id + '\')">Remove upload</button>' : '') + '</div>';
+}
+function bannerUrlInput(id){
+  delete BANNER_UP[id];
+  $(id).placeholder = 'Paste an image URL (https://…)';
+  $(id + 'Prev').innerHTML = bannerPrevHtml(id, $(id).value.trim());
+}
+function onBannerFile(id, inp){
+  var f = inp.files && inp.files[0];
+  if(!f){ return; }
+  if(f.type.indexOf('image/') !== 0){ toast('Not an image', 'Choose a JPG, PNG or WebP file.'); inp.value=''; return; }
+  if(f.size > 5*1048576){ toast('Image too large', 'Use an image under 5 MB.'); inp.value=''; return; }
+  var r = new FileReader();
+  r.onload = function(){ BANNER_UP[id] = {src:r.result, name:f.name}; $(id).value = ''; $(id).placeholder = 'Using the uploaded image'; $(id + 'Prev').innerHTML = bannerPrevHtml(id, r.result); };
+  r.readAsDataURL(f);
+}
+function clearBannerUpload(id){ delete BANNER_UP[id]; $(id + 'File').value = ''; bannerUrlInput(id); }
+function bannerValue(id){ return BANNER_UP[id] ? BANNER_UP[id].src : $(id).value.trim(); }
+function openBannerUpdate(){
+  var c = findCourse(curCourseId);
+  openMdl(mHead('Update Banner', catName(c.category) + ' · ' + c.name) + '<div class="mdl-bd">' + bannerField('ubBanner', c.banner, 'Banner Image') + '</div>' +
+    '<div class="mdl-ft"><button class="btn btn-out sm" type="button" onclick="closeMdl()">Cancel</button>' +
+    '<button class="btn btn-pri sm" type="button" onclick="saveBannerUpdate()">Save Banner</button></div>', '');
+}
+function saveBannerUpdate(){
+  var c = findCourse(curCourseId), v = bannerValue('ubBanner');
+  if(!v){ toast('No image', 'Paste a URL or upload an image.'); return; }
+  c.banner = v; closeMdl(); paintCourseView();
+  toast('Banner updated', c.name);
+}
 function openCourseForm(id){
   var c = id ? findCourse(id) : null;
   courseLessonsDraft = c ? c.lessons.slice() : [];
@@ -1962,7 +2110,7 @@ function openCourseForm(id){
       '<div class="field"><label>Amount</label><input type="number" id="cfAmt" required value="' + (c?c.amount:'') + '" placeholder="9000"></div>' +
       '<div class="field"><label>Duration</label><input type="text" id="cfDur" required value="' + (c?c.duration:'') + '" placeholder="6 Months"></div>' +
     '</div>' +
-    '<div class="field"><label>Course Banner Image (URL)</label><input type="text" id="cfBanner" value="' + (c?c.banner:'') + '" placeholder="https://\u2026"></div>' +
+    bannerField('cfBanner', c?c.banner:'', 'Course Banner Image') +
     '<div class="field"><label>Description</label><textarea id="cfDesc" placeholder="What this course covers">' + (c?c.desc:'') + '</textarea></div>' +
     '<div class="field"><label>Lessons</label><div class="rep-row"><input type="text" id="cfLessonNew" placeholder="Lesson name"><button class="btn btn-out sm" type="button" onclick="addLessonDraft()">Add</button></div>' +
     '<div class="chiplist" id="cfLessonList"></div></div>' +
@@ -1989,7 +2137,7 @@ function removeLessonDraft(i){ courseLessonsDraft.splice(i,1); paintLessonDraft(
 function saveCourse(e, id){
   e.preventDefault();
   var data = {category:$('cfCat').value, name:$('cfName').value.trim(), amount:Number($('cfAmt').value)||0,
-    duration:$('cfDur').value.trim(), banner:$('cfBanner').value.trim(), desc:$('cfDesc').value.trim(), lessons:courseLessonsDraft.slice()};
+    duration:$('cfDur').value.trim(), banner:bannerValue('cfBanner'), desc:$('cfDesc').value.trim(), lessons:courseLessonsDraft.slice()};
   if(id){
     var c=findCourse(id);
     c.category=data.category; c.name=data.name; c.amount=data.amount; c.duration=data.duration;
@@ -2016,9 +2164,10 @@ function openCourseView(id){
 function paintCourseView(){
   var c = findCourse(curCourseId);
   $('cvInfo').innerHTML = '<div class="info">' +
-    (c.banner ? '<div class="banner-thumb"><img src="' + c.banner + '" alt="' + c.name + '"></div>' : '') +
+    (c.banner ? '<div class="banner-thumb sm"><img src="' + c.banner + '" alt="' + c.name + ' banner"></div>' : '<div class="banner-thumb sm empty-banner">No banner yet</div>') +
     '<div class="info-hd"><div><h3>' + c.name + '</h3><p>' + catName(c.category) + '</p></div>' +
-    '<span class="tag ' + (c.status==='active'?'good':'mute') + '">' + (c.status==='active'?'Active':'Inactive') + '</span></div>' +
+    '<div class="acts" style="align-items:flex-start"><span class="tag ' + (c.status==='active'?'good':'mute') + '" style="margin-top:7px">' + (c.status==='active'?'Active':'Inactive') + '</span>' +
+    '<button class="btn btn-out sm" type="button" onclick="openBannerUpdate()"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>Update Banner</button></div></div>' +
     '<div class="info-grid">' +
       '<div><small>Amount</small><b>' + inr(c.amount) + '</b></div>' +
       '<div><small>Duration</small><b>' + c.duration + '</b></div>' +
@@ -2267,7 +2416,7 @@ function setProgTab(t){
   bs[0].classList.toggle('active', t==='list'); bs[1].classList.toggle('active', t==='req');
   $('progList').style.display = t==='list' ? 'block' : 'none';
   $('progReq').style.display = t==='req' ? 'block' : 'none';
-  if(t==='req'){ renderPolicyCard(); renderReqKpi(); renderReqFilter(); }
+  if(t==='req'){ renderReqKpi(); renderReqFilter(); }
   syncReqCount();
 }
 function syncReqCount(){
@@ -2726,17 +2875,6 @@ var REQ_KIND = {cancel:'Cancellation', reschedule:'Reschedule', refund:'Exceptio
 var REQ_TONE = {'Pending':'warn', 'Approved':'good', 'Rejected':'bad', 'Under Management Review':'violet'};
 var REFUND_TONE = {'Not requested':'mute', 'Non-refundable':'mute', 'Not eligible':'bad', 'Under Management Review':'violet',
   'Approved — To Process':'info', 'Refunded':'good', 'Rejected':'bad'};
-function renderPolicyCard(){
-  $('policyCard').innerHTML = '<summary><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>' +
-    'Cancellation, Rescheduling &amp; Refund Policy — Workshops and Trainings<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></summary>' +
-    '<div class="policy-grid">' +
-      '<div><b>Student cancellation</b><p>Requests must reach the academy in advance. Once a workshop or training has commenced, the fee is non-refundable.</p></div>' +
-      '<div><b>Refunds</b><p>Fees are generally non-refundable and non-transferable. Exceptional refund requests may be considered at management’s discretion.</p></div>' +
-      '<div><b>Rescheduling</b><p>Students may request it before the scheduled date, subject to availability and prior academy approval. Not permitted once the session has commenced.</p></div>' +
-      '<div><b>Cancelled by the academy</b><p>Students are informed in advance and may be offered a full refund or an alternative session, as applicable.</p></div>' +
-      '<div><b>Absence / non-attendance</b><p>Absence without prior notice does not qualify for a refund or rescheduling.</p></div>' +
-    '</div>';
-}
 function renderReqKpi(){
   var pend = PROGRAM_REQUESTS.filter(function(r){ return r.status==='Pending'; }).length;
   var mgmt = PROGRAM_REQUESTS.filter(function(r){ return r.status==='Under Management Review'; }).length;
@@ -2896,8 +3034,8 @@ var SESS_LABEL = {live:'Live', upcoming:'Upcoming', completed:'Completed', cance
 var SESS_TONE = {live:'bad', upcoming:'info', completed:'good', cancelled:'mute', pending:'warn'};
 function renderSessFilter(){
   $('sessFilter').innerHTML =
-    '<div class="fb grow"><label>Search</label><div class="search-wrap"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>' +
-    '<input type="text" id="seQ" placeholder="Search sessions\u2026" oninput="renderSessions()"></div></div>' +
+    '<div class="fb grow"><label for="seQ">Search Sessions</label><div class="search-wrap"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>' +
+    '<input type="text" id="seQ" placeholder="Search by session name\u2026" oninput="renderSessions()"></div></div>' +
     selectHtml('seCat','Category',catOptions(),'renderSessions()') +
     selectHtml('seCourse','Course',courseOptions(),'renderSessions()') +
     '<div class="fb"><label>Batch</label><select id="seBatch" onchange="renderSessions()"><option value="all">All batches</option>' + allBatchOptions() + '</select></div>' +
@@ -3184,19 +3322,29 @@ function saveGroup(ids){
 function renderStudFilter(){
   $('studFilter').innerHTML =
     '<div class="fb grow"><label>Student Name</label><div class="search-wrap"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>' +
-    '<input type="text" id="stQ" placeholder="Search by name\u2026" oninput="renderStudents()"></div></div>' +
-    '<div class="fb"><label>Phone Number</label><input type="text" id="stPhone" placeholder="Phone\u2026" oninput="renderStudents()"></div>' +
-    '<div class="fb"><label>Email</label><input type="text" id="stEmailF" placeholder="Email\u2026" oninput="renderStudents()"></div>' +
+    '<input type="text" id="stQ" placeholder="Search by name…" oninput="renderStudents()"></div></div>' +
+    selectHtml('stCourse','Course',courseOptions(),'renderStudents()') +
+    selectHtml('stCat','Category',catOptions(),'renderStudents()') +
+    '<div class="fb"><label>Batch</label><select id="stBatch" onchange="renderStudents()"><option value="all">All batches</option>' + batchOptionsWithCourse() + '</select></div>' +
     '<div class="fb"><label>Status</label><select id="stStatus" onchange="renderStudents()"><option value="all">All statuses</option><option>Active</option><option>Blocked</option></select></div>' +
-    '<div class="fb"><label>&nbsp;</label><button class="btn btn-out sm" type="button" onclick="resetF([\'stQ\',\'stPhone\',\'stEmailF\',\'stStatus\'],renderStudents)">Reset</button></div>';
+    '<div class="fb"><label>&nbsp;</label><button class="btn btn-out sm" type="button" onclick="resetF([\'stQ\',\'stCourse\',\'stCat\',\'stBatch\',\'stStatus\'],renderStudents)">Reset</button></div>';
+}
+/* batch options labelled with their course so same-named batches stay distinguishable */
+function batchOptionsWithCourse(){
+  var out='', i,j,c;
+  for(i=0;i<COURSES.length;i++){ c=COURSES[i]; for(j=0;j<c.batches.length;j++){ out += '<option value="'+c.batches[j].id+'">'+c.batches[j].name+' – '+courseLabel(c)+'</option>'; } }
+  return out;
 }
 function renderStudents(){
-  var q=val('stQ',''), ph=val('stPhone',''), em=val('stEmailF',''), st=val('stStatus');
+  var q=val('stQ',''), co=val('stCourse'), cat=val('stCat'), ba=val('stBatch'), st=val('stStatus');
   var html='', i,s,shown=0;
   for(i=0;i<STUDENTS.length;i++){
     s=STUDENTS[i];
     if(st!=='all' && s.status!==st.toLowerCase()){ continue; }
-    if(!hit(s.name,q) || !hit(s.phone,ph) || !hit(s.email,em)){ continue; }
+    if(!hit(s.name,q)){ continue; }
+    if(co!=='all' && !s.enroll.some(function(en){ return en.course===co; })){ continue; }
+    if(cat!=='all' && !s.enroll.some(function(en){ var c=findCourse(en.course); return c && c.category===cat; })){ continue; }
+    if(ba!=='all' && !s.enroll.some(function(en){ return en.batch===ba; })){ continue; }
     shown++;
     var e0 = s.enroll[0], course = e0?findCourse(e0.course):null;
     var courseTxt = s.enroll.map(function(en){ return findCourse(en.course).name; }).join(', ') || '\u2014';
@@ -3220,12 +3368,13 @@ function renderStudents(){
 function toggleStudentBlock(id){
   var s=findStudent(id); s.status = s.status==='active'?'blocked':'active';
   renderStudents();
+  if($('pStudentView').classList.contains('on') && curStudentId===id){ paintStudentView(); }
   toast('Student updated', s.name + ' is now ' + s.status + '.');
 }
 function deleteStudent(id){
   var s=findStudent(id);
   askDelete('Student', 'This permanently removes <b>' + s.name + '</b> and their enrolment history.',
-    "function(){ STUDENTS=STUDENTS.filter(function(x){return x.id!=='" + id + "';}); renderStudents(); toast('Student deleted','" + esc(s.name) + " has been removed.'); }");
+    "function(){ STUDENTS=STUDENTS.filter(function(x){return x.id!=='" + id + "';}); if($('pStudentView').classList.contains('on')){ goPanel('pStudents'); } else { renderStudents(); } toast('Student deleted','" + esc(s.name) + " has been removed.'); }");
 }
 function openStudentForm(id){
   var s = id ? findStudent(id) : null;
@@ -3273,6 +3422,7 @@ function saveStudent(e, id){
     toast('Student added', ns.name + ' enrolled.');
   }
   closeMdl(); renderStudents();
+  if(id && $('pStudentView').classList.contains('on')){ paintStudentView(); }
   return false;
 }
 
@@ -3288,13 +3438,18 @@ function paintStudentView(){
   var att = ATT_SUMMARY.filter(function(a){ return a.student===s.id; })[0];
   $('sdInfo').innerHTML = '<div class="info"><div class="info-hd"><div style="display:flex;align-items:center;gap:13px">' +
     '<span class="av lg">' + ini(s.name) + '</span><div><h3 style="margin-bottom:2px">' + s.name + '</h3><p>' + s.email + ' \u00B7 ' + s.phone + '</p></div></div>' +
-    '<span class="tag ' + (s.status==='active'?'good':'bad') + '">' + s.status + '</span></div>' +
+    '<div class="acts" style="align-items:flex-start"><span class="tag ' + (s.status==='active'?'good':'bad') + '" style="margin-top:7px">' + s.status + '</span>' +
+      '<button class="btn btn-out sm" type="button" onclick="openStudentForm(\'' + s.id + '\')"><svg viewBox="0 0 24 24">' + ICO_EDIT + '</svg>Edit</button>' +
+      '<button class="btn btn-out sm" type="button" onclick="toggleStudentBlock(\'' + s.id + '\')"><svg viewBox="0 0 24 24">' + (s.status==='active'?ICO_BLOCK:ICO_UNBLOCK) + '</svg>' + (s.status==='active'?'Block':'Unblock') + '</button>' +
+      '<button class="btn btn-danger sm" type="button" onclick="deleteStudent(\'' + s.id + '\')"><svg viewBox="0 0 24 24">' + ICO_DELETE + '</svg>Delete</button></div></div>' +
     '<div class="info-grid">' +
+      '<div><small>Registration No.</small><b>' + (s.regNo || '\u2014') + '</b></div>' +
       s.enroll.map(function(en){ var c=findCourse(en.course); return '<div><small>' + catName(c.category) + '</small><b>' + c.name + ' \u00B7 ' + batchLabel(en.course,en.batch) + '</b></div>'; }).join('') +
       (att ? '<div><small>Overall Attendance</small><b>' + attPct(att) + '%</b></div>' : '') +
-    '</div></div>';
+    '</div>' + credSection('student', s) + '</div>';
   var bs = $('sdSeg').querySelectorAll('button'), i, order=['att','exam','pay'];
   for(i=0;i<bs.length;i++){ bs[i].classList.toggle('active', order[i]===studTab); }
+  $('sdLegend').style.visibility = studTab==='att' ? 'visible' : 'hidden';
   if(studTab==='att'){ renderStudCalendar(); }
   else if(studTab==='exam'){ renderStudExams(); }
   else { renderStudPayments(); }
@@ -3323,9 +3478,7 @@ function renderStudCalendar(){
     '<button class="icon-btn" onclick="shiftCal(1)"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button></div>' +
     '<div class="year-cal-grid">';
   for(m=0;m<12;m++){ html += miniMonth(y, m); }
-  html += '</div><div class="cal-legend">' +
-    '<span><i style="background:var(--good)"></i>Present</span><span><i style="background:var(--bad)"></i>Absent</span>' +
-    '<span><i style="background:var(--warn)"></i>Late</span></div></div>';
+  html += '</div></div>';
   $('sdBody').innerHTML = html;
 }
 function shiftCal(n){ studCalDate = new Date(studCalDate.getFullYear()+n, 0, 1); renderStudCalendar(); }
@@ -3412,8 +3565,10 @@ function deleteStaff(id){
   askDelete('Staff Member', 'This removes <b>' + s.name + '</b> from the academy roster.',
     "function(){ STAFF=STAFF.filter(function(x){return x.id!=='" + id + "';}); renderStaffList(); toast('Staff deleted','" + esc(s.name) + " has been removed.'); }");
 }
+var tfEditing = null;
 function openStaffForm(id){
   var s = id ? findStaff(id) : null;
+  tfEditing = id || null;
   var catOpts = CATEGORIES.map(function(c){ return '<option value="'+c.id+'"'+(s&&s.category===c.id?' selected':'')+'>'+c.name+'</option>'; }).join('');
   var html = mHead(s?'Edit Staff':'Add Staff') + '<div class="mdl-bd"><form id="staffForm" onsubmit="return saveStaff(event,'+(s?"'"+id+"'":'null')+')">' +
     '<div class="field"><label>Staff Name</label><input type="text" id="tfName" required value="' + (s?s.name:'') + '"></div>' +
@@ -3424,28 +3579,68 @@ function openStaffForm(id){
     '<div class="field-row"><div class="field"><label>Qualification</label><input type="text" id="tfQual" required value="' + (s?s.qualification:'') + '"></div>' +
     '<div class="field"><label>Experience</label><input type="text" id="tfExp" required value="' + (s?s.experience:'') + '" placeholder="10 years"></div></div>' +
     '<div class="field"><label>Profile Photo (URL)</label><input type="text" id="tfPhoto" value=""></div>' +
-    '<div class="field-row"><div class="field"><label>Username</label><input type="text" id="tfUser" required value="' + (s?s.username:'') + '"></div>' +
-    '<div class="field"><label>Password</label><input type="password" id="tfPass" ' + (s?'placeholder="Leave blank to keep current"':'required') + '></div></div>' +
+    '<div class="cred-gen"><div class="cred-gen-hd"><b>Login Credentials</b>' +
+      '<button class="btn btn-soft sm" type="button" onclick="autoGenCreds()"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-2.64-6.36"/><path d="M21 4v5h-5"/></svg>Auto-Generate Credentials</button></div>' +
+    '<div class="field-row"><div class="field"><label for="tfUser">Username</label><input type="text" id="tfUser" required autocomplete="off" value="' + (s?s.username:'') + '"></div>' +
+    '<div class="field"><label for="tfPass">Password</label><div class="pw-wrap"><input type="password" id="tfPass" autocomplete="new-password" ' + (s?'placeholder="Leave blank to keep current"':'required') + '>' +
+      '<button class="mini ghost" type="button" id="tfPassEye" onclick="togglePw()" aria-label="Show password">Show</button></div></div></div>' +
+    '<div class="cred-gen-ft"><span class="hint" id="tfCredHint" style="margin:0">' + (s ? 'Generate new credentials only if this person needs a fresh login.' : 'Generate, review, then add the staff member. The password is stored encrypted and is not shown again.') + '</span>' +
+      '<button class="mini ghost" type="button" id="tfCopy" onclick="copyStaffCreds()" disabled>Copy Credentials</button></div></div>' +
     '</form></div><div class="mdl-ft"><button class="btn btn-out sm" type="button" onclick="closeMdl()">Cancel</button>' +
     '<button class="btn btn-pri sm" type="submit" form="staffForm">' + (s?'Save Changes':'Add Staff') + '</button></div>';
   openMdl(html, '');
+}
+/* auto-generated staff credentials: a unique username from the name, and a strong random password */
+function genStaffUsername(name){
+  var parts = name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z\s]/g,'').trim().split(/\s+/).filter(Boolean);
+  if(!parts.length){ return ''; }
+  var base = parts.length > 1 ? parts[0] + '.' + parts[parts.length-1] : parts[0], u = base, n = 2;
+  var taken = STAFF.filter(function(s){ return s.id !== tfEditing; }).map(function(s){ return s.username; });
+  while(taken.indexOf(u) > -1){ u = base + n; n++; }
+  return u;
+}
+function autoGenCreds(){
+  var name = $('tfName').value.trim();
+  if(!name){ toast('Enter the name first', 'The username is built from the staff member’s name.'); $('tfName').focus(); return; }
+  $('tfUser').value = genStaffUsername(name);
+  $('tfPass').value = genStrongPassword();
+  $('tfCopy').disabled = false;
+  $('tfCredHint').textContent = 'Generated. Review them (use Show), copy them for handover, then save. You can still edit either field.';
+  toast('Credentials generated', 'Username ' + $('tfUser').value + ' and a 14-character password.');
+}
+function togglePw(){
+  var p = $('tfPass'), show = p.type === 'password';
+  p.type = show ? 'text' : 'password';
+  $('tfPassEye').textContent = show ? 'Hide' : 'Show';
+  $('tfPassEye').setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+}
+function copyStaffCreds(){
+  copyToClipboard('Username: ' + $('tfUser').value + '\nPassword: ' + $('tfPass').value);
+  toast('Copied', 'Username and password copied together.');
 }
 function saveStaff(e, id){
   e.preventDefault();
   var data = {name:$('tfName').value.trim(), phone:$('tfPhone').value.trim(), email:$('tfEmail').value.trim(),
     category:$('tfCat').value, salary:Number($('tfSalary').value)||0, qualification:$('tfQual').value.trim(),
     experience:$('tfExp').value.trim(), username:$('tfUser').value.trim()};
+  var pw = $('tfPass').value, target;
+  if(STAFF.some(function(x){ return x.id !== id && x.username === data.username; })){ toast('Username taken', 'Choose another username, or auto-generate one.'); return false; }
+  if(pw && (pw.length < 8 || !/[A-Za-z]/.test(pw) || !/\d/.test(pw))){ toast('Password too weak', 'Use at least 8 characters with letters and numbers, or auto-generate one.'); return false; }
   if(id){
-    var s=findStaff(id);
+    var s=findStaff(id); target = s;
     s.name=data.name; s.phone=data.phone; s.email=data.email; s.category=data.category; s.salary=data.salary;
     s.qualification=data.qualification; s.experience=data.experience; s.username=data.username;
-    toast('Staff updated', data.name);
+    toast('Staff updated', data.name + (pw ? ' — new password set.' : ''));
   } else {
-    STAFF.push({id:'s'+(STAFF.length+1)+Date.now().toString().slice(-3), name:data.name, phone:data.phone, email:data.email,
+    target = {id:'s'+(STAFF.length+1)+Date.now().toString().slice(-3), name:data.name, phone:data.phone, email:data.email,
       category:data.category, qualification:data.qualification, experience:data.experience, salary:data.salary,
-      username:data.username, status:'active'});
-    toast('Staff added', data.name + ' has been empanelled.');
+      username:data.username, status:'active'};
+    STAFF.push(target);
+    toast('Staff added', data.name + ' can log in as ' + data.username + '.');
   }
+  /* only a hash of the password is kept */
+  if(pw){ target.pwSet = new Date(); hashPassword(pw).then(function(h){ target.pwHash = h; }); }
+  pw = null; $('tfPass').value = '';
   closeMdl(); renderStaffList();
   return false;
 }
@@ -4206,7 +4401,12 @@ function receiptHtml(p){
         '</div></div></div>' +
       '<div class="rc-auth"><div class="rc-note"><b>Please note:</b> fees are non-refundable and non-transferable except where the academy’s cancellation and refund policy allows. ' +
         'This is a computer-generated receipt and is valid with the academy seal or an authorised signature.</div>' +
-        '<div class="rc-sign">' + svgImg(rcSeal()) + '<div class="rc-sig"><div class="ln"></div><b>' + ADMIN.name + '</b><span>Authorised Signatory</span><span>' + ADMIN.role + '</span></div></div></div>' +
+        '<div class="rc-sign">' +
+          '<div class="rc-place"><span>Place</span><b>' + ACADEMY.place.split(',')[0] + '</b><span>Date</span><b>' + fmtDate(p.date) + '</b></div>' +
+          '<div class="rc-seal-box">' + (BRAND.seal ? '<img class="rc-seal" src="' + BRAND.seal + '" alt="Academy seal">' : '') + '</div>' +
+          '<div class="rc-sig"><div class="ln">' + (BRAND.signature ? '<img src="' + BRAND.signature + '" alt="Authorised signature">' : '') + '</div>' +
+            '<span class="lbl">Signature</span><b>' + hx(BRAND.signer || ADMIN.name) + '</b><span>' + hx(BRAND.signerRole || 'Authorised Signatory') + '</span></div>' +
+        '</div></div>' +
       '<div class="rc-foot"><span>' + ACADEMY.name.replace('&','&amp;') + ' · ' + ACADEMY.place + '</span><span>' + p.receiptNo + ' · Page 1 of 1</span></div>' +
     '</div></div>';
 }
@@ -4285,19 +4485,26 @@ function renderEnqFilter(){
     '<div class="fb grow"><label>Search</label><div class="search-wrap"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>' +
     '<input type="text" id="eqQ" placeholder="Search enquiries\u2026" oninput="renderEnquiries()"></div></div>' +
     '<div class="fb"><label>Status</label><select id="eqStatus" onchange="renderEnquiries()"><option value="all">All statuses</option><option>New</option><option>Pending</option><option>Closed</option></select></div>' +
-    '<div class="fb"><label>&nbsp;</label><button class="btn btn-out sm" type="button" onclick="resetF([\'eqQ\',\'eqStatus\'],renderEnquiries)">Reset</button></div>';
+    '<div class="fb"><label for="eqFrom">Date From</label><input type="date" id="eqFrom" onchange="renderEnquiries()" title="Pick one date, or the start of a range"></div>' +
+    '<div class="fb"><label for="eqTo">Date To</label><input type="date" id="eqTo" onchange="renderEnquiries()" title="Leave empty to see only the From date"></div>' +
+    '<div class="fb"><label>&nbsp;</label><button class="btn btn-out sm" type="button" onclick="resetF([\'eqQ\',\'eqStatus\',\'eqFrom\',\'eqTo\'],renderEnquiries)">Reset</button></div>';
   renderEnquiries();
 }
 function renderEnquiries(){
-  var q=val('eqQ',''), st=val('eqStatus');
-  var html='', i,e,shown=0;
-  for(i=0;i<ENQUIRIES.length;i++){
-    e=ENQUIRIES[i];
+  var q=val('eqQ',''), st=val('eqStatus'), from=val('eqFrom',''), to=val('eqTo','');
+  if(from && !to){ to = from; }            /* one date picked = that day only */
+  if(to && !from){ from = to; }
+  if(from && to && to < from){ var sw = from; from = to; to = sw; }
+  var html='', i,e,shown=0, list = ENQUIRIES.slice().sort(function(a,b){ return b.at - a.at; });
+  for(i=0;i<list.length;i++){
+    e=list[i];
     if(st!=='all' && e.status!==st){ continue; }
+    if(from && (isoOf(e.at) < from || isoOf(e.at) > to)){ continue; }
     if(!hit(e.name+' '+e.text, q)){ continue; }
     shown++;
     var tone = e.status==='New'?'info':(e.status==='Pending'?'warn':'good');
     html += '<tr><td><b>' + e.name + '</b></td><td class="nowrap">' + e.whatsapp + '</td>' +
+      '<td class="nowrap">' + fmtDate(e.at) + '<small>' + fmtTime(e.at) + '</small></td>' +
       '<td style="max-width:280px">' + e.text + (e.reply?'<small>Reply: '+e.reply+'</small>':'') + '</td>' +
       '<td><span class="tag ' + tone + '">' + e.status + '</span></td>' +
       '<td><div class="acts">' +
@@ -4306,7 +4513,7 @@ function renderEnquiries(){
         (e.status!=='Closed' ? '<button class="mini ghost" type="button" onclick="closeEnquiry(\'' + e.id + '\')">Close</button>' : '') +
       '</div></td></tr>';
   }
-  $('enqBody').innerHTML = shown ? html : '<tr><td colspan="5" class="empty-row">No enquiries match these filters.</td></tr>';
+  $('enqBody').innerHTML = shown ? html : '<tr><td colspan="6" class="empty-row">No enquiries match these filters.</td></tr>';
 }
 function openReplyForm(id){
   var e = findEnquiry(id);
@@ -4461,10 +4668,9 @@ function renderAttendance(){
     html += '<tr><td class="clickable" onclick="openStudentView(\'' + a.student + '\')"><b style="color:var(--teal-2)">' + studentName(a.student) + '</b></td>' +
       '<td>' + batchLabelFromId(a.batch) + '</td><td>' + a.present + '</td><td>' + a.absent + '</td><td>' + a.late + '</td>' +
       '<td><b>' + pct + '%</b></td>' +
-      '<td class="nowrap">' + (bal ? '<span class="tag bad">' + inr(bal) + '</span>' : '<span class="tag good">Paid up</span>') + '</td>' +
       '<td><span class="tag ' + risk.tone + '">' + risk.label + '</span></td></tr>';
   }
-  $('attBody').innerHTML = shown ? html : '<tr><td colspan="8" class="empty-row">No students match these filters.</td></tr>';
+  $('attBody').innerHTML = shown ? html : '<tr><td colspan="7" class="empty-row">No students match these filters.</td></tr>';
 }
 function batchLabelFromId(batchId){
   var i,j,c; for(i=0;i<COURSES.length;i++){ c=COURSES[i]; for(j=0;j<c.batches.length;j++){ if(c.batches[j].id===batchId){ return c.batches[j].name; } } } return batchId;
@@ -4476,12 +4682,14 @@ function batchLabelFromId(batchId){
 var masterTab = 'cat';
 function setMasterTab(t){
   masterTab = t;
-  var bs = $('mSeg').querySelectorAll('button'), i, order=['cat','method','tz'];
+  var bs = $('mSeg').querySelectorAll('button'), i, order=['cat','method','tz','seal','yt'];
   for(i=0;i<bs.length;i++){ bs[i].classList.toggle('active', order[i]===t); }
   renderMaster();
 }
 function renderMaster(){
   if(masterTab==='cat'){ return renderMasterCats(); }
+  if(masterTab==='seal'){ return renderSealSettings(); }
+  if(masterTab==='yt'){ return renderYouTube(); }
   if(masterTab==='method'){ return renderMasterChips('Payment Methods', PAYMENT_METHODS, 'method'); }
   return renderMasterChips('Time Zones', TIMEZONES, 'tz');
 }
@@ -4539,6 +4747,144 @@ function removeMasterChip(kind, i){
   renderMaster();
 }
 
+/* -----------------------------------------------------------------
+   SEAL & SIGNATURE — used automatically on every payment receipt.
+   Nothing configured = that area of the receipt stays blank.
+   Saved in this browser so it survives a page reload.
+   ----------------------------------------------------------------- */
+var BRAND = {seal:null, signature:null, signer:'', signerRole:''};
+(function(){ try{ var s = JSON.parse(localStorage.getItem('chaarulaya.brand') || 'null'); if(s){ BRAND = s; } }catch(e){} })();
+var brandDraft = null;
+function brandSlot(kind, title, hint){
+  var src = brandDraft[kind];
+  return '<div class="card brand-card"><h4>' + title + '</h4>' +
+    '<div class="brand-prev' + (kind==='signature' ? ' sig' : '') + '">' + (src ? '<img src="' + src + '" alt="' + title + ' preview">' : '<span>Not configured — this area stays blank on receipts</span>') + '</div>' +
+    '<input type="file" id="bf_' + kind + '" accept="image/png,image/jpeg,image/webp,image/svg+xml" style="display:none" onchange="onBrandFile(\'' + kind + '\',this)">' +
+    '<div class="acts" style="margin-top:12px"><button class="btn btn-out sm" type="button" onclick="$(\'bf_' + kind + '\').click()"><svg viewBox="0 0 24 24"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>' + (src ? 'Replace' : 'Upload') + '</button>' +
+    (kind==='seal' ? '<button class="btn btn-out sm" type="button" onclick="useDefaultSeal()">Use Academy Seal Design</button>' : '') +
+    (src ? '<button class="btn btn-danger sm" type="button" onclick="brandDraft.' + kind + '=null;renderSealSettings()">Remove</button>' : '') + '</div>' +
+    '<div class="hint">' + hint + '</div></div>';
+}
+function renderSealSettings(){
+  if(!brandDraft){ brandDraft = JSON.parse(JSON.stringify(BRAND)); }
+  var d = brandDraft, dirty = JSON.stringify(d) !== JSON.stringify(BRAND);
+  $('masterBody').innerHTML = '<div class="head" style="margin-bottom:12px"><div><h2 style="font-size:17px">Seal &amp; Signature</h2><p>Printed on every payment receipt.</p></div>' +
+    '<div class="acts">' + (PAYMENTS.length ? '<button class="btn btn-out sm" type="button" onclick="previewBrandOnReceipt()">Preview on Receipt</button>' : '') +
+    '<button class="btn btn-pri sm" type="button" id="brandSave"' + (dirty ? '' : ' disabled') + ' onclick="saveBrand()">Save Changes</button></div></div>' +
+    '<div class="aud-note" id="brandDirty" style="margin:0 0 14px;display:' + (dirty ? 'block' : 'none') + '">You have unsaved changes. Receipts keep using the last saved seal and signature until you save.</div>' +
+    '<div class="brand-grid">' +
+      brandSlot('seal', 'Academy Seal', 'PNG with a transparent background works best. Up to 2 MB.') +
+      '<div>' + brandSlot('signature', 'Authorised Signature', 'A clear signature on a white or transparent background. Up to 2 MB.') +
+      '<div class="card" style="margin-top:14px"><h4>Authorised Person</h4><div class="field-row">' +
+        '<div class="field"><label for="bSigner">Name</label><input type="text" id="bSigner" value="' + hx(d.signer || '') + '" placeholder="' + hx(ADMIN.name) + '" oninput="brandDraft.signer=this.value;syncBrandDirty()"></div>' +
+        '<div class="field"><label for="bRole">Designation</label><input type="text" id="bRole" value="' + hx(d.signerRole || '') + '" placeholder="Authorised Signatory" oninput="brandDraft.signerRole=this.value;syncBrandDirty()"></div>' +
+      '</div><div class="hint" style="margin-top:-6px">Shown under the signature line. Leave the name empty to use the logged-in admin’s name.</div></div></div>' +
+    '</div>';
+}
+function syncBrandDirty(){
+  var dirty = JSON.stringify(brandDraft) !== JSON.stringify(BRAND);
+  $('brandSave').disabled = !dirty;
+  $('brandDirty').style.display = dirty ? 'block' : 'none';
+}
+function onBrandFile(kind, inp){
+  var f = inp.files && inp.files[0];
+  if(!f){ return; }
+  if(!/^image\/(png|jpeg|webp|svg\+xml)$/.test(f.type)){ toast('Unsupported file', 'Use a PNG, JPG, WebP or SVG image.'); inp.value=''; return; }
+  if(f.size > 2*1048576){ toast('Image too large', 'Use an image under 2 MB.'); inp.value=''; return; }
+  var r = new FileReader();
+  r.onload = function(){ brandDraft[kind] = r.result; renderSealSettings(); };
+  r.readAsDataURL(f);
+}
+function useDefaultSeal(){
+  var m = /src="([^"]+)"/.exec(svgImg(rcSeal()));
+  brandDraft.seal = m ? m[1] : null;
+  renderSealSettings();
+}
+function saveBrand(){
+  BRAND = JSON.parse(JSON.stringify(brandDraft));
+  var persisted = true;
+  try{ localStorage.setItem('chaarulaya.brand', JSON.stringify(BRAND)); }catch(e){ persisted = false; }
+  renderSealSettings();
+  toast('Seal & signature saved', persisted ? 'New receipts will use them automatically.' : 'Applied to receipts for this session (browser storage is full or blocked).');
+}
+function previewBrandOnReceipt(){
+  if(JSON.stringify(brandDraft) !== JSON.stringify(BRAND)){ toast('Save first', 'The receipt shows the saved seal and signature.'); return; }
+  showReceipt(PAYMENTS[PAYMENTS.length-1].id);
+}
+
+/* -----------------------------------------------------------------
+   YOUTUBE LINKS — add any number of videos; edit, delete, and switch
+   each one active / inactive.
+   ----------------------------------------------------------------- */
+var YT_LINKS = [];
+(function(){ try{ var s = JSON.parse(localStorage.getItem('chaarulaya.youtube') || 'null'); if(s){ YT_LINKS = s; } }catch(e){} })();
+function saveYT(){ try{ localStorage.setItem('chaarulaya.youtube', JSON.stringify(YT_LINKS)); }catch(e){} }
+function ytId(url){
+  var m = /(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/|v\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/.exec(String(url).trim());
+  return m ? m[1] : null;
+}
+function findYT(id){ var i; for(i=0;i<YT_LINKS.length;i++){ if(YT_LINKS[i].id===id){ return YT_LINKS[i]; } } return null; }
+function renderYouTube(){
+  var active = YT_LINKS.filter(function(y){ return y.active; }).length;
+  $('masterBody').innerHTML = '<div class="head" style="margin-bottom:12px"><div><h2 style="font-size:17px">YouTube Links</h2><p>' + YT_LINKS.length + ' link' + (YT_LINKS.length===1?'':'s') + ' · ' + active + ' active</p></div>' +
+    '<button class="btn btn-pri sm" type="button" onclick="openYTForm()"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add YouTube Link</button></div>' +
+    (YT_LINKS.length ?
+      '<div class="fbar"><div class="fb grow"><label for="ytQ">Search</label><div class="search-wrap"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>' +
+        '<input type="text" id="ytQ" placeholder="Search by title or link…" oninput="renderYTRows()"></div></div>' +
+        '<div class="fb"><label for="ytStatus">Status</label><select id="ytStatus" onchange="renderYTRows()"><option value="all">All</option><option value="active">Active</option><option value="inactive">Inactive</option></select></div></div>' +
+      '<div class="tbl"><div class="tbl-scroll"><table><thead><tr><th>Video</th><th>Title</th><th>Link</th><th>Added On</th><th>Status</th><th>Actions</th></tr></thead><tbody id="ytBody"></tbody></table></div></div>'
+    : '<div class="empty"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z"/></svg><h3>No YouTube links yet</h3><p>Add the academy’s performance, lesson or event videos. You can add as many as you like.</p></div>');
+  if(YT_LINKS.length){ renderYTRows(); }
+}
+function renderYTRows(){
+  var q = val('ytQ',''), st = val('ytStatus');
+  var rows = YT_LINKS.filter(function(y){ return hit(y.title + ' ' + y.url + ' ' + (y.desc||''), q) && (st==='all' || (st==='active') === y.active); });
+  $('ytBody').innerHTML = rows.length ? rows.map(function(y){
+    return '<tr><td><a href="' + hx(y.url) + '" target="_blank" rel="noopener" class="yt-thumb" aria-label="Open video"><img src="https://i.ytimg.com/vi/' + y.vid + '/mqdefault.jpg" alt="" loading="lazy"><span>▶</span></a></td>' +
+      '<td style="min-width:200px"><b>' + hx(y.title) + '</b>' + (y.desc ? '<small>' + hx(y.desc) + '</small>' : '') + '</td>' +
+      '<td class="nowrap"><a class="count-link" href="' + hx(y.url) + '" target="_blank" rel="noopener">youtu.be/' + y.vid + '</a></td>' +
+      '<td class="nowrap">' + fmtDate(new Date(y.added)) + '</td>' +
+      '<td><label class="toggle"><input type="checkbox"' + (y.active?' checked':'') + ' onchange="toggleYT(\'' + y.id + '\',this.checked)"><span class="tg-track"></span><span class="tl">' + (y.active?'Active':'Inactive') + '</span></label></td>' +
+      '<td><div class="acts">' + actBtn('Edit', ICO_EDIT, "openYTForm('" + y.id + "')") + actBtn('Delete', ICO_DELETE, "deleteYT('" + y.id + "')", 'danger') + '</div></td></tr>';
+  }).join('') : '<tr><td colspan="6" class="empty-row">No links match these filters.</td></tr>';
+}
+function openYTForm(id){
+  var y = id ? findYT(id) : null;
+  openMdl(mHead(y ? 'Edit YouTube Link' : 'Add YouTube Link') + '<div class="mdl-bd">' +
+    '<div class="field"><label for="ytUrl">YouTube Link</label><input type="url" id="ytUrl" value="' + (y?hx(y.url):'') + '" placeholder="https://www.youtube.com/watch?v=…" oninput="ytPreview()"></div>' +
+    '<div id="ytPrev"></div>' +
+    '<div class="field"><label for="ytTitle">Title</label><input type="text" id="ytTitle" value="' + (y?hx(y.title):'') + '" placeholder="e.g. Annual Day 2026 — Bharatanatyam"></div>' +
+    '<div class="field"><label for="ytDesc">Description (optional)</label><textarea id="ytDesc" placeholder="What is this video about?">' + (y?hx(y.desc||''):'') + '</textarea></div>' +
+    '<label class="toggle"><input type="checkbox" id="ytActive"' + (!y || y.active ? ' checked' : '') + '><span class="tg-track"></span><span class="tl">Active</span></label>' +
+    '</div><div class="mdl-ft"><button class="btn btn-out sm" type="button" onclick="closeMdl()">Cancel</button>' +
+    '<button class="btn btn-pri sm" type="button" onclick="saveYTLink(' + (y ? "'" + id + "'" : 'null') + ')">' + (y ? 'Save Changes' : 'Add Link') + '</button></div>', '');
+  ytPreview();
+}
+function ytPreview(){
+  var v = ytId($('ytUrl').value);
+  $('ytPrev').innerHTML = v ? '<div class="banner-prev" style="margin:-4px 0 14px"><img src="https://i.ytimg.com/vi/' + v + '/mqdefault.jpg" alt="Video thumbnail"><span>Video ID ' + v + '</span></div>' :
+    ($('ytUrl').value.trim() ? '<div class="flag bad" style="margin:-8px 0 14px">This doesn’t look like a YouTube video link.</div>' : '');
+}
+function saveYTLink(id){
+  var url = $('ytUrl').value.trim(), v = ytId(url), title = $('ytTitle').value.trim();
+  if(!v){ toast('Check the link', 'Paste a YouTube video link, e.g. youtube.com/watch?v=… or youtu.be/…'); return; }
+  if(!title){ toast('Title needed', 'Give the video a short title.'); return; }
+  if(YT_LINKS.some(function(y){ return y.vid===v && y.id!==id; })){ toast('Already added', 'This video is already in the list.'); return; }
+  var data = {url:url, vid:v, title:title, desc:$('ytDesc').value.trim(), active:$('ytActive').checked}, k;
+  if(id){ var y = findYT(id); for(k in data){ y[k] = data[k]; } toast('Link updated', title); }
+  else { data.id = 'yt' + Date.now(); data.added = new Date().toISOString(); YT_LINKS.unshift(data); toast('Link added', title); }
+  saveYT(); closeMdl(); renderYouTube();
+}
+function toggleYT(id, on){
+  var y = findYT(id); y.active = on; saveYT(); renderYouTube();
+  toast(on ? 'Link activated' : 'Link deactivated', y.title);
+}
+function deleteYT(id){
+  var y = findYT(id);
+  askDelete('YouTube Link', 'Remove <b>' + hx(y.title) + '</b> from the list?',
+    "function(){ YT_LINKS = YT_LINKS.filter(function(x){ return x.id!=='" + id + "'; }); saveYT(); renderYouTube(); toast('Link deleted',''); }");
+}
+
 /* =================================================================
    SETTINGS
    ================================================================= */
@@ -4563,7 +4909,7 @@ function paintStaff(){ renderStaffFilter(); renderStaffList(); }
 function paintEnquiries(){ renderEnqKpi(); renderEnqFilter(); }
 function paintPayments(){ renderPayKpi(); renderPayFilter(); }
 function paintAttendance(){ renderAttKpi(); renderAttFilter(); }
-function paintMaster(){ setMasterTab('cat'); }
+function paintMaster(){ brandDraft = null; setMasterTab('cat'); }
 
 /* =================================================================
    RENDER / TITLES — built here, after every module's render function
@@ -4584,7 +4930,7 @@ var TITLES = {
   pProgramView:['Program Details',''],
   pExamBuild:['Exams','Build a quiz or written exam for any batch.'],
   pPlanner:['Staff Weekly Planner','Admin view of any staff member’s week.'],
-  pRetention:['Retention','Attendance and fee standing, student by student.'],
+  pRetention:['Attendance','Academy-wide attendance, student by student.'],
   pSessions:['Sessions','Every scheduled class across every batch.'],
   pSessionView:['Session Details',''],
   pExams:['Exams','Create exams, or monitor the ones staff have set.'],
