@@ -360,7 +360,7 @@ nav.main-nav a.nav-my-courses{color:var(--rose-2);}
 .toast span{font-size:12px;color:rgba(232,248,250,.7);}
 
 /* ============================= DASHBOARD ============================= */
-.dash-shell{display:grid;grid-template-columns:250px 1fr;min-height:calc(100vh - 70px);}
+.dash-shell{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:calc(100vh - 70px);}
 .dash-sidebar{background:var(--plum);color:var(--cream);padding:34px 20px;position:sticky;top:69px;align-self:start;height:calc(100vh - 69px);display:flex;flex-direction:column;}
 .dash-profile{display:flex;align-items:center;gap:12px;padding:0 6px 26px;border-bottom:1px solid var(--line-light);margin-bottom:20px;}
 .dash-profile .faculty-avatar{width:44px;height:44px;font-size:15px;margin:0;border:2px solid rgba(232,248,250,.25);}
@@ -374,7 +374,7 @@ nav.main-nav a.nav-my-courses{color:var(--rose-2);}
 .dash-nav a:hover{background:rgba(232,248,250,.08);color:var(--cream);}
 .dash-nav a.active{background:linear-gradient(100deg,var(--rose-2),var(--saffron));color:#fff;}
 .dash-logout{margin-top:auto;padding-top:16px;border-top:1px solid var(--line-light);}
-.dash-main{padding:42px 44px;background:#f6f8fc;}
+.dash-main{padding:42px 44px;background:#f6f8fc;min-width:0;}
 .dash-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px;flex-wrap:wrap;gap:16px;}
 .dash-head h2{font-size:29px;}
 .dash-head p{font-size:14px;margin-top:4px;}
@@ -423,7 +423,7 @@ table.dash-table td{padding:16px 20px;font-size:14px;border-top:1px solid var(--
 .cert-card.locked svg{stroke:var(--ink-soft);}
 
 @media(max-width:900px){
-  .dash-shell{grid-template-columns:1fr;}
+  .dash-shell{grid-template-columns:minmax(0,1fr);}
   .dash-sidebar{position:relative;top:0;height:auto;flex-direction:row;overflow-x:auto;padding:16px;}
   .dash-profile,.dash-logout{display:none;}
   .dash-nav{display:flex;gap:4px;}
@@ -1414,7 +1414,7 @@ img.img-failed{opacity:0 !important;}
 
 /* tables */
 .tbl-wrap{background:var(--white);border:1px solid var(--line);border-radius:16px;overflow:hidden;}
-.tbl-scroll{overflow-x:auto;}
+.tbl-scroll{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch;}
 table.dash-table{border:none;border-radius:0;min-width:100%;}
 table.dash-table th{white-space:nowrap;font-weight:800;}
 table.dash-table td{vertical-align:middle;}
@@ -1683,6 +1683,211 @@ table.dash-table td small{font-size:12px;color:var(--ink-soft);display:block;mar
 .sub-file b{font-size:13.2px;font-weight:800;}
 @media(max-width:560px){.sub-file{margin-left:0;}}
 
+
+/* =================================================================
+   ROUND 7 — PROGRAMS · MY PROGRAMS · TIME ZONES · ENROLMENT
+   ================================================================= */
+
+/* ---------- time-zone picker ("Timings For") ---------- */
+.tz-pick{display:inline-flex;align-items:center;gap:10px;background:var(--white);border:1px solid var(--line);
+  border-radius:100px;padding:5px 6px 5px 16px;box-shadow:var(--shadow-sm);max-width:100%;}
+.tz-pick svg{width:16px;height:16px;stroke:var(--rose-2);stroke-width:2;fill:none;flex-shrink:0;}
+.tz-pick label{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap;}
+.tz-pick select{border:none;background:var(--cream-2);border-radius:100px;padding:9px 14px;font-family:inherit;
+  font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;min-width:0;max-width:220px;}
+.tz-pick select:focus{outline:2px solid var(--rose-2);outline-offset:1px;}
+
+/* ---------- programs page bar ---------- */
+.prog-bar{display:flex;align-items:center;justify-content:space-between;gap:16px 24px;flex-wrap:wrap;margin-bottom:30px;}
+.prog-tabs{display:flex;gap:10px;flex-wrap:wrap;}
+.prog-tabs .cat-tab{display:inline-flex;align-items:center;gap:8px;}
+.prog-tabs .cat-tab i{font-style:normal;font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:100px;
+  background:rgba(14,76,122,.1);color:var(--plum-2);}
+.prog-tabs .cat-tab.active i{background:rgba(255,255,255,.24);color:#fff;}
+.prog-note{display:flex;gap:10px;align-items:center;font-size:13.2px;color:var(--ink-soft);margin:-10px 0 24px;}
+.prog-note svg{width:16px;height:16px;stroke:var(--rose-2);stroke-width:2;fill:none;flex-shrink:0;}
+.prog-empty{background:var(--white);border:1px dashed var(--line);border-radius:18px;padding:44px 24px;text-align:center;color:var(--ink-soft);}
+
+/* listing card additions (design otherwise untouched) */
+.wsc-badges{position:absolute;top:14px;right:14px;z-index:2;display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+.wsc-tag{font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;padding:5px 10px;border-radius:100px;background:rgba(255,255,255,.94);}
+.wsc-tag.nr{color:#B3382C;}
+.wsc-tag.rs{background:#FCEBD4;color:#9A5B0E;}
+.wsc-meta div b.days{font-size:13px;}
+.wsc-meta{grid-template-columns:1fr 1fr;}
+
+/* ---------- status pills (colour + label + dot) ---------- */
+.stp{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  padding:6px 12px;border-radius:100px;white-space:nowrap;}
+.stp::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;}
+.stp.s-upcoming{background:#DDF1F5;color:#0E6F8A;}
+.stp.s-scheduled{background:#E3E9F8;color:#3A4FA0;}
+.stp.s-rescheduled{background:#FCEBD4;color:#9A5B0E;}
+.stp.s-cancelled{background:#FBE0DE;color:#B3382C;}
+.stp.s-refunded{background:#E9E1F7;color:#5B3FA0;}
+.stp.s-completed{background:#DFF1E4;color:#2E7D4F;}
+
+.nr-tag{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  padding:5px 10px;border-radius:100px;background:#FDF0EE;color:#B3382C;border:1px solid #F0C6C1;}
+.nr-tag svg{width:12px;height:12px;stroke:currentColor;stroke-width:2.4;fill:none;}
+
+/* ---------- practice sessions table ---------- */
+.prac-tbl td small{display:block;font-size:11.8px;color:var(--ink-soft);margin-top:2px;font-weight:600;}
+.prac-tbl td.nm{font-weight:800;color:var(--ink);min-width:170px;}
+.prac-tbl td.ds{min-width:240px;color:var(--ink-soft);font-size:13.4px;line-height:1.5;}
+.prac-tbl .was{text-decoration:line-through;color:var(--ink-soft);font-size:11.8px;display:block;font-weight:600;}
+.prac-tbl .new{color:#9A5B0E;font-weight:800;}
+@media(max-width:760px){
+  .prac-tbl thead{display:none;}
+  .prac-tbl,.prac-tbl tbody,.prac-tbl tr,.prac-tbl td{display:block;width:100%;}
+  .prac-tbl tr{padding:16px 18px;border-top:1px solid var(--line);}
+  .prac-tbl tr:first-child{border-top:none;}
+  .prac-tbl td{border:none !important;padding:5px 0 !important;min-width:0 !important;}
+  .prac-tbl td::before{content:attr(data-l);display:block;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:2px;}
+}
+
+/* ---------- dashboard: My Programs ---------- */
+.dash-nav a{position:relative;}
+.dn-badge{margin-left:auto;min-width:20px;height:20px;padding:0 6px;border-radius:100px;background:#F59E0B;color:#fff;
+  font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;}
+.dn-badge:empty{display:none;}
+.mp-notices{display:grid;gap:12px;margin-bottom:22px;}
+.mp-notice{display:flex;gap:14px;align-items:flex-start;padding:15px 18px;border-radius:16px;border:1px solid;}
+.mp-notice .ni{width:34px;height:34px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.mp-notice .ni svg{width:18px;height:18px;stroke:currentColor;stroke-width:2;fill:none;}
+.mp-notice b{display:block;font-size:14px;margin-bottom:2px;color:var(--ink);}
+.mp-notice p{font-size:13.2px;line-height:1.5;color:var(--ink-2);}
+.mp-notice .nx{margin-left:auto;font-size:12px;font-weight:800;color:var(--ink-soft);padding:6px 10px;border-radius:100px;flex-shrink:0;}
+.mp-notice .nx:hover{background:rgba(0,0,0,.06);}
+.mp-notice.n-resched{background:#FFF6E6;border-color:#F3D9A4;}
+.mp-notice.n-resched .ni{background:#FCEBD4;color:#9A5B0E;}
+.mp-notice.n-cancel{background:#FEF1EF;border-color:#F0C6C1;}
+.mp-notice.n-cancel .ni{background:#FBE0DE;color:#B3382C;}
+.mp-notice.n-refund{background:#F3EEFB;border-color:#D9CCF0;}
+.mp-notice.n-refund .ni{background:#E9E1F7;color:#5B3FA0;}
+
+.mp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;}
+.mp-card{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:22px 24px;display:flex;flex-direction:column;
+  transition:box-shadow .3s var(--ease),transform .3s var(--ease);}
+.mp-card:hover{transform:translateY(-3px);box-shadow:0 22px 44px -26px rgba(10,50,80,.4);}
+.mp-card.st-cancelled,.mp-card.st-refunded{background:#FCFDFD;}
+.mp-card.st-cancelled .mp-meta,.mp-card.st-refunded .mp-meta{opacity:.62;}
+.mp-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;}
+.mp-type{font-size:10.5px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--rose-2);}
+.mp-card h4{font-size:18px;line-height:1.3;margin-bottom:4px;}
+.mp-sub{font-size:13px;color:var(--ink-soft);font-weight:600;margin-bottom:14px;}
+.mp-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:12px 0 14px;}
+.mp-meta small,.mp-new small{display:block;font-size:9.8px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:3px;}
+.mp-meta b,.mp-new b{font-size:13.6px;font-weight:800;color:var(--ink);}
+.mp-meta .full{grid-column:1/-1;}
+.mp-new{margin:12px 0 10px;padding:14px 16px;border-radius:14px;background:#FFF6E6;border:1.5px solid #F2C879;}
+.mp-new .nh{display:flex;align-items:center;gap:8px;font-size:10.5px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:#9A5B0E;margin-bottom:10px;}
+.mp-new .nh i{font-style:normal;background:#F59E0B;color:#fff;border-radius:100px;padding:2px 8px;font-size:9.5px;}
+.mp-new .ng{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;}
+.mp-new .ng .full{grid-column:1/-1;}
+.mp-was{font-size:12.2px;color:var(--ink-soft);margin:0 0 14px;}
+.mp-was s{opacity:.85;}
+.mp-msg{display:flex;gap:10px;align-items:flex-start;font-size:12.8px;line-height:1.5;padding:12px 14px;border-radius:12px;margin-bottom:14px;}
+.mp-msg svg{width:16px;height:16px;stroke:currentColor;stroke-width:2.2;fill:none;flex-shrink:0;margin-top:2px;}
+.mp-msg.m-red{background:#FEF1EF;color:#9C2F25;}
+.mp-msg.m-violet{background:#F3EEFB;color:#4B3290;}
+.mp-msg.m-amber{background:#FFF6E6;color:#8A5209;}
+.mp-msg b{font-weight:800;}
+.mp-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;flex-wrap:wrap;}
+.mp-paid{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;font-weight:700;color:var(--ink-soft);}
+.mp-paid b{color:var(--ink);font-family:var(--serif);font-size:16px;}
+.mp-empty{grid-column:1/-1;}
+@media(max-width:980px){.mp-grid{grid-template-columns:1fr;}}
+@media(max-width:520px){.mp-meta,.mp-new .ng{grid-template-columns:1fr;}}
+
+/* ---------- buttons / modal extras ---------- */
+.btn-danger{background:#C0392B;color:#fff;border:1.5px solid #C0392B;}
+.btn-danger:hover{background:#A93226;border-color:#A93226;}
+.btn-ghost-red{color:#B3382C;font-size:12.5px;font-weight:800;padding:9px 16px;border-radius:100px;border:1.5px solid #F0C6C1;background:#fff;}
+.btn-ghost-red:hover{background:#FDF0EE;}
+.pol-box{display:flex;gap:12px;padding:14px 16px;border-radius:14px;background:#FEF1EF;border:1px solid #F0C6C1;margin-bottom:16px;}
+.pol-box svg{width:20px;height:20px;stroke:#B3382C;stroke-width:2.2;fill:none;flex-shrink:0;margin-top:1px;}
+.pol-box b{display:block;color:#9C2F25;font-size:14px;margin-bottom:2px;}
+.pol-box p{font-size:13px;line-height:1.5;color:#7A2820;}
+.tnc{padding:18px 28px 24px;background:var(--cream);border-top:1px solid var(--line);border-radius:0 0 24px 24px;}
+.tnc h5{font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;}
+.tnc ul{display:grid;gap:7px;}
+.tnc li{position:relative;padding-left:16px;font-size:12.6px;line-height:1.5;color:var(--ink-2);}
+.tnc li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--rose-2);}
+.cx-list{display:grid;gap:7px;margin:4px 0 0;}
+.cx-list li{position:relative;padding-left:16px;font-size:12.8px;line-height:1.5;color:var(--ink-2);}
+.cx-list li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--ink-soft);}
+.cx-tick{width:68px;height:68px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#E5655A,#C0392B);}
+.cx-tick svg{width:30px;height:30px;stroke:#fff;stroke-width:2.6;fill:none;}
+@media(max-width:600px){.tnc{padding-left:20px;padding-right:20px;}}
+
+/* ---------- online courses: intro row + tz ---------- */
+.intro-row{display:flex;align-items:flex-end;justify-content:space-between;gap:16px 24px;flex-wrap:wrap;margin-bottom:26px;}
+.intro-row .cat-intro{margin-bottom:0;flex:1 1 320px;}
+.lvl-card h4{font-size:18px;}
+.lvl-row b small{display:block;font-size:11px;font-weight:700;color:var(--ink-soft);}
+
+/* ---------- login & enrolment ---------- */
+.auth-wrap.wide{max-width:660px;}
+.enr-amt{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;border-radius:16px;
+  background:linear-gradient(120deg,var(--plum-2),var(--plum-3));color:#fff;margin:6px 0 22px;}
+.enr-amt small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;opacity:.75;margin-bottom:3px;}
+.enr-amt span{font-size:12.8px;opacity:.9;}
+.enr-amt b{font-family:var(--serif);font-size:28px;font-weight:800;white-space:nowrap;}
+.enr-hint{font-size:13px;color:var(--ink-soft);text-align:center;padding:16px;border:1.5px dashed var(--line);border-radius:14px;margin:6px 0 22px;}
+.enr-h{font-size:14px;margin:0 0 12px;}
+.enr-sum{margin-top:18px;margin-bottom:20px;}
+.enr-sum .sr .pill{font-size:12px;}
+.field select:disabled{opacity:.55;cursor:not-allowed;}
+.btn[disabled]{opacity:.55;cursor:not-allowed;}
+@media(max-width:560px){.enr-amt{flex-direction:column;align-items:flex-start;}}
+
+/* =================================================================
+   ROUND 8 — My Programs table · exam header · video questions
+   ================================================================= */
+.mp-tbl td.nm{font-weight:800;color:var(--ink);min-width:190px;}
+.mp-tbl td[data-l="Course"]{min-width:200px;}
+.mp-tbl td .mp-type{font-size:10.5px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--rose-2);}
+.mp-tbl .was{text-decoration:line-through;color:var(--ink-soft);font-size:11.8px;display:block;font-weight:600;}
+.mp-tbl .new{color:#9A5B0E;font-weight:800;display:block;}
+.mp-tbl tr.st-cancelled td:not(:nth-last-child(-n+2)),.mp-tbl tr.st-refunded td:not(:nth-last-child(-n+2)){opacity:.65;}
+.mp-tbl td .stp{margin-bottom:0;}
+.mp-tbl .mp-note{display:block;max-width:230px;margin-top:6px;font-size:11.8px;line-height:1.45;font-weight:600;white-space:normal;}
+.mp-note.red{color:#9C2F25;} .mp-note.amber{color:#8A5209;} .mp-note.violet{color:#4B3290;}
+.mp-tbl .nr-tag{margin-top:4px;}
+@media(max-width:760px){
+  .mp-tbl thead{display:none;}
+  .mp-tbl,.mp-tbl tbody,.mp-tbl tr,.mp-tbl td{display:block;width:100%;}
+  .mp-tbl tr{padding:16px 18px;border-top:1px solid var(--line);}
+  .mp-tbl tr:first-child{border-top:none;}
+  .mp-tbl td{border:none !important;padding:5px 0 !important;min-width:0 !important;}
+  .mp-tbl td::before{content:attr(data-l);display:block;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:2px;}
+}
+
+.exam-bar .eb-back{display:inline-flex;align-items:center;gap:8px;padding:9px 16px 9px 12px;border-radius:100px;
+  border:1.5px solid var(--line);background:var(--white);font-size:13px;font-weight:800;color:var(--ink);flex-shrink:0;transition:.2s;}
+.exam-bar .eb-back:hover{border-color:var(--rose-2);color:var(--rose-2);}
+.exam-bar .eb-back svg{width:15px;height:15px;stroke:currentColor;stroke-width:2.4;fill:none;}
+.exam-bar .eb-title{flex:1 1 220px;min-width:0;margin-left:4px;padding-left:22px;border-left:1px solid var(--line);}
+@media(max-width:560px){
+  .exam-bar .eb-back{order:1;}
+  .exam-bar > :last-child:not(.eb-title){order:2;margin-left:auto;}
+  .exam-bar .eb-title{order:3;flex-basis:100%;margin-left:0;padding-left:0;border-left:none;}
+}
+
+.qv{padding-left:40px;margin-bottom:16px;}
+.qv-bar{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--cream);}
+.qv-ic{width:38px;height:38px;border-radius:11px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--rose-2),var(--saffron));}
+.qv-ic svg{width:19px;height:19px;stroke:#fff;stroke-width:2;fill:none;stroke-linejoin:round;}
+.qv-t{flex:1;min-width:0;}
+.qv-t b{display:block;font-size:13.8px;font-weight:800;color:var(--ink);}
+.qv-t small{font-size:12px;color:var(--ink-soft);font-weight:600;}
+.qv-box{display:none;margin-top:12px;border-radius:14px;overflow:hidden;background:#07131F;}
+.qv-box.open{display:block;}
+.qv-box video{display:block;width:100%;max-height:420px;background:#000;}
+.qv-err{display:none;padding:18px;font-size:13px;color:#fff;text-align:center;}
+@media(max-width:560px){.qv{padding-left:0;}.qv-bar{flex-wrap:wrap;}}
 </style>
 </head>
 <body>
@@ -1771,7 +1976,7 @@ table.dash-table td small{font-size:12px;color:var(--ink-soft);display:block;mar
 
     <nav class="main-nav" id="mainNav">
       <a href="#" data-page="courses" onclick="return navClick(this)">Online Courses</a>
-      <a href="#" data-page="workshops" onclick="return navClick(this)">Workshops</a>
+      <a href="#" data-page="workshops" onclick="return navClick(this)">Programs</a>
       <button class="mega-trigger" id="megaTrigger" aria-expanded="false" aria-controls="megaOverlay" onclick="toggleMega(event)">
         Others
         <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
@@ -1832,7 +2037,7 @@ table.dash-table td small{font-size:12px;color:var(--ink-soft);display:block;mar
         </a>
         <div class="mega-caption">
           <div><b>Voice Culture Intensive · 14–18 August</b><span>Five mornings with Kavitha Ramesh. 12 seats left.</span></div>
-          <a href="#" class="btn btn-primary btn-sm" onclick="closeMega();showPage('workshops');return false;">See All Workshops</a>
+          <a href="#" class="btn btn-primary btn-sm" onclick="closeMega();showPage('workshops');return false;">See All Programs</a>
         </div>
       </div>
     </div>
@@ -2036,7 +2241,7 @@ table.dash-table td small{font-size:12px;color:var(--ink-soft);display:block;mar
           <h2>The Room, Two Days Later</h2>
           <p>A few unbroken days on one form, with a senior artist in the room. Here is what the last three looked like.</p>
         </div>
-        <a href="#" class="btn btn-outline" onclick="showPage('workshops');return false;">See All Workshops</a>
+        <a href="#" class="btn btn-outline" onclick="showPage('workshops');return false;">See All Programs</a>
       </div>
 
       <div class="wsp-grid">
@@ -2093,7 +2298,7 @@ table.dash-table td small{font-size:12px;color:var(--ink-soft);display:block;mar
           <h2>Short, Intensive, Unforgettable</h2>
           <p>Seats are capped by design — small rooms are the whole point. Book before the batch fills.</p>
         </div>
-        <a href="#" class="btn btn-primary btn-sm" onclick="showPage('workshops');return false;">See All Workshops</a>
+        <a href="#" class="btn btn-primary btn-sm" onclick="showPage('workshops');return false;">See All Programs</a>
       </div>
 
       <div class="wsu-grid">
@@ -2164,7 +2369,7 @@ table.dash-table td small{font-size:12px;color:var(--ink-soft);display:block;mar
   <section class="section-tight">
     <div class="wrap">
       <div class="cat-row" id="catRow"></div>
-      <div class="cat-intro" id="catIntro"></div>
+      <div class="intro-row"><div class="cat-intro" id="catIntro"></div><div data-tzpick></div></div>
       <div class="lvl-grid" id="lvlGrid"></div>
     </div>
   </section>
@@ -2213,6 +2418,10 @@ table.dash-table td small{font-size:12px;color:var(--ink-soft);display:block;mar
   </section>
   <section class="section-tight section-cream2">
     <div class="wrap">
+      <div class="prog-bar">
+        <div class="prog-tabs" id="progTabs"></div>
+        <div data-tzpick></div>
+      </div>
       <div class="ws-list" id="wsList"></div>
     </div>
   </section>
@@ -2351,38 +2560,36 @@ table.dash-table td small{font-size:12px;color:var(--ink-soft);display:block;mar
 <!-- ============================= LOGIN / ENROLL ============================= -->
 <section id="page-login" class="page">
   <section class="section">
-    <div class="wrap auth-wrap">
+    <div class="wrap auth-wrap wide">
       <div class="section-head center">
         <div class="eyebrow center-text" style="justify-content:center">JOIN THE ACADEMY</div>
         <h2>Begin Your Charulaya Journey</h2>
       </div>
       <div class="auth-tabs">
-        <div class="auth-tab active" id="tabEnroll" onclick="switchAuthTab('enroll')">New Student — Enroll</div>
+        <div class="auth-tab active" id="tabEnroll" onclick="switchAuthTab('enroll')">New Student Enroll</div>
         <div class="auth-tab" id="tabLogin" onclick="switchAuthTab('login')">Student Login</div>
       </div>
 
       <div class="auth-panel active" id="panelEnroll">
         <div class="form-card">
-          <form onsubmit="return handleEnroll(event)">
-            <div class="field"><label>Student Full Name</label><input type="text" required placeholder="Ananya Suresh"></div>
+          <form id="enrForm" onsubmit="return handleEnroll(event)">
+            <div class="field"><label>Full Name</label><input type="text" required placeholder="Ananya Suresh"></div>
             <div class="field-row">
-              <div class="field"><label>Email</label><input type="email" required placeholder="you@email.com"></div>
-              <div class="field"><label>Phone (with country code)</label><input type="tel" required placeholder="+1 555 000 0000"></div>
+              <div class="field"><label>Email ID</label><input type="email" required placeholder="you@email.com"></div>
+              <div class="field"><label>Phone Number</label><div class="phone-row">
+                <select aria-label="Country code"><option>+91</option><option>+1</option><option>+44</option><option>+971</option><option>+65</option><option>+61</option></select>
+                <input type="tel" required placeholder="98765 43210"></div></div>
             </div>
             <div class="field-row">
-              <div class="field"><label>Country / Time Zone</label>
-                <select><option>India (IST)</option><option>USA (EST/PST)</option><option>UK (GMT)</option><option>UAE (GST)</option><option>Singapore (SGT)</option><option>Other</option></select>
-              </div>
-              <div class="field"><label>Course of Interest</label>
-                <select><option>Carnatic Vocal</option><option>Hindustani Vocal</option><option>Veena</option><option>Violin</option><option>Keyboard</option><option>Piano</option><option>Bharatanatyam</option><option>Western &amp; Contemporary Dance</option></select>
-              </div>
+              <div class="field"><label>Category</label>
+                <select id="enrCat" required onchange="enrCatChange(this.value)"></select></div>
+              <div class="field"><label>Course Selection</label>
+                <select id="enrCourse" required disabled onchange="enrCourseChange(this.value)"><option value="">Select course</option></select></div>
             </div>
-            <div class="field"><label>Prior Experience</label>
-              <select><option>Complete beginner</option><option>Some experience (1–3 years)</option><option>Intermediate / Grade level</option><option>Advanced</option></select>
-            </div>
-            <button class="btn btn-primary btn-block" type="submit">Create Account &amp; Book Free Trial</button>
+            <div id="enrPay"></div>
+            <button class="btn btn-primary btn-block" type="submit" id="enrCta" disabled>Select a course to continue</button>
           </form>
-          <p class="auth-note">By enrolling you agree to Charulaya's course policies. No payment is required for your trial class.</p>
+          <p class="auth-note">By enrolling you agree to Charulaya's course policies. Your free trial class needs no payment.</p>
         </div>
       </div>
 
@@ -2412,6 +2619,10 @@ table.dash-table td small{font-size:12px;color:var(--ink-soft);display:block;mar
         <a href="#" data-panel="pCourses" onclick="return dashNavClick(this)">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 19V5a2 2 0 012-2h12a2 2 0 012 2v13l-4-2-4 2-4-2-4 2z"/></svg>
           My Courses
+        </a>
+        <a href="#" data-panel="pPrograms" onclick="return dashNavClick(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.5 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/></svg>
+          My Programs <span class="dn-badge" id="mpBadge"></span>
         </a>
         <a href="#" data-panel="pLive" onclick="return dashNavClick(this)">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M3 12h3M18 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
@@ -2452,6 +2663,19 @@ table.dash-table td small{font-size:12px;color:var(--ink-soft);display:block;mar
       <div class="dash-panel active" id="pCourses">
         <div class="dash-head"><div><h2 id="mcTitle">My Courses</h2><p>Everything you are enrolled in, and where you have reached.</p></div></div>
         <div class="mc-grid" id="mcGrid"></div>
+      </div>
+
+      <!-- MY PROGRAMS -->
+      <div class="dash-panel" id="pPrograms">
+        <div class="dash-head"><div><h2 id="mpTitle">My Programs</h2><p>Workshops, trainings and practice sessions you have joined — with schedule updates and refund status.</p></div><div data-tzpick></div></div>
+        <div class="mp-notices" id="mpNotices"></div>
+        <div class="fbar" id="mpFilter"></div>
+        <div class="tbl-wrap"><div class="tbl-scroll">
+          <table class="dash-table mp-tbl">
+            <thead><tr><th>Program</th><th>Type</th><th>Course</th><th>Date</th><th>Time</th><th>Class Days</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody id="mpBody"></tbody>
+          </table>
+        </div></div>
       </div>
 
       <!-- COURSE DETAIL -->
@@ -2615,7 +2839,7 @@ table.dash-table td small{font-size:12px;color:var(--ink-soft);display:block;mar
       <div><h5>Explore</h5><ul>
         <li><a href="#" onclick="showPage('courses');return false;">Courses</a></li>
         <li><a href="#" onclick="showPage('faculties');return false;">Faculties</a></li>
-        <li><a href="#" onclick="showPage('workshops');return false;">Workshops</a></li>
+        <li><a href="#" onclick="showPage('workshops');return false;">Programs</a></li>
         <li><a href="#" onclick="showPage('events');return false;">Events</a></li>
       </ul></div>
       <div><h5>Academy</h5><ul>
@@ -4275,7 +4499,7 @@ function startExam(id){
   runLeft = runExam.durMin * 60;
 
   document.getElementById('examBar').innerHTML =
-    '<div><h3>' + runExam.name + '</h3><div class="eb-meta">' + runExam.course + ' · ' + runExam.type +
+    ebBack() + '<div class="eb-title"><h3>' + runExam.name + '</h3><div class="eb-meta">' + runExam.course + ' · ' + runExam.type +
     ' · ' + qs.length + ' questions · ' + runExam.marks + ' marks</div></div>' +
     '<div class="exam-timer" id="examTimer"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><b id="examClock">--:--</b></div>';
 
@@ -4836,12 +5060,14 @@ function renderSessions(){
 function writtenQs(id){
   var map = {
     x2: [
-      {q:'Sing from Sarali Varisai 1 to 7, in first and second speed, without stopping.', up:'video'},
+      {q:'Sing from Sarali Varisai 1 to 7, in first and second speed, without stopping.', up:'video',
+       video:{title:'Guru demonstration — Sarali Varisai 1 to 7', src:'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4'}},
       {q:'Write out the seven exercises from Sarali Varisai in full Carnatic notation.', up:'pdf'},
       {q:'Photograph your practice notebook page showing the talam markings for Adi talam.', up:'image'}
     ],
     x5: [
-      {q:'Sing the Geetham "Lambodara Lakumikara" with talam, in one take.', up:'video'},
+      {q:'Sing the Geetham "Lambodara Lakumikara" with talam, in one take.', up:'video',
+       video:{title:'Reference recording — Lambodara Lakumikara', src:'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4'}},
       {q:'Write the sahityam and swaras of the Geetham, line by line.', up:'pdf'}
     ]
   };
@@ -4855,6 +5081,60 @@ var UP_META = {
 };
 
 var writtenFiles = [];
+
+/* exam header: Back button (left) + title block */
+function ebBack(){
+  return '<button class="eb-back" type="button" onclick="examBack()" aria-label="Back to Exams">' +
+    '<svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Back</button>';
+}
+function examBack(){
+  var i, dirty = false;
+  if(runExam && isWritten(runExam)){
+    for(i = 0; i < writtenFiles.length; i++){ if(writtenFiles[i]){ dirty = true; } }
+  } else {
+    for(i = 0; i < runAnswers.length; i++){ if(runAnswers[i] > -1){ dirty = true; } }
+  }
+  if(dirty && !window.confirm('Leave this exam? Your answers so far will not be saved.')){ return; }
+  abandonExam();
+}
+
+/* video questions (written exam) */
+function qVideo(pre, i, v){
+  if(!v || !v.src){ return ''; }
+  var id = pre + 'qv' + i;
+  return '<div class="qv" id="' + id + '">' +
+    '<div class="qv-bar">' +
+      '<span class="qv-ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10.5 9.5v5l4.5-2.5z"/></svg></span>' +
+      '<div class="qv-t"><b>' + (v.title || 'Video question') + '</b><small>Watch this video, then answer the question</small></div>' +
+      '<button class="mini solid" type="button" id="' + id + 'b" onclick="toggleQV(\'' + id + '\')">Watch Video</button>' +
+    '</div>' +
+    '<div class="qv-box" id="' + id + 'x">' +
+      '<video controls playsinline preload="none" data-src="' + v.src + '"' + (v.poster ? ' poster="' + v.poster + '"' : '') + ' onerror="qvErr(\'' + id + '\')"></video>' +
+      '<div class="qv-err">This video could not be loaded. Please check your connection and try again.</div>' +
+    '</div></div>';
+}
+function toggleQV(id){
+  var box = document.getElementById(id + 'x'), btn = document.getElementById(id + 'b');
+  if(!box){ return; }
+  var vid = box.querySelector('video');
+  if(box.classList.contains('open')){
+    vid.pause(); box.classList.remove('open'); btn.textContent = 'Watch Video';
+  } else {
+    if(!vid.getAttribute('src')){ vid.src = vid.getAttribute('data-src'); }
+    box.classList.add('open'); btn.textContent = 'Hide Video';
+    var pr = vid.play(); if(pr && pr.catch){ pr.catch(function(){}); }
+  }
+}
+function qvErr(id){
+  var box = document.getElementById(id + 'x'); if(!box){ return; }
+  box.querySelector('video').style.display = 'none';
+  box.querySelector('.qv-err').style.display = 'block';
+}
+function stopQVideos(){
+  var v = document.querySelectorAll('.qv video'), i;
+  for(i = 0; i < v.length; i++){ v[i].pause(); }
+}
+
 
 function isWritten(x){ return x.type === 'Written'; }
 
@@ -4945,7 +5225,7 @@ function startExam(id){
   runLeft = runExam.durMin * 60;
 
   document.getElementById('examBar').innerHTML =
-    '<div><h3>' + runExam.name + '</h3><div class="eb-meta">' + runExam.course + ' · ' + runExam.type +
+    ebBack() + '<div class="eb-title"><h3>' + runExam.name + '</h3><div class="eb-meta">' + runExam.course + ' · ' + runExam.type +
     ' · ' + qs.length + ' questions · ' + runExam.marks + ' marks</div></div>' +
     '<div class="exam-timer" id="examTimer"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><b id="examClock">--:--</b></div>';
 
@@ -4975,7 +5255,7 @@ function startWritten(){
 
   clearInterval(runTimer);
   document.getElementById('examBar').innerHTML =
-    '<div><h3>' + runExam.name + '</h3><div class="eb-meta">' + runExam.course + ' · Written · ' +
+    ebBack() + '<div class="eb-title"><h3>' + runExam.name + '</h3><div class="eb-meta">' + runExam.course + ' · Written · ' +
     runExam.faculty + ' · ' + qs.length + ' questions · ' + runExam.marks + ' marks</div></div>' +
     '<span class="status-tag submitted">No time limit</span>';
 
@@ -4984,6 +5264,7 @@ function startWritten(){
     m = UP_META[qs[i].up] || UP_META.pdf;
     html += '<div class="q-card">' +
       '<div class="q-hd"><span class="q-no">' + (i + 1) + '</span><p>' + qs[i].q + '</p></div>' +
+      qVideo('w', i, qs[i].video) +
       '<div class="up-box"><span class="up-req">Answer format · ' + qs[i].up + '</span>' +
         '<input type="file" id="upf' + i + '" accept="' + m.accept + '" style="display:none" onchange="onUpload(' + i + ',this)">' +
         '<div id="upw' + i + '">' + upDrop(i, m) + '</div>' +
@@ -5120,6 +5401,7 @@ function writtenResult(x){
   for(i = 0; i < qs.length; i++){
     m = UP_META[qs[i].up] || UP_META.pdf;
     html += '<div class="q-card"><div class="q-hd"><span class="q-no">' + (i + 1) + '</span><p>' + qs[i].q + '</p></div>' +
+      qVideo('r', i, qs[i].video) +
       '<div class="sub-file"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg>' +
       '<b>' + (files[i] || m.file) + '</b>' +
       '<span class="status-tag done" style="margin-left:auto;">Submitted</span></div></div>';
@@ -5131,12 +5413,699 @@ function writtenResult(x){
   goPanel('pExamResult');
 }
 
+
+/* =================================================================
+   ROUND 7 — PROGRAMS · MY PROGRAMS · TIME ZONES · ENROLMENT
+   (var only, overrides earlier definitions of the same names)
+   ================================================================= */
+
+function gid(id){ return document.getElementById(id); }
+function pad2(n){ return (n < 10 ? '0' : '') + n; }
+
+/* -----------------------------------------------------------------
+   A. TIME ZONES — every session is stored once in IST and converted
+   ----------------------------------------------------------------- */
+var TZS = [
+  {id:'in',  label:'India',                  zone:'Asia/Kolkata',        loc:'en-IN'},
+  {id:'use', label:'United States – Eastern', zone:'America/New_York',    loc:'en-US'},
+  {id:'usc', label:'United States – Central', zone:'America/Chicago',    loc:'en-US'},
+  {id:'usm', label:'United States – Mountain',zone:'America/Denver',     loc:'en-US'},
+  {id:'usp', label:'United States – Pacific', zone:'America/Los_Angeles',loc:'en-US'},
+  {id:'uk',  label:'United Kingdom',         zone:'Europe/London',       loc:'en-GB'},
+  {id:'au',  label:'Australia',              zone:'Australia/Sydney',    loc:'en-AU'}
+];
+var curTZ = 'in';
+var WD_LONG = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+var _tzFmt = {};
+
+function tzById(id){ var i; for(i = 0; i < TZS.length; i++){ if(TZS[i].id === id){ return TZS[i]; } } return TZS[0]; }
+function inst(iso, at){ return new Date(iso + 'T' + at + ':00+05:30'); }
+function addDays(iso, n){
+  var p = iso.split('-');
+  var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2] + n));
+  return d.getUTCFullYear() + '-' + pad2(d.getUTCMonth() + 1) + '-' + pad2(d.getUTCDate());
+}
+function drange(a, b){ var out = [], d = a; while(d <= b){ out.push(d); d = addDays(d, 1); } return out; }
+
+function tzp(date, zone){
+  var f = _tzFmt[zone];
+  if(!f){
+    f = _tzFmt[zone] = new Intl.DateTimeFormat('en-US', {timeZone:zone, year:'numeric', month:'numeric', day:'numeric',
+      weekday:'long', hour:'numeric', minute:'numeric', hour12:false});
+  }
+  var ps = f.formatToParts(date), o = {}, i;
+  for(i = 0; i < ps.length; i++){ o[ps[i].type] = ps[i].value; }
+  return {y:+o.year, m:+o.month, d:+o.day, wd:o.weekday, h:(+o.hour) % 24, mi:+o.minute};
+}
+function tzAbbr(date, t){
+  if(t.id === 'in'){ return 'IST'; }
+  var f = new Intl.DateTimeFormat(t.loc, {timeZone:t.zone, timeZoneName:'short'});
+  var ps = f.formatToParts(date), i;
+  for(i = 0; i < ps.length; i++){ if(ps[i].type === 'timeZoneName'){ return ps[i].value; } }
+  return '';
+}
+function clock(p){ var h = p.h % 12; if(h === 0){ h = 12; } return {t:h + ':' + pad2(p.mi), ap:(p.h < 12 ? 'AM' : 'PM')}; }
+function fmtRange(start, durMin, t){
+  var a = clock(tzp(start, t.zone)), b = clock(tzp(new Date(start.getTime() + durMin * 60000), t.zone));
+  return (a.ap === b.ap ? a.t : a.t + ' ' + a.ap) + ' – ' + b.t + ' ' + b.ap + ' ' + tzAbbr(start, t);
+}
+function dayStr(p){ return pad2(p.d) + ' ' + MON[p.m - 1] + ' ' + p.y; }
+function dateSpan(first, last){
+  if(first.y === last.y && first.m === last.m && first.d === last.d){ return dayStr(first); }
+  if(first.y === last.y && first.m === last.m){ return pad2(first.d) + '–' + pad2(last.d) + ' ' + MON[first.m - 1] + ' ' + first.y; }
+  if(first.y === last.y){ return pad2(first.d) + ' ' + MON[first.m - 1] + ' – ' + pad2(last.d) + ' ' + MON[last.m - 1] + ' ' + first.y; }
+  return dayStr(first) + ' – ' + dayStr(last);
+}
+/* weekday names -> "Mon – Fri" / "Mon, Wed & Sat" / full names for courses */
+function daysText(set, full){
+  var idx = [], i;
+  for(i = 0; i < 7; i++){ if(set[WD_LONG[i]]){ idx.push(i); } }
+  if(idx.length === 7){ return 'Daily'; }
+  var nm = function(k){ return full ? WD_LONG[k] : WD_LONG[k].slice(0, 3); };
+  var runs = [], used = {}, s, k, run;
+  if(!full){
+    for(i = 0; i < idx.length; i++){
+      s = idx[i];
+      if(used[s] || set[WD_LONG[(s + 6) % 7]]){ continue; }
+      run = [s]; used[s] = 1; k = (s + 1) % 7;
+      while(set[WD_LONG[k]] && !used[k]){ run.push(k); used[k] = 1; k = (k + 1) % 7; }
+      runs.push(run);
+    }
+  }
+  var parts = [];
+  if(runs.length){
+    for(i = 0; i < runs.length; i++){
+      run = runs[i];
+      if(run.length >= 3){ parts.push(nm(run[0]) + ' – ' + nm(run[run.length - 1])); }
+      else { var j; for(j = 0; j < run.length; j++){ parts.push(nm(run[j])); } }
+    }
+  } else {
+    for(i = 0; i < idx.length; i++){ parts.push(nm(idx[i])); }
+  }
+  if(parts.length === 1){ return parts[0]; }
+  return parts.slice(0, -1).join(', ') + ' & ' + parts[parts.length - 1];
+}
+/* a schedule: {dates:[IST ISO days], at:'HH:MM' (IST), dur:minutes} */
+function schedInfo(sch, tzId){
+  var t = tzById(tzId || curTZ), i, ps = [], wds = {}, s, p;
+  for(i = 0; i < sch.dates.length; i++){
+    s = inst(sch.dates[i], sch.at); p = tzp(s, t.zone); ps.push(p); wds[p.wd] = 1;
+  }
+  var first = inst(sch.dates[0], sch.at);
+  return {date:dateSpan(ps[0], ps[ps.length - 1]), time:fmtRange(first, sch.dur, t), days:daysText(wds, false),
+          wd:ps[0].wd.slice(0, 3), one:(sch.dates.length === 1)};
+}
+function refMonday(){
+  var p = tzp(new Date(), 'Asia/Kolkata');
+  var base = p.y + '-' + pad2(p.m) + '-' + pad2(p.d);
+  var wi = WD_LONG.indexOf(p.wd);
+  return addDays(base, 7 - wi);
+}
+/* regular course timings for a level in the chosen time zone */
+var LVL_AT = {v1:'19:00',v2:'18:30',v3:'17:30',v4:'19:00', vo1:'18:00',vo2:'17:00',vo3:'18:30',vo4:'19:30',
+  k1:'10:00',k2:'11:00',k3:'18:00', ve1:'17:30',ve2:'19:00',ve3:'10:30', p1:'16:00',p2:'18:00',p3:'19:00',
+  b1:'16:30',b2:'17:30',b3:'09:30'};
+function courseSched(l, tzId){
+  var t = tzById(tzId || curTZ), names = l.days.replace(/ & /g, ', ').split(', '), ref = refMonday(), set = {}, i, s, first = null;
+  var at = LVL_AT[l.id] || '18:00';
+  for(i = 0; i < names.length; i++){
+    s = inst(addDays(ref, WD_LONG.indexOf(names[i])), at);
+    set[tzp(s, t.zone).wd] = 1;
+    if(!first){ first = s; }
+  }
+  return {days:daysText(set, true), time:fmtRange(first, 60, t)};
+}
+
+function tzOptions(){
+  var h = '', i;
+  for(i = 0; i < TZS.length; i++){ h += '<option value="' + TZS[i].id + '"' + (TZS[i].id === curTZ ? ' selected' : '') + '>' + TZS[i].label + '</option>'; }
+  return h;
+}
+function renderAllTZ(){
+  var els = document.querySelectorAll('[data-tzpick]'), i;
+  for(i = 0; i < els.length; i++){
+    els[i].className = 'tz-pick';
+    els[i].innerHTML = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>' +
+      '<label>Timings For</label><select aria-label="Timings For" onchange="setTZ(this.value)">' + tzOptions() + '</select>';
+  }
+}
+function setTZ(id){
+  curTZ = id;
+  renderAllTZ();
+  renderLevels();
+  renderWorkshops();
+  renderMyPrograms();
+}
+
+/* -----------------------------------------------------------------
+   B. PROGRAM DATA — workshops (existing) + trainings (separate)
+   ----------------------------------------------------------------- */
+var WS_SCHED = {
+  w1:{dates:drange('2026-08-14','2026-08-18'), at:'07:00', dur:90},
+  w2:{dates:drange('2026-08-28','2026-08-30'), at:'16:00', dur:180},
+  w3:{dates:['2026-08-30'], at:'18:00', dur:60},
+  w4:{dates:['2026-09-05','2026-09-06'], at:'18:30', dur:90}
+};
+(function(){ var i; for(i = 0; i < WSHOPS.length; i++){ WSHOPS[i].sch = WS_SCHED[WSHOPS[i].id]; WSHOPS[i].kind = 'workshop'; } })();
+WSHOPS[1].rescheduled = true;      /* Navaratri Varnam Marathon moved by the academy */
+
+var TRAININGS = [
+  {id:'t1', kind:'training', img:PEXELS(30481580,760,340), name:'Carnatic Vocal Pedagogy Training',
+   post:'Learn to teach — voice care, lesson design and classroom practice for aspiring and working vocal teachers.',
+   fee:4999, seats:14, joined:false,
+   sch:{dates:['2026-09-07','2026-09-10','2026-09-14','2026-09-17'], at:'19:00', dur:90}},
+  {id:'t2', kind:'training', img:PEXELS(30424952,760,340), name:'Bharatanatyam Adavu Teacher Training',
+   post:'A weekend-format track on teaching adavus, hasta mudras and korvai structure to young learners.',
+   fee:6500, seats:10, joined:false,
+   sch:{dates:['2026-09-12','2026-09-13','2026-09-19','2026-09-20'], at:'10:00', dur:150}},
+  {id:'t3', kind:'training', img:PEXELS(32858785,760,340), name:'Keyboard Accompaniment Training',
+   post:'Learn to accompany vocalists on keyboard — sruti-matched drones, simple chord support and rhythm patterns.',
+   fee:3800, seats:18, joined:false,
+   sch:{dates:['2026-09-16','2026-09-18','2026-09-23','2026-09-25'], at:'18:30', dur:90}},
+  {id:'t4', kind:'training', img:PEXELS(33638418,760,340), name:'Online Teaching Studio Setup',
+   post:'A free, hands-on session on mic, camera, lighting and screen-sharing setup for teaching live online.',
+   fee:0, seats:40, joined:false,
+   sch:{dates:['2026-09-26'], at:'17:00', dur:120}}
+];
+
+function findWs(id){
+  var i;
+  for(i = 0; i < WSHOPS.length; i++){ if(WSHOPS[i].id === id){ return WSHOPS[i]; } }
+  for(i = 0; i < TRAININGS.length; i++){ if(TRAININGS[i].id === id){ return TRAININGS[i]; } }
+  return null;
+}
+var KIND_LABEL = {workshop:'Workshop', training:'Training', webinar:'Webinar', practice:'Practice Session'};
+var ST_LABEL = {upcoming:'Upcoming', scheduled:'Scheduled', rescheduled:'Rescheduled', cancelled:'Cancelled', refunded:'Refunded', completed:'Completed'};
+function stp(s){ return '<span class="stp s-' + s + '">' + ST_LABEL[s] + '</span>'; }
+
+/* -----------------------------------------------------------------
+   C. STUDENT'S PROGRAMS (what admin / student actions have done)
+   ----------------------------------------------------------------- */
+var MYPROG = [
+  {key:'m1', ref:'w1', kind:'workshop', status:'upcoming',    paid:1499},
+  {key:'m2', ref:'w2', kind:'workshop', status:'rescheduled', paid:2200, notice:true,
+   was:{dates:drange('2026-08-21','2026-08-23'), at:'16:00', dur:180}},
+  {key:'m3', ref:'t1', kind:'training', status:'scheduled',   paid:4999},
+  {key:'m4', ref:'t2', kind:'training', status:'cancelled',   paid:6500, by:'student'},
+  {key:'m5', ref:'t3', kind:'training', status:'cancelled',   paid:3800, by:'academy', refund:'processing', notice:true},
+  {key:'m6', ref:'w4', kind:'workshop', status:'refunded',    paid:1299, by:'academy', refundRef:'RFD-260812-0417', refundOn:'12 Aug 2026'},
+  {key:'m7', kind:'workshop', status:'completed', paid:1499, name:'Sruti & Breath Bootcamp',
+   sch:{dates:drange('2026-07-20','2026-07-24'), at:'07:00', dur:90}}
+];
+function myByRef(ref){ var i; for(i = 0; i < MYPROG.length; i++){ if(MYPROG[i].ref === ref){ return MYPROG[i]; } } return null; }
+function myByKey(k){ var i; for(i = 0; i < MYPROG.length; i++){ if(MYPROG[i].key === k){ return MYPROG[i]; } } return null; }
+function isActive(m){ return m && (m.status === 'upcoming' || m.status === 'scheduled' || m.status === 'rescheduled'); }
+function progOf(m){
+  if(m.ref){ var w = findWs(m.ref); return {name:w.name, sch:w.sch, fee:w.fee}; }
+  return {name:m.name, sch:m.sch, fee:m.paid};
+}
+(function(){ var i, m, w; for(i = 0; i < MYPROG.length; i++){ m = MYPROG[i]; if(m.ref){ w = findWs(m.ref); if(isActive(m) && w.seats > 0){ w.seats--; } if(isActive(m)){ w.joined = true; } } } })();
+
+/* -----------------------------------------------------------------
+   D. PRACTICE SESSIONS — admin-created, linked to ONE course
+   ----------------------------------------------------------------- */
+var PRACTICE = [
+  {id:'pr1', lvl:'vo1', name:'Sarali Varisai Drill Lab',     desc:'Guided repetition of Sarali and Janta varisai at three speeds, with live pitch correction.',
+   sch:{dates:['2026-08-18'], at:'18:30', dur:60}, status:'upcoming'},
+  {id:'pr2', lvl:'vo1', name:'Shruti Alignment Practice',    desc:'Hold the tonic against the tanpura and learn to self-correct drifting sruti.',
+   sch:{dates:['2026-08-25'], at:'18:30', dur:60}, status:'scheduled'},
+  {id:'pr3', lvl:'vo1', name:'Geetham Run-Through',          desc:'Sing your current Geetham start to finish with faculty feedback on tala and diction.',
+   sch:{dates:['2026-09-01'], at:'18:30', dur:60}, status:'rescheduled', notice:true,
+   was:{dates:['2026-08-29'], at:'18:30', dur:60}},
+  {id:'pr4', lvl:'vo1', name:'Alankaram Practice',           desc:'Seven-tala alankaram practice in two speeds.',
+   sch:{dates:['2026-08-04'], at:'18:30', dur:60}, status:'completed'},
+  {id:'pr5', lvl:'v1',  name:'Bow Control & Open-String Practice', desc:'Long bows, string crossing and clean open-string tone on the violin.',
+   sch:{dates:['2026-08-19'], at:'19:30', dur:60}, status:'upcoming'},
+  {id:'pr6', lvl:'v1',  name:'Geetham Fingering Clinic',     desc:'Finger placement and shifting for the first Geetham, played slowly then at tempo.',
+   sch:{dates:['2026-08-26'], at:'19:30', dur:60}, status:'scheduled'},
+  {id:'pr7', lvl:'v1',  name:'Sarali Varisai on Violin',     desc:'Sarali varisai in mandra and madhya sthayi with metronome support.',
+   sch:{dates:['2026-08-05'], at:'19:30', dur:60}, status:'completed'},
+  {id:'pr8', lvl:'k1',  name:'Right-Hand Swara Practice',    desc:'Scale patterns and simple swara exercises with the right hand over a drone.',
+   sch:{dates:['2026-08-22'], at:'11:30', dur:60}, status:'upcoming'},
+  {id:'pr9', lvl:'k1',  name:'Chord & Rhythm Styles Practice', desc:'Basic chord changes with the keyboard’s built-in rhythm styles.',
+   sch:{dates:['2026-08-29'], at:'11:30', dur:60}, status:'scheduled'},
+  {id:'pr10',lvl:'k1',  name:'Sruti Box Basics',             desc:'Setting the base note and playing along with a recorded vocal line.',
+   sch:{dates:['2026-08-08'], at:'11:30', dur:60}, status:'completed'},
+  {id:'pr11',lvl:'ve1', name:'Plucking Technique Practice',  desc:'Right-hand plucking exercises on the Saraswati veena.',
+   sch:{dates:['2026-08-20'], at:'18:00', dur:60}, status:'scheduled'},
+  {id:'pr12',lvl:'p1',  name:'Scales & Arpeggios Practice',  desc:'Two-octave major scales and arpeggios, hands together.',
+   sch:{dates:['2026-08-21'], at:'16:30', dur:60}, status:'scheduled'},
+  {id:'pr13',lvl:'b1',  name:'Adavu Rhythm Practice',        desc:'Tattadavu and Nattadavu in three speeds with nattuvangam.',
+   sch:{dates:['2026-08-23'], at:'17:00', dur:60}, status:'scheduled'}
+];
+var EXTRA_LVLS = [];
+/* level id -> enrolled course record */
+function enrolledLvls(){
+  var map = {}, i, j, e, cat, l;
+  for(i = 0; i < ENROLLED.length; i++){
+    e = ENROLLED[i]; cat = findCat(e.key);
+    if(!cat){ continue; }
+    for(j = 0; j < cat.levels.length; j++){
+      l = cat.levels[j];
+      if(l.name === e.course && l.duration === e.duration){ map[l.id] = e; }
+    }
+  }
+  for(i = 0; i < EXTRA_LVLS.length; i++){ if(!map[EXTRA_LVLS[i]]){ map[EXTRA_LVLS[i]] = {batch:''}; } }
+  return map;
+}
+function lvlLookup(lvlId){
+  var i, j;
+  for(i = 0; i < CATS.length; i++){ for(j = 0; j < CATS[i].levels.length; j++){ if(CATS[i].levels[j].id === lvlId){ return {cat:CATS[i], lvl:CATS[i].levels[j]}; } } }
+  return null;
+}
+function myPractice(){
+  if(!isLoggedIn){ return []; }
+  var map = enrolledLvls(), out = [], i;
+  for(i = 0; i < PRACTICE.length; i++){ if(map[PRACTICE[i].lvl]){ out.push(PRACTICE[i]); } }
+  out.sort(function(a, b){ return a.sch.dates[0] < b.sch.dates[0] ? -1 : 1; });
+  return out;
+}
+function courseName(lvlId){ var x = lvlLookup(lvlId); return x ? x.cat.short + ' – ' + x.lvl.name : ''; }
+function courseSub(lvlId){
+  var x = lvlLookup(lvlId), e = enrolledLvls()[lvlId];
+  return x ? x.lvl.duration + (e && e.batch ? ' · Batch ' + e.batch.replace(/^\w+\s/, '') : '') : '';
+}
+
+/* -----------------------------------------------------------------
+   E. PROGRAMS PAGE — Workshops / Trainings / Practice Sessions
+   ----------------------------------------------------------------- */
+var progTab = 'workshops';
+function progTabs(){
+  var el = gid('progTabs'); if(!el){ return; }
+  var tabs = [['workshops','Workshops',WSHOPS.length], ['trainings','Trainings',TRAININGS.length]];
+  var h = '', i;
+  for(i = 0; i < tabs.length; i++){
+    h += '<button type="button" class="cat-tab' + (progTab === tabs[i][0] ? ' active' : '') + '" onclick="setProgTab(\'' + tabs[i][0] + '\')">' +
+         tabs[i][1] + '<i>' + tabs[i][2] + '</i></button>';
+  }
+  el.innerHTML = h;
+}
+function setProgTab(t){ progTab = t; renderWorkshops(); }
+
+function termsFor(kind, paid){
+  var k = kind === 'training' ? 'Training' : 'Workshop';
+  if(!paid){
+    return ['This is a free ' + k.toLowerCase() + ' — no payment is collected.',
+            'You can cancel your registration any time from My Programs.',
+            'If the academy reschedules or cancels, you will be notified with the updated details.'];
+  }
+  return [k + ' registrations are non-refundable.',
+          'Once payment is completed, the registration amount cannot be refunded.',
+          'You may cancel from My Programs, but cancellation does not qualify for a refund.',
+          'If the academy reschedules or cancels this ' + k.toLowerCase() + ', you will be notified and any applicable refund is processed by the academy.'];
+}
+function termsHtml(kind, paid){
+  var t = termsFor(kind, paid), h = '<div class="tnc"><h5>Terms &amp; Conditions</h5><ul>', i;
+  for(i = 0; i < t.length; i++){ h += '<li>' + t[i] + '</li>'; }
+  return h + '</ul></div>';
+}
+var NR_ICON = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg>';
+
+function progCard(w){
+  var s = schedInfo(w.sch), m = myByRef(w.id), foot;
+  if(m && isActive(m)){
+    foot = '<span class="joined-tag"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Joined</span>';
+  } else if(m){
+    foot = stp(m.status);
+  } else {
+    foot = '<button class="btn btn-primary btn-sm" type="button" onclick="openJoin(\'' + w.id + '\')">Join</button>';
+  }
+  return '<article class="wsc">' +
+    '<div class="wsc-banner">' +
+      '<img src="' + w.img + '" alt="' + w.name + '" loading="lazy">' +
+      '<span class="wsc-badge' + (w.fee === 0 ? ' free' : '') + '">' + (w.fee === 0 ? 'Free' : 'Paid') + '</span>' +
+      '<span class="wsc-badges">' + (w.rescheduled ? '<span class="wsc-tag rs">Rescheduled</span>' : '') +
+        (w.fee > 0 ? '<span class="wsc-tag nr">Non-Refundable</span>' : '') + '</span>' +
+      '<span class="wsc-name">' + w.name + '</span>' +
+    '</div>' +
+    '<div class="wsc-body">' +
+      '<p class="wsc-post">' + w.post + '</p>' +
+      '<div class="wsc-meta">' +
+        '<div><small>Date</small><b>' + s.date + '</b></div>' +
+        '<div><small>Time</small><b>' + s.time + '</b></div>' +
+        '<div><small>Class Days</small><b class="days">' + s.days + '</b></div>' +
+        '<div><small>Amount</small><b>' + (w.fee === 0 ? 'Free' : inr(w.fee)) + '</b></div>' +
+      '</div>' +
+      '<div class="wsc-foot">' +
+        '<span class="wsc-seats' + (w.seats > 15 ? ' plenty' : '') + '">' + w.seats + ' seats left</span>' + foot +
+      '</div>' +
+    '</div>' +
+  '</article>';
+}
+
+function renderWorkshops(){
+  var list = gid('wsList'); if(!list){ return; }
+  progTabs();
+  var h = '', i, arr;
+  list.classList.remove('hidden');
+  arr = progTab === 'trainings' ? TRAININGS : WSHOPS;
+  for(i = 0; i < arr.length; i++){ h += progCard(arr[i]); }
+  list.innerHTML = h;
+}
+
+/* join flow (workshops + trainings) — Non-Refundable label + T&C */
+function openJoin(id){
+  var w = findWs(id); if(!w){ return; }
+  var s = schedInfo(w.sch), paid = w.fee > 0, k = w.kind === 'training' ? 'Training' : 'Workshop';
+  var html = mdlHead('Join ' + k, w.name);
+  html += '<div class="mdl-bd"><form id="joinForm" onsubmit="return submitJoin(event,\'' + id + '\')">' +
+    '<div class="sum-card" style="padding:14px 16px;margin-bottom:18px;">' +
+      '<div class="sr"><span>Date</span><b>' + s.date + '</b></div>' +
+      '<div class="sr"><span>Time</span><b>' + s.time + '</b></div>' +
+      '<div class="sr"><span>Class Days</span><b>' + s.days + '</b></div>' +
+      '<div class="sr"><span>Refund Policy</span><b>' + (paid ? '<span class="nr-tag">' + NR_ICON + 'Non-Refundable</span>' : 'Free — no payment') + '</b></div>' +
+      '<div class="sr total" style="padding-top:11px;margin-top:6px;"><span>' + (paid ? 'Pay Amount' : 'Amount') + '</span><b>' + (paid ? inr(w.fee) : 'Free') + '</b></div>' +
+    '</div>' +
+    '<h4 style="margin:0 0 12px;">Student Details</h4>' +
+    '<div class="field"><label>Student Name</label><input type="text" required placeholder="Ananya Suresh"></div>' +
+    '<div class="field-row">' +
+      '<div class="field"><label>Email ID</label><input type="email" required placeholder="you@email.com"></div>' +
+      '<div class="field"><label>Phone Number</label><div class="phone-row">' +
+        '<select aria-label="Country code"><option>+91</option><option>+1</option><option>+44</option><option>+971</option><option>+65</option><option>+61</option></select>' +
+        '<input type="tel" required placeholder="98765 43210">' +
+      '</div></div>' +
+    '</div>' +
+  '</form></div><div class="mdl-ft">' +
+    '<button class="btn btn-outline btn-sm" type="button" onclick="closeApp()">Cancel</button>' +
+    '<button class="btn btn-primary" type="submit" form="joinForm">' + (paid ? 'Pay ' + inr(w.fee) : 'Confirm Registration') + '</button>' +
+  '</div>' + termsHtml(w.kind, paid);
+  openApp(html, 'form');
+}
+function submitJoin(e, id){
+  e.preventDefault();
+  var w = findWs(id); if(!w){ return false; }
+  MYPROG.unshift({key:'m' + Date.now(), ref:id, kind:w.kind, status:'scheduled', paid:w.fee});
+  w.joined = true;
+  if(w.seats > 0){ w.seats--; }
+  closeApp();
+  renderWorkshops(); renderMyPrograms();
+  showToast('You are in', w.fee > 0 ? inr(w.fee) + ' paid — your seat for ' + w.name + ' is confirmed. Registration is non-refundable.' :
+    'Your free seat for ' + w.name + ' is confirmed.');
+  return false;
+}
+
+/* -----------------------------------------------------------------
+   F. MY PROGRAMS (student dashboard)
+   ----------------------------------------------------------------- */
+var mpType = 'all', mpStatus = 'all';
+
+function allMyItems(){
+  var out = [], i, m, p, pr = myPractice();
+  for(i = 0; i < MYPROG.length; i++){
+    m = MYPROG[i]; p = progOf(m);
+    out.push({key:m.key, src:m, kind:m.kind, name:p.name, sch:p.sch, status:m.status, was:m.was, paid:m.paid, by:m.by,
+              refund:m.refund, refundRef:m.refundRef, refundOn:m.refundOn});
+  }
+  for(i = 0; i < pr.length; i++){
+    out.push({key:pr[i].id, src:pr[i], kind:'practice', name:pr[i].name, course:courseName(pr[i].lvl) + ' · ' + courseSub(pr[i].lvl),
+              sch:pr[i].sch, status:pr[i].status, was:pr[i].was});
+  }
+  return out;
+}
+function mpRow(it){
+  var s = schedInfo(it.sch), isPrac = it.kind === 'practice';
+  var o = (it.status === 'rescheduled' && it.was) ? schedInfo(it.was) : null;
+  var wd = isPrac ? s.wd + ', ' : '', note = '', dateH, timeH, amtH, actH = '—';
+  var paid = !isPrac && it.paid > 0;
+
+  if(it.status === 'cancelled'){
+    if(it.by === 'student'){
+      note = '<small class="mp-note red">You cancelled this registration.' + (paid ? ' ' + inr(it.paid) + ' is non-refundable.' : '') + '</small>';
+    } else if(it.refund === 'processing'){
+      note = '<small class="mp-note amber">Cancelled by Chaarulaya. Refund of ' + inr(it.paid) + ' is being processed.</small>';
+    } else {
+      note = '<small class="mp-note red">Cancelled by Chaarulaya.</small>';
+    }
+  } else if(it.status === 'refunded'){
+    note = '<small class="mp-note violet">' + inr(it.paid) + ' refunded on ' + it.refundOn + ' · Ref ' + it.refundRef + '</small>';
+  }
+
+  if(o){
+    dateH = '<span class="was">' + (isPrac ? o.wd + ', ' : '') + o.date + '</span><span class="new">' + wd + s.date + '</span>';
+    timeH = '<span class="was">' + o.time + '</span><span class="new">' + s.time + '</span>';
+  } else {
+    dateH = wd + s.date; timeH = s.time;
+  }
+
+  if(isPrac){ amtH = 'Included with course'; }
+  else if(paid){ amtH = '<b>' + inr(it.paid) + '</b>' + (it.status !== 'refunded' ? '<span class="nr-tag">' + NR_ICON + 'Non-Refundable</span>' : ''); }
+  else { amtH = 'Free'; }
+
+  if(!isPrac && isActive(it.src)){
+    actH = '<button class="btn-ghost-red" type="button" onclick="openCancelProg(\'' + it.key + '\')">Cancel</button>';
+  }
+
+  return '<tr class="st-' + it.status + '">' +
+    '<td class="nm" data-l="Program">' + it.name + '</td>' +
+    '<td class="nowrap" data-l="Type"><span class="mp-type">' + KIND_LABEL[it.kind] + '</span></td>' +
+    '<td data-l="Course">' + (it.course || '—') + '</td>' +
+    '<td class="nowrap" data-l="Date">' + dateH + '</td>' +
+    '<td class="nowrap" data-l="Time">' + timeH + '</td>' +
+    '<td data-l="Class Days">' + (s.one ? '—' : s.days) + '</td>' +
+    '<td data-l="Amount">' + amtH + '</td>' +
+    '<td data-l="Status">' + stp(it.status) + note + '</td>' +
+    '<td data-l="Action">' + actH + '</td></tr>';
+}
+
+function noticeList(){
+  var out = [], i, m, p, s, o, pr = PRACTICE;
+  for(i = 0; i < MYPROG.length; i++){
+    m = MYPROG[i]; if(!m.notice){ continue; } p = progOf(m); s = schedInfo(p.sch);
+    if(m.status === 'rescheduled'){
+      o = schedInfo(m.was);
+      out.push({k:'resched', key:m.key, t:'Schedule updated — ' + p.name, x:'Now ' + s.date + ' · ' + s.time + ' (earlier ' + o.date + ').'});
+    } else if(m.status === 'cancelled'){
+      out.push({k:'cancel', key:m.key, t:'Cancelled by Chaarulaya — ' + p.name, x:'A refund of ' + inr(m.paid) + ' is being processed. Status will show Refunded once complete.'});
+    } else if(m.status === 'refunded'){
+      out.push({k:'refund', key:m.key, t:'Refund processed — ' + p.name, x:inr(m.paid) + ' has been refunded to your original payment method.'});
+    }
+  }
+  var map = enrolledLvls();
+  if(isLoggedIn){
+    for(i = 0; i < pr.length; i++){
+      if(pr[i].notice && map[pr[i].lvl] && pr[i].status === 'rescheduled'){
+        s = schedInfo(pr[i].sch); o = schedInfo(pr[i].was);
+        out.push({k:'resched', key:pr[i].id, t:'Practice session rescheduled — ' + pr[i].name, x:'Now ' + s.wd + ', ' + s.date + ' · ' + s.time + ' (earlier ' + o.date + ').'});
+      }
+    }
+  }
+  return out;
+}
+var NOTE_ICON = {
+  resched:'<svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1112 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 004 0"/></svg>',
+  cancel:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>',
+  refund:'<svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 109-9M3 4v5h5"/></svg>'
+};
+function dismissNotice(key){
+  var m = myByKey(key), i;
+  if(m){ m.notice = false; }
+  for(i = 0; i < PRACTICE.length; i++){ if(PRACTICE[i].id === key){ PRACTICE[i].notice = false; } }
+  renderMyPrograms();
+}
+function updateMpBadge(){
+  var b = gid('mpBadge'); if(!b){ return; }
+  var n = isLoggedIn ? noticeList().length : 0;
+  b.textContent = n ? n : '';
+}
+function renderMyPrograms(){
+  var grid = gid('mpBody'); if(!grid){ return; }
+  var items = allMyItems(), i, h = '', shown = 0, it;
+  var t = gid('mpTitle'); if(t){ t.textContent = 'My Programs – ' + items.length + ' Program' + (items.length === 1 ? '' : 's'); }
+  var nl = noticeList(), nh = '';
+  for(i = 0; i < nl.length; i++){
+    nh += '<div class="mp-notice n-' + nl[i].k + '" role="status"><span class="ni">' + NOTE_ICON[nl[i].k] + '</span><div><b>' + nl[i].t + '</b><p>' + nl[i].x + '</p></div>' +
+          '<button class="nx" type="button" onclick="dismissNotice(\'' + nl[i].key + '\')">Dismiss</button></div>';
+  }
+  gid('mpNotices').innerHTML = nh;
+  var order = {rescheduled:0, upcoming:1, scheduled:2, cancelled:3, refunded:4, completed:5};
+  items.sort(function(a, b){ return (order[a.status] - order[b.status]) || (a.sch.dates[0] < b.sch.dates[0] ? -1 : 1); });
+  for(i = 0; i < items.length; i++){
+    it = items[i];
+    if(mpType !== 'all' && it.kind !== mpType){ continue; }
+    if(mpStatus !== 'all' && it.status !== mpStatus){ continue; }
+    h += mpRow(it); shown++;
+  }
+  grid.innerHTML = shown ? h : '<tr><td colspan="9" style="text-align:center;color:var(--ink-soft);padding:36px;">No programs match these filters.</td></tr>';
+  var f = gid('mpFilter');
+  if(f && !f.getAttribute('data-ready')){
+    var st = '', k;
+    for(k in ST_LABEL){ st += '<option value="' + k + '">' + ST_LABEL[k] + '</option>'; }
+    f.innerHTML = '<div class="fb"><label>Program Type</label><select id="mpT" onchange="mpType=this.value;renderMyPrograms()">' +
+      '<option value="all">All programs</option><option value="workshop">Workshops</option><option value="training">Trainings</option><option value="practice">Practice Sessions</option></select></div>' +
+      '<div class="fb"><label>Status</label><select id="mpS" onchange="mpStatus=this.value;renderMyPrograms()"><option value="all">All statuses</option>' + st + '</select></div>' +
+      '<div class="fb"><label>&nbsp;</label><button class="btn btn-outline btn-sm" type="button" onclick="mpType=\'all\';mpStatus=\'all\';gid(\'mpT\').value=\'all\';gid(\'mpS\').value=\'all\';renderMyPrograms()">Reset</button></div>';
+    f.setAttribute('data-ready', '1');
+  }
+  updateMpBadge();
+}
+
+/* student cancellation — confirm first, always non-refundable */
+function openCancelProg(key){
+  var m = myByKey(key); if(!m){ return; }
+  var p = progOf(m), s = schedInfo(p.sch), k = KIND_LABEL[m.kind], paid = m.paid > 0;
+  var html = mdlHead('Cancel Registration?', p.name);
+  html += '<div class="mdl-bd">' +
+    '<div class="sum-card" style="padding:14px 16px;margin-bottom:16px;">' +
+      '<div class="sr"><span>' + k + '</span><b>' + p.name + '</b></div>' +
+      '<div class="sr"><span>Date</span><b>' + s.date + '</b></div>' +
+      '<div class="sr"><span>Time</span><b>' + s.time + '</b></div>' +
+      '<div class="sr"><span>Amount Paid</span><b>' + (paid ? inr(m.paid) : 'Free') + '</b></div></div>' +
+    (paid ? '<div class="pol-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg><div><b>This cancellation is non-refundable</b>' +
+      '<p>Cancelling your own registration does not qualify for a refund. The ' + inr(m.paid) + ' you paid will not be returned.</p></div></div>' : '') +
+    '<div class="les-sub">Cancellation policy</div><ul class="cx-list">' +
+      '<li>' + k + ' registrations are ' + (paid ? 'non-refundable.' : 'free of charge, so there is nothing to refund.') + '</li>' +
+      '<li>Your seat is released immediately and the status changes to <b>Cancelled</b>.</li>' +
+      '<li>If the academy cancels a program and processes a refund, the status shows <b>Refunded</b>.</li></ul>' +
+  '</div><div class="mdl-ft">' +
+    '<button class="btn btn-outline btn-sm" type="button" onclick="closeApp()">Keep Registration</button>' +
+    '<button class="btn btn-danger btn-sm" type="button" onclick="confirmCancelProg(\'' + key + '\')">Yes, Cancel Registration</button></div>';
+  openApp(html, 'slim');
+}
+function confirmCancelProg(key){
+  var m = myByKey(key); if(!m){ return; }
+  var p = progOf(m), w = m.ref ? findWs(m.ref) : null, paid = m.paid > 0;
+  m.status = 'cancelled'; m.by = 'student'; m.notice = false;
+  if(w){ w.seats++; w.joined = false; }
+  var html = mdlHead('Registration Cancelled', p.name) +
+    '<div class="mdl-bd"><div class="pay-done"><div class="cx-tick"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></div>' +
+    '<h3>Status: Cancelled</h3><p>' + (paid ? 'Your registration amount of <b>' + inr(m.paid) + '</b> is non-refundable, as stated in the cancellation policy.' :
+      'Your free registration has been cancelled. No payment was made, so there is nothing to refund.') + '</p></div></div>' +
+    '<div class="mdl-ft"><button class="btn btn-primary btn-sm" type="button" onclick="closeApp()">Back to My Programs</button></div>';
+  openApp(html, 'slim');
+  renderMyPrograms(); renderWorkshops();
+}
+
+/* -----------------------------------------------------------------
+   G. ONLINE COURSES — level cards with class days + timings
+   ----------------------------------------------------------------- */
+function renderLevels(){
+  if(!TZS){ return; }   /* an earlier boot call can arrive before the data below is defined */
+  var cat = findCat(catActive), intro = gid('catIntro'), grid = gid('lvlGrid');
+  if(!cat || !grid){ return; }
+  intro.innerHTML = '<h3>' + cat.name + '</h3><p>' + cat.blurb + '</p>';
+  var h = '', i, l, c, lv, n;
+  for(i = 0; i < cat.levels.length; i++){
+    l = cat.levels[i]; c = courseSched(l);
+    n = (l.name.match(/^Level \d+/) || [''])[0]; lv = l.name.replace(/^Level \d+\s*/, '');
+    h += '<article class="lvl-card">' +
+      '<h4>' + cat.short + ' – ' + l.name + '</h4>' +
+      '<div class="lvl-rows">' +
+        '<div class="lvl-row"><span>Level</span><b>' + n + ' · ' + lv + '</b></div>' +
+        '<div class="lvl-row"><span>Duration</span><b>' + l.duration + '</b></div>' +
+        '<div class="lvl-row"><span>Course Fee</span><b class="fee">' + inr(l.fee) + '</b></div>' +
+        '<div class="lvl-row"><span>Class Days</span><b>' + c.days + '</b></div>' +
+        '<div class="lvl-row"><span>Class Timings</span><b>' + c.time + '<small>' + tzById(curTZ).label + '</small></b></div>' +
+      '</div>' +
+      '<div class="lvl-act">' +
+        '<button class="lnk" type="button" onclick="openCourseInfo(\'' + cat.id + '\',\'' + l.id + '\')">View details</button>' +
+        '<button class="btn btn-primary btn-sm" type="button" onclick="openEnroll(\'' + cat.id + '\',\'' + l.id + '\')">Enroll</button>' +
+      '</div></article>';
+  }
+  grid.innerHTML = h;
+}
+/* a modal enrolment also unlocks that course's practice sessions */
+var _submitEnrollOld = submitEnroll;
+submitEnroll = function(e){
+  var r = _submitEnrollOld(e);
+  if(enrolCtx && EXTRA_LVLS.indexOf(enrolCtx.lvl.id) < 0){ EXTRA_LVLS.push(enrolCtx.lvl.id); }
+  return r;
+};
+
+/* -----------------------------------------------------------------
+   H. LOGIN & ENROLMENT — New Student Enroll / Student Login
+   ----------------------------------------------------------------- */
+var enr = {cat:null, lvl:null, mode:'full'};
+function enrInit(){
+  var s = gid('enrCat'); if(!s){ return; }
+  var h = '<option value="">Select category</option>', i;
+  for(i = 0; i < CATS.length; i++){ h += '<option value="' + CATS[i].id + '">' + CATS[i].name + '</option>'; }
+  s.innerHTML = h;
+}
+function enrCatChange(id){
+  var c = gid('enrCourse'), h = '<option value="">Select course</option>', i, l;
+  enr.cat = findCat(id); enr.lvl = null;
+  if(enr.cat){
+    for(i = 0; i < enr.cat.levels.length; i++){
+      l = enr.cat.levels[i];
+      h += '<option value="' + l.id + '">' + l.name + ' · ' + l.duration + '</option>';
+    }
+    c.disabled = false;
+  } else { c.disabled = true; }
+  c.innerHTML = h;
+  renderEnrPay();
+}
+function enrCourseChange(id){
+  enr.lvl = enr.cat ? findLvl(enr.cat, id) : null;
+  enr.mode = 'full';
+  renderEnrPay();
+}
+function enrSetMode(m){ enr.mode = m; renderEnrPay(); }
+function enrPayCard(mode, label, amt, info){
+  return '<label class="pay-card' + (enr.mode === mode ? ' sel' : '') + '" onclick="enrSetMode(\'' + mode + '\')">' +
+    '<span class="pc-top"><span class="pay-radio"><i></i></span><b>' + label + '</b></span>' +
+    '<span class="pc-amt">' + inr(amt) + '</span><span class="pc-info">' + info + '</span></label>';
+}
+function renderEnrPay(){
+  var box = gid('enrPay'), btn = gid('enrCta'); if(!box){ return; }
+  if(!enr.lvl){
+    box.innerHTML = '<div class="enr-hint">Select a category and course to see the course fee and payment options.</div>';
+    btn.disabled = true; btn.textContent = 'Select a course to continue';
+    return;
+  }
+  var l = enr.lvl, half = Math.round(l.fee / 2), pay = enr.mode === 'full' ? l.fee : half;
+  box.innerHTML =
+    '<div class="enr-amt"><div><small>Course Fee</small><span>' + enr.cat.short + ' – ' + l.name + ' · ' + l.duration + '</span></div><b>' + inr(l.fee) + '</b></div>' +
+    '<h4 class="enr-h">Payment Option</h4>' +
+    '<div class="pay-row">' +
+      enrPayCard('full', 'Pay Full Amount', l.fee, 'You will get full access for this month.') +
+      enrPayCard('part', 'Pay in Installments', half, 'A single installment must be completed next month. You will get access to your classes.') +
+    '</div>' +
+    '<div class="sum-card enr-sum"><div class="sr"><span>Course Name</span><b>' + enr.cat.short + ' – ' + l.name + '</b></div>' +
+      '<div class="sr"><span>Total Course Amount</span><b>' + inr(l.fee) + '</b></div>' +
+      '<div class="sr"><span>Selected Payment Option</span><b>' + (enr.mode === 'full' ? 'Pay Full Amount' : 'Pay in Installments') + '</b></div>' +
+      '<div class="sr total"><span>Amount Payable</span><b>' + inr(pay) + '</b></div></div>';
+  btn.disabled = false; btn.textContent = 'Pay ' + inr(pay);
+}
+function handleEnroll(e){
+  e.preventDefault();
+  if(!enr.lvl){ return false; }
+  var l = enr.lvl, cat = enr.cat, pay = enr.mode === 'full' ? l.fee : Math.round(l.fee / 2);
+  var nm = e.target.querySelector('input[type=text]').value || 'Student';
+  if(EXTRA_LVLS.indexOf(l.id) < 0){ EXTRA_LVLS.push(l.id); }
+  var html = mdlHead('Enrollment Confirmed', cat.short + ' · ' + l.name);
+  html += '<div class="mdl-bd"><div class="pay-done"><div class="pay-tick"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>' +
+    '<h3>' + inr(pay) + ' received</h3><p>Welcome, <b>' + nm.replace(/</g, '&lt;') + '</b>. You are enrolled in <b>' + cat.short + ' – ' + l.name + '</b>. ' +
+    (enr.mode === 'full' ? 'You have full access for this month.' : 'Your second installment of ' + inr(l.fee - pay) + ' is due next month.') + '</p></div></div>' +
+    '<div class="mdl-ft"><button class="btn btn-outline btn-sm" type="button" onclick="closeApp()">Close</button>' +
+    '<button class="btn btn-primary btn-sm" type="button" onclick="closeApp();completeLogin();showPage(\'dashboard\');goPanel(\'pCourses\')">Go to Student Portal</button></div>';
+  openApp(html, 'compact');
+  return false;
+}
+
+/* -----------------------------------------------------------------
+   I. WIRING — page / login hooks
+   ----------------------------------------------------------------- */
+var _showPage7 = showPage;
+showPage = function(n){ _showPage7(n); if(n === 'workshops'){ renderWorkshops(); } };
+var _completeLogin7 = completeLogin;
+completeLogin = function(){ _completeLogin7(); renderWorkshops(); renderMyPrograms(); };
+var _doLogout7 = doLogout;
+doLogout = function(){ _doLogout7(); renderWorkshops(); updateMpBadge(); };
+var _goPanel7 = goPanel;
+goPanel = function(id){ stopQVideos(); if(id === 'pPrograms'){ renderMyPrograms(); } _goPanel7(id); };
+
+renderAllTZ();
+enrInit();
+renderEnrPay();
+renderLevels();
+
 /* -----------------------------------------------------------------
    BOOT
    ----------------------------------------------------------------- */
 renderWorkshops();
 renderMyCourses();
 renderExamFilter();
+renderMyPrograms();
 
 </script>
 </body>
